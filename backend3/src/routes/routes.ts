@@ -512,7 +512,7 @@ router.post('/chart-data/line', async (req: Request, res: Response) => {
       if (seriesColumn) whereParts.push(format("%I IS NOT NULL", seriesColumn));
     }
 
-    // 🔐 param $1 = GeoJSON ; auto-SRID
+    //  param $1 = GeoJSON ; auto-SRID
     const hasSel = !!currentSelection?.geometry;
     let params: any[] = [];
     if (useSelection && hasSel) {
@@ -607,6 +607,229 @@ router.post('/chart-data/line', async (req: Request, res: Response) => {
 });
 
 
+
+// router.post('/chart-data/line', async (req: Request, res: Response) => {
+//   const {
+//     tableName,
+//     tableNames,
+//     xColumn,
+//     valueColumn,
+//     seriesColumn = null,
+//     includeNulls = false,
+//     useSelection = false,
+//     geomColumn = 'geom',
+//     categoryGroups = []
+//   } = req.body;
+
+//   const tables: string[] =
+//     Array.isArray(tableNames) && tableNames.length ? tableNames
+//       : tableName ? [tableName]
+//         : [];
+
+//   if (!tables.length) return res.status(400).send('tableName ou tableNames requis.');
+//   if (!xColumn || !valueColumn) return res.status(400).send('xColumn et valueColumn requis.');
+//   if (tables.some(t => !allowedTables.includes(t))) return res.status(400).send('Table non autorisée.');
+
+//   try {
+//     // Validate columns
+//     for (const t of tables) {
+//       const { rows } = await query(
+//         `SELECT column_name FROM information_schema.columns
+//          WHERE table_schema='public' AND table_name=$1`,
+//         [t]
+//       );
+//       const cols = rows.map(r => r.column_name);
+//       if (!cols.includes(xColumn) || !cols.includes(valueColumn)) {
+//         return res.status(400).send(`Colonnes invalides dans ${t}.`);
+//       }
+//       if (seriesColumn && !cols.includes(seriesColumn)) {
+//         return res.status(400).send(`seriesColumn "${seriesColumn}" absente de ${t}.`);
+//       }
+//       if (useSelection && !cols.includes(geomColumn)) {
+//         return res.status(400).send(`Colonne géométrique "${geomColumn}" absente de ${t}.`);
+//       }
+//     }
+
+//     const xExpr = includeNulls
+//       ? format("COALESCE(%I::text, %L)", xColumn, 'Non spécifié')
+//       : format("%I::text", xColumn);
+//     const sExpr = seriesColumn
+//       ? (includeNulls
+//         ? format("COALESCE(%I::text, %L)", seriesColumn, 'Non spécifié')
+//         : format("%I::text", seriesColumn))
+//       : null;
+
+//     const whereParts: string[] = [];
+//     if (!includeNulls) {
+//       whereParts.push(format("%I IS NOT NULL", xColumn));
+//       if (seriesColumn) whereParts.push(format("%I IS NOT NULL", seriesColumn));
+//     }
+
+//     const hasSel = !!currentSelection?.geometry;
+//     let params: any[] = [];
+//     if (useSelection && hasSel) {
+//       whereParts.push(
+//         format(
+//           "ST_Intersects(%1$I, ST_Transform(ST_SetSRID(ST_GeomFromGeoJSON($1),4326), ST_SRID(%1$I)))",
+//           geomColumn
+//         )
+//       );
+//       params = [JSON.stringify(currentSelection!.geometry)];
+//       console.log('[line] filtre spatial actif ✅');
+//     } else {
+//       console.log('[line] filtre spatial inactif ❌ (useSelection=%s, hasSelection=%s)', useSelection, hasSel);
+//     }
+
+//     const whereSQL = whereParts.length ? `WHERE ${whereParts.join(' AND ')}` : '';
+
+//     let sql: string;
+//     if (seriesColumn) {
+//       const unions = tables.map(t =>
+//         format(
+//           `SELECT %s AS x, %s AS s, (%I)::numeric AS v FROM %I t %s`,
+//           xExpr, sExpr!, valueColumn, t, whereSQL
+//         )
+//       );
+//       sql = `
+//         WITH src AS (
+//           ${unions.join(' UNION ALL ')}
+//         )
+//         SELECT s AS series, x, SUM(v) AS value
+//         FROM src
+//         GROUP BY 1,2
+//         ORDER BY 1,2;
+//       `;
+//     } else if (tables.length > 1) {
+//       const unions = tables.map(t =>
+//         format(
+//           `SELECT %s AS x, %L AS s, (%I)::numeric AS v FROM %I t %s`,
+//           xExpr, t, valueColumn, t, whereSQL
+//         )
+//       );
+//       sql = `
+//         WITH src AS (
+//           ${unions.join(' UNION ALL ')}
+//         )
+//         SELECT s AS series, x, SUM(v) AS value
+//         FROM src
+//         GROUP BY 1,2
+//         ORDER BY 1,2;
+//       `;
+//     } else {
+//       const t = tables[0];
+//       sql = format(
+//         `SELECT %s AS x, SUM(%I::numeric) AS value
+//          FROM %I t
+//          %s
+//          GROUP BY 1
+//          ORDER BY 1;`,
+//         xExpr, valueColumn, t, whereSQL
+//       );
+//     }
+
+//     const { rows } = await query(sql, params);
+
+//     // CORRECTION 1: Définir un type explicite pour finalData
+//     interface LineChartData {
+//       x: string[];
+//       series: Array<{
+//         name: string;
+//         data: number[];
+//       }>;
+//     }
+
+//     let finalData: LineChartData;
+
+//     if (!seriesColumn && tables.length === 1) {
+//       const x = rows.map(r => r.x);
+//       const data = rows.map(r => Number(r.value) || 0);
+//       finalData = { x, series: [{ name: 'Total', data }] };
+//     } else {
+//       const xAll = Array.from(new Set(rows.map(r => r.x))).sort();
+//       const xIdx = new Map(xAll.map((v, i) => [v, i]));
+//       const seriesNames = Array.from(new Set(rows.map(r => r.series))).sort();
+
+//       const bySeries = new Map<string, number[]>(
+//         seriesNames.map(s => [s, new Array(xAll.length).fill(0)])
+//       );
+//       for (const r of rows) {
+//         bySeries.get(r.series)![xIdx.get(r.x)!] = Number(r.value) || 0;
+//       }
+
+//       finalData = {
+//         x: xAll,
+//         series: seriesNames.map(name => ({ name, data: bySeries.get(name)! }))
+//       };
+//     }
+
+
+//     // CORRECTION: Gestion de l'agrégation avec vérifications de type
+//     if (categoryGroups && categoryGroups.length > 0 && finalData.series.length > 0) {
+//       console.log('[line] 🔥 Agrégation par groupes côté serveur activée');
+
+//       const seriesToGroupMap = new Map<string, string>();
+//       categoryGroups.forEach((group: any) => {
+//         console.log(`[line] Groupe "${group.name}" avec membres:`, group.members);
+//         group.members.forEach((member: string) => {
+//           seriesToGroupMap.set(member, group.name);
+//         });
+//       });
+
+//       const aggregatedSeriesMap = new Map<string, number[]>();
+
+//       // CORRECTION: Vérifier que finalData.x existe
+//       if (finalData.x && finalData.x.length > 0) {
+//         finalData.series.forEach((serie: any) => {
+//           const groupName = seriesToGroupMap.get(serie.name) || serie.name;
+//           if (!aggregatedSeriesMap.has(groupName)) {
+//             aggregatedSeriesMap.set(groupName, new Array(finalData.x.length).fill(0));
+//           }
+//         });
+
+//         // CORRECTION COMPLÈTE: Vérifier que groupData existe avant de l'utiliser
+//         finalData.series.forEach((serie: any) => {
+//           const groupName = seriesToGroupMap.get(serie.name) || serie.name;
+//           const groupData = aggregatedSeriesMap.get(groupName);
+
+//           // VÉRIFICATION COMPLÈTE
+//           if (groupData && serie.data && Array.isArray(serie.data)) {
+//             serie.data.forEach((value: number, index: number) => {
+//               // Vérifier que l'index est dans les limites ET que groupData[index] existe
+//               if (index < groupData.length && groupData[index] !== undefined) {
+//                 groupData[index] += Number(value) || 0;
+//               }
+//             });
+//             console.log(`[line] ➕ Série "${serie.name}" → Groupe "${groupName}"`);
+//           } else {
+//             console.log(`[line] ❌ Données manquantes pour la série "${serie.name}" ou groupe "${groupName}"`);
+//           }
+//         });
+
+//         const aggregatedSeries = Array.from(aggregatedSeriesMap.entries()).map(([name, data]) => ({
+//           name,
+//           data: data.map(val => Math.round((val + Number.EPSILON) * 100) / 100)
+//         }));
+
+//         console.log('[line] ✅ Séries après agrégation:', aggregatedSeries);
+
+//         finalData = {
+//           x: finalData.x,
+//           series: aggregatedSeries
+//         };
+//       } else {
+//         console.log('[line] ❌ Aucune donnée X disponible pour l\'agrégation');
+//       }
+//     }
+
+//     console.log('[line] useSel=%s series=%d x=%d', useSelection, finalData.series.length, finalData.x.length);
+//     return res.json(finalData);
+//   } catch (e) {
+//     console.error('[line] Erreur:', e);
+//     return res.status(500).send('Erreur interne du serveur.');
+//   }
+// });
+
+
 // Nouvelle route pour les données Sunburst des milieux humides (basée sur le compte)
 
 
@@ -673,6 +896,7 @@ router.get("/sunburst-milieux-humides", async (req: Request, res: Response) => {
     return res.status(500).send("Erreur interne du serveur lors de la récupération des données Sunburst.");
   }
 });
+
 
 // route pour obtenir la liste et le type des colonnes
 
