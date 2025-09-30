@@ -1,0 +1,1496 @@
+/* En-tête utilisant Flexbox pour aligner les éléments */
+.modal-header {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    padding-bottom: 0px !important;
+
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+}
+
+.header-item {
+    flex-shrink: 0;
+    /* Empêche les éléments de rétrécir */
+}
+
+.header-spacer {
+    flex: 1 1 auto;
+    text-align: right;
+
+}
+
+.button-close {
+    background-color: #2196f3;
+    color: white;
+    border-radius: 50%;
+    padding: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    top: -3px;
+
+    left: -3px;
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+/* Donne plus d'espace au champ du titre */
+.header-title {
+    flex-grow: 1;
+
+}
+
+/* Contenu principal de la modale */
+.modal-content {
+    padding: 0;
+
+    display: flex;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+    color: #888;
+}
+
+/* Pied de page utilisant Flexbox */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    /* Pousse les éléments aux extrémités */
+    width: 100%;
+    padding: 5px 24px !important;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Utilitaire pour pousser les boutons de droite */
+.spacer {
+    flex-grow: 1;
+}
+
+
+
+
+/* Style de la barre latérale quand elle est fermée */
+.sidebar.closed {
+    flex-basis: 0;
+
+    padding: 0;
+    overflow: hidden;
+
+}
+
+/* Style du contenu principal */
+.main-content {
+    flex-grow: 1;
+    /* Prend tout l'espace restant en largeur */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    overflow-y: auto;
+    /* 3. Permet au contenu principal de gérer son propre défilement */
+}
+
+
+.chart-container {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Style de la barre latérale */
+.sidebar {
+    position: relative;
+    flex-basis: 30%;
+
+    flex-shrink: 0;
+    background-color: #f9f9f9;
+    border-right: 1px solid #e0e0e0;
+    padding: 16px;
+    transition: all 0.3s ease;
+    min-width: 0;
+
+
+}
+
+/* Style et position du bouton chevron */
+.sidebar-toggle {
+    position: absolute;
+    top: 230px;
+
+    left: 34.5%;
+    background-color: #2196f3;
+    color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    width: 30px;
+    height: 40px;
+    padding: 0;
+    line-height: 40px;
+    transform: translateX(-50%);
+    transition: left 0.3s ease;
+    z-index: 10;
+}
+
+/*lorsque la barre est fermée*/
+.sidebar.closed+.sidebar-toggle {
+    left: 7px;
+
+}
+
+.sidebar-toggle mat-icon {
+    position: relative;
+
+    top: 1px;
+    font-size: 30px;
+    left: -2px;
+
+}
+
+
+/* Style pour que l'accordéon s'intègre bien dans la barre latérale */
+.sidebar .mat-expansion-panel {
+    box-shadow: none;
+    /* Retire l'ombre par défaut pour un look plus plat */
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 0;
+}
+
+/* Barre de recherche et liste des couches à l'intérieur de l'accordéon */
+.search-bar {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.layer-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0 8px;
+    /* Léger padding horizontal */
+}
+
+.layer-options {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Style pour la nouvelle liste de checkboxes */
+.fields-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px;
+    /* Limite la hauteur et ajoute un scroll si nécessaire */
+    overflow-y: auto;
+    border: 1px solid #eee;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+
+/*// configuration des étément de la legende dans l'accordéon //*/
+
+.category-item {
+    display: flex;
+    align-items: center;
+    /* Aligne verticalement les 3 éléments */
+    margin-bottom: 8px;
+    gap: 8px;
+    /* Ajoute un espace de 8px entre chaque élément */
+    height: 25px;
+    /* gerer l'espacement vertical entre les catégories*/
+}
+
+/* On cible spécifiquement l'input du sélecteur de couleur */
+.color-input-ngx {
+    width: 20px;
+    /* Largeur réduite */
+    height: 15px;
+    /* Hauteur réduite */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    /* Empêche le carré de se déformer */
+}
+
+.category-name {
+    /* Permet au nom de la catégorie de prendre l'espace restant */
+    flex-grow: 1;
+}
+
+/* Section 2: Catégories individuelles */
+.category-list {
+    flex-basis: 60%;
+    border-left: 1px solid #eee;
+    padding-left: 16px;
+
+
+    max-height: 250px;
+    /* Hauteur maximale avant que la barre de défilement n'apparaisse */
+    overflow-y: auto;
+    /* Affiche la barre de défilement si le contenu dépasse */
+}
+
+.chart-config-section {
+    /* Définit une hauteur maximale pour la section de configuration */
+    max-height: 250px;
+    overflow-y: auto;
+
+}
+
+
+
+
+
+
+
+/*** ====================            DEBUT STYLE ACCORDEON    ====================           ***/
+
+
+/* Bordure noire sur tous les panneaux */
+:host ::ng-deep .mat-expansion-panel {
+    border: 1.5px solid #474545;
+
+}
+
+/* Header quand le panneau est FERMÉ */
+:host ::ng-deep .mat-expansion-panel-header:not(.mat-expanded) {
+    background-color: #2196f3;
+    /* bleu demandé */
+    color: #fff;
+    transition: background-color .2s ease;
+}
+
+
+
+
+
+/* Header quand le panneau est OUVERT */
+:host ::ng-deep .mat-expansion-panel-header.mat-expanded {
+    background-color: #842929;
+    /* violet */
+    color: #721414;
+}
+
+/* Assure la couleur des textes/indicateurs/icônes */
+:host ::ng-deep .mat-expansion-panel-header .mat-expansion-panel-header-title,
+:host ::ng-deep .mat-expansion-panel-header .mat-expansion-panel-header-description,
+:host ::ng-deep .mat-expansion-panel-header mat-icon,
+:host ::ng-deep .mat-expansion-panel-header .mat-expansion-indicator::after {
+    color: #fff;
+}
+
+
+/* Corps du panneau quand il est OUVERT : teinte violette légère */
+:host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-body {
+    background-color: rgba(156, 39, 176, 0.08);
+    /* #9c27b0 à ~8% */
+    color: #1a1a1a;
+    /* lisible sur fond clair */
+    transition: background-color .2s ease;
+}
+
+/* (Optionnel) fine séparation entre header et body, cohérente avec ta bordure noire */
+:host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-body {
+    border-top: 1px solid #000;
+}
+
+/* (Optionnel) un peu d’air à l’intérieur pour un rendu net */
+:host ::ng-deep .mat-expansion-panel .mat-expansion-panel-body {
+    padding: 12px 16px;
+    /* ajuste si besoin */
+}
+
+
+
+/* Curseur main sur le header */
+:host ::ng-deep .mat-expansion-panel-header {
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+/* HOVER : header noir (qu'il soit ouvert ou fermé) */
+:host ::ng-deep .mat-expansion-panel-header:hover,
+:host ::ng-deep .mat-expansion-panel-header.mat-expanded:hover {
+    background-color: #837d85 !important;
+    color: #2f0303 !important;
+}
+
+/* HOVER : texte/chevron/icône en blanc pour la lisibilité */
+:host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-panel-header-title,
+:host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-panel-header-description,
+:host ::ng-deep .mat-expansion-panel-header:hover mat-icon,
+:host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-indicator::after {
+    color: #2f0303 !important;
+}
+
+/***  ============  FIN STYLE ACCORDEON========  **/
+
+
+
+/*======= OPTIONS DE CONFIGURATIONS DU DIAGRAMME EN LIGNE=====*/
+/* Bloc "Grouper les catégories" */
+
+
+
+
+.bar-config-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.bar-config-scroll-categorie-line {
+    max-height: 200px;
+    overflow-y: auto;
+    scrollbar-color: #9aa0a6 transparent;
+}
+
+
+/* Conteneur des champs */
+.pack-line {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Le mat-form-field prend toute la largeur disponible */
+.pack-line mat-form-field,
+.pack-line .compact-field-line-1 {
+    width: 80px;
+}
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+.w-140-line {
+    min-width: 140px;
+}
+
+
+
+/* Conteneur des champs */
+.pack-line-2 {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line-2 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-2 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-2 .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-2 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-140-line-2 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-2 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-2 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-2 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-2 mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-2 mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-2 mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-2 mat-form-field,
+.pack-line-2 .compact-field-line-2,
+.pack-line-2 .compact-field-line-2-2 {
+    width: 80px;
+}
+
+.pack-line-2 mat-form-field,
+.pack-line-2 .compact-field-line-2-2 {
+    width: 120px;
+}
+
+.w-140-line-2 {
+    min-width: 40px;
+}
+
+/*line 3*/
+
+.pack-line-3 {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line-3 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-3 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-3 .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-3 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-140-line-3 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-3 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-3 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-3 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-3 mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-3 mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-3 mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+
+
+.pack-line-3 mat-form-field,
+.pack-line-3 .compact-field-line- {
+    width: 80px;
+}
+
+.w-140-line-3 {
+    min-width: 40px;
+}
+
+/*line 4*/
+
+.pack-line-4 {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-200-line-4 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-4 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-4 .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-4 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-200-line-4 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-4 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-4 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-4 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-4 mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-4 mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-4 mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-4 mat-form-field,
+.pack-line-4 .compact-field-line-4 {
+    width: 80px;
+}
+
+.pack-line-4 mat-form-field,
+.pack-line-4 .compact-field-line-4-4 {
+    width: 120px;
+}
+
+.w-140-line-4 {
+    min-width: 40px;
+}
+
+
+/*ligne etiquettes*/
+
+.pack-line-5 {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-180-line-5 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-5 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-5 .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-5 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-5 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-200-line-5 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-5 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-5 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-5 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-5 mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-5 mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-5 mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-5 mat-form-field,
+.pack-line-5 .compact-field-line-5 {
+    width: 80px;
+}
+
+.pack-line-5 mat-form-field,
+.pack-line-5 .compact-field-line-5-5 {
+    width: 120px;
+}
+
+.w-180-line-5 {
+    min-width: 40px;
+}
+
+
+/*ligne zoom*/
+
+.pack-line-zoom {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line-zoom {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-zoom .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-zoom .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-zoom input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-zoom {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-200-line-5 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-zoom mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-zoom mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-zoom mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-zoom mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-zoom mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-zoom mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-zoom mat-form-field,
+.pack-line-zoom .compact-field-line-zoom {
+    width: 80px;
+}
+
+
+.w-140-line-zoom {
+    min-width: 40px;
+}
+
+
+/*ligne legende sur le graphique*/
+
+.pack-line-legend-type {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line-legend-type {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-legend-type .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-legend-type .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-legend-type input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-legend-type {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Helpers si tu les utilises encore */
+/* .w-200-line-5 {
+    min-width: 140px;
+} */
+
+:host ::ng-deep .pack-line-legend-type mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-legend-type mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-legend-type mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-legend-type mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-legend-type mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-legend-type mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-legend-type mat-form-field,
+.pack-line-legend-type .compact-field-line-legend-type {
+    width: 100px;
+}
+
+.pack-line-legend-type mat-form-field,
+.pack-line-legend-type .compact-field-line-legend-type-1 {
+    width: 105px;
+}
+
+
+.w-180-line-legend-type {
+    min-width: 40px;
+}
+
+
+/*ligne legende item*/
+
+.pack-line-item {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-140-line-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-item .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+
+/* Optionnel : resserrer un peu la hauteur du champ (Angular Material MDC) */
+.pack-line-item .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-item input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-iteme {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+:host ::ng-deep .pack-line-item mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-item mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-item mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-item mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-item mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-item mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-item mat-form-field,
+.pack-line-item .compact-field-line-item {
+    width: 100px;
+}
+
+/* .pack-line-item mat-form-field,
+.pack-line-item .compact-field-line-item {
+    width: 105px;
+} */
+
+
+.w-140-line-item {
+    min-width: 40px;
+}
+
+
+
+/*ligne legende style*/
+
+.pack-line-style-legend {
+    display: grid;
+    /* 2 colonnes -> 2 lignes pour 4 champs */
+    grid-template-columns: repeat(2, minmax(var(--field-min, 140px), 1fr));
+    gap: 7px 4px;
+    /* espace (lignes x colonnes) */
+    max-width: 100%;
+    overflow-x: hidden;
+    /* pas de scroll horizontal */
+}
+
+/* Chaque bloc champ */
+.pack .field w-160-line-style-legend {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* IMPORTANT pour éviter le débordement en grid */
+}
+
+/* Libellé compact au-dessus */
+.pack-line-style-legend .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+.pack-line-style-legend .mat-mdc-form-field-infix {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/*  le nombre n’ajoute pas de largeur */
+.pack-line-style-legend input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Petites largeurs : repasse en 1 colonne si nécessaire */
+@media (max-width: 520px) {
+    .pack-line-style-legend {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+:host ::ng-deep .pack-line-style-legend mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-radius: 0px;
+    transition: background-color .15s ease;
+}
+
+:host ::ng-deep .pack-line-style-legend mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-line-style-legend mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+:host ::ng-deep .pack-line-style-legend mat-form-field .mdc-notched-outline__leading,
+:host ::ng-deep .pack-line-style-legend mat-form-field .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-line-style-legend mat-form-field .mdc-notched-outline__notch {
+    border-radius: 0px;
+}
+
+.pack-line-style-legend mat-form-field,
+.pack-line-item .compact-field-line-style-legend {
+    width: 90px;
+}
+
+
+.pack-line-style-legend .compact-field-line-style-legend-1 {
+    width: 125px;
+}
+
+
+.w-160-line-style-legend {
+    min-width: 40px;
+}
+
+
+
+/* ======================DIAGRAMME EN BAR ET BAR GROUPE===========*/
+
+/*Bar Grille position*/
+
+
+.pack-bar-1 {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px 6px;
+    max-width: 100%;
+}
+
+
+.pack-bar-1>mat-checkbox {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+}
+
+
+.pack-bar-1 .field.w-120-bar-1 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+
+.pack-bar-1 mat-form-field {
+    width: 80px;
+    border-color: #000;
+}
+
+
+
+.pack-bar-1 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pack-bar-1 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+:host ::ng-deep .pack-bar-1 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    transition: background-color .15s ease;
+    /* Note: border-radius est déjà géré par les règles plus bas */
+}
+
+:host ::ng-deep .pack-bar-1 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+}
+
+:host ::ng-deep .pack-bar-1 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+/* Assurez-vous d'avoir des bordures nulles pour un look plat si c'est ce que vous voulez */
+:host ::ng-deep .pack-bar-1 .mdc-notched-outline__leading,
+:host ::ng-deep .pack-bar-1 .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-bar-1 .mdc-notched-outline__notch {
+    border-style: none !important;
+}
+
+
+
+/*Axe label*/
+
+.pack-bar-2 {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 5px 3px;
+    max-width: 100%;
+}
+
+
+.pack-bar-2>mat-checkbox {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+}
+
+
+.pack-bar-2 .field.w-140-bar-2 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+
+.pack-bar-2 mat-form-field {
+    width: 100px;
+
+
+}
+
+
+
+
+.pack-bar-2 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pack-bar-2 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+:host ::ng-deep .pack-bar-2 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-color: #000;
+    /* transition: background-color .15s ease; */
+    /* Note: border-radius est déjà géré par les règles plus bas */
+}
+
+:host ::ng-deep .pack-bar-2 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+
+}
+
+:host ::ng-deep .pack-bar-2 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+/* Assurez-vous d'avoir des bordures nulles pour un look plat si c'est ce que vous voulez */
+:host ::ng-deep .pack-bar-2 .mdc-notched-outline__leading,
+:host ::ng-deep .pack-bar-2 .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-bar-2 .mdc-notched-outline__notch {
+    border-style: none !important;
+}
+
+
+/*Bar titre*/
+
+.pack-bar-title {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 5px 3px;
+    max-width: 100%;
+}
+
+
+.pack-bar-title>mat-checkbox {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+}
+
+
+.pack-bar-title .field.w-140-bar-title {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+
+.pack-bar-title mat-form-field {
+    width: 100px;
+
+
+}
+
+
+
+
+.pack-bar-title .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pack-bar-title input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+:host ::ng-deep .pack-bar-title mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-color: #000;
+    /* transition: background-color .15s ease; */
+    /* Note: border-radius est déjà géré par les règles plus bas */
+}
+
+:host ::ng-deep .pack-bar-title mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+
+}
+
+:host ::ng-deep .pack-bar-title mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+/* Assurez-vous d'avoir des bordures nulles pour un look plat si c'est ce que vous voulez */
+:host ::ng-deep .pack-bar-title .mdc-notched-outline__leading,
+:host ::ng-deep .pack-bar-title .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-bar-title .mdc-notched-outline__notch {
+    border-style: none !important;
+}
+
+
+/*Configuration du camembert*/
+
+
+.pack-pie-1 {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 5px 3px;
+    max-width: 100%;
+}
+
+
+.pack-pie-1 mat-checkbox {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+}
+
+
+.pack-pie-1 .field.w-140-pie-1 {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+
+.pack-pie-1 mat-form-field {
+    width: 100px;
+
+
+}
+
+.pack-pie-1 .compact-field-pie-1-1 {
+    width: 200px !important;
+}
+
+.pack-pie-1 .compact-field-pie-1-1-formatter {
+    width: 240px !important;
+}
+
+.color-field,
+.field w-140-check {
+    padding-bottom: 20px;
+}
+
+.pack-pie-1 .mini-label {
+    font-size: 12px;
+    line-height: 1.2;
+    margin: 0 0 4px 2px;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pack-pie-1 input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+:host ::ng-deep .pack-pie-1 mat-form-field .mat-mdc-text-field-wrapper {
+    background-color: #ffffff;
+    border-color: #000;
+    /* transition: background-color .15s ease; */
+    /* Note: border-radius est déjà géré par les règles plus bas */
+}
+
+:host ::ng-deep .pack-pie-1 mat-form-field:hover .mat-mdc-text-field-wrapper {
+    background-color: #eceff1;
+
+}
+
+:host ::ng-deep .pack-pie-1 mat-form-field.mat-focused .mat-mdc-text-field-wrapper {
+    background-color: #e6e6e7;
+}
+
+/* Assurez-vous d'avoir des bordures nulles pour un look plat si c'est ce que vous voulez */
+:host ::ng-deep .pack-pie-1 .mdc-notched-outline__leading,
+:host ::ng-deep .pack-pie-1 .mdc-notched-outline__trailing,
+:host ::ng-deep .pack-pie-1 .mdc-notched-outline__notch {
+    border-style: none !important;
+}
+
+
+/*===============Modal footer============*/
+
+.color-bottom {
+    background-color: #2196f3;
+    color: white;
+
+    padding: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+
+}
+
+.footer-button {
+    background-color: #2196f3;
+    color: white;
+    border-radius: 50%;
+    padding: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    top: -3px;
+
+    left: -3px;
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+
+}

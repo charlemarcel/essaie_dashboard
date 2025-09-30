@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Entrer les coordonnées</h2>
+<div mat-dialog-content>
+  <p>Veuillez renseigner les coordonnées du point :</p>
+  <mat-form-field appearance="fill" style="display: block; margin-bottom: 8px">
+    <mat-label>Latitude</mat-label>
+    <input matInput type="number" [(ngModel)]="lat" placeholder="Latitude" />
+  </mat-form-field>
+  <mat-form-field appearance="fill" style="display: block">
+    <mat-label>Longitude</mat-label>
+    <input matInput type="number" [(ngModel)]="lon" placeholder="Longitude" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-button color="primary" (click)="confirm()">Valider</button>
+</div>

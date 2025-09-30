@@ -1,0 +1,17 @@
+<div class="layers-control">
+  <button mat-icon-button (click)="togglePanel()" aria-label="Gérer les couches">
+    <mat-icon>layers</mat-icon>
+  </button>
+
+  <div *ngIf="panelOpen" class="layers-panel mat-elevation-z4">
+    <h3>Couches</h3>
+    <div *ngFor="let layer of layers" class="layer-item">
+      <mat-checkbox
+        [checked]="layer.visible"
+        (change)="toggleLayer($event, layer.id)"
+      >
+        {{ layer.name }}
+      </mat-checkbox>
+    </div>
+  </div>
+</div>

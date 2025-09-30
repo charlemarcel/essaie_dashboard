@@ -1,0 +1,6 @@
+@import "ol/ol.css";
+
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+/* src/styles.css */
+
+@import "@angular/material/prebuilt-themes/indigo-pink.css";

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Enregistrer la géométrie</h2>
+
+<div mat-dialog-content>
+  <!-- Champ Nom obligatoire -->
+  <mat-form-field appearance="fill" style="display: block; margin-bottom: 8px">
+    <mat-label>Nom <span></span></mat-label>
+    <input
+      matInput
+      [(ngModel)]="polygonName"
+      placeholder="Nom du polygone"
+      required
+    />
+  </mat-form-field>
+
+  <!-- Champ Forme (automatiquement rempli, désactivé) -->
+  <mat-form-field appearance="fill" style="display: block; margin-bottom: 8px">
+    <mat-label>Forme</mat-label>
+    <input matInput [disabled]="true" [value]="polygonShape" />
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-button color="primary" (click)="save()" [disabled]="!polygonName">
+    Enregistrer
+  </button>
+</div>

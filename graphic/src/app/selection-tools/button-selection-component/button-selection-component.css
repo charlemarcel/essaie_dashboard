@@ -1,0 +1,47 @@
+/* Conteneur principal */
+.menu-container {
+
+  position: fixed;
+  top: 50px;
+  right: 50%;
+  z-index: 900;
+}
+
+/* Bouton principal */
+.menu-container button[mat-icon-button] {
+  background-color: #c99507;
+  color: #030303;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 50%;
+  border: 1px solid rgba(73, 228, 112, 0.3);
+}
+
+.menu-container button[mat-icon-button]:hover {
+  background-color: rgba(234, 190, 190, 0.8);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px rgba(73, 228, 112, 0.2);
+}
+
+
+/* Cible le menu principal par son ID (#mainMenu) */
+#mainMenu.mat-menu-panel {
+  background: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Cible tous les items de menu */
+#mainMenu .mat-menu-item {
+  background: white !important;
+  color: #1a1a1a !important;
+}
+
+/* Cible spécifiquement les boutons avec sous-menu */
+#mainMenu .mat-menu-item[matMenuTriggerFor] {
+  background: white !important;
+}
+
+/* Effet de survol */
+#mainMenu .mat-menu-item:hover {
+  background: #f5f5f5 !important;
+}

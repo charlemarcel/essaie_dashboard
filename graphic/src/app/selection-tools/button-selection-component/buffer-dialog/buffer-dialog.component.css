@@ -1,0 +1,48 @@
+/* buffer-dialog.component.css */
+
+/* Style pour le titre H2 */
+h2 {
+  font-weight: bold;
+}
+
+/* Style pour le paragraphe */
+p {
+  font-size: 0.9em;
+  font-style: italic;
+  /* La couleur par défaut est conservée, ou vous pouvez la définir ici si besoin */
+}
+
+/* Conteneur pour les boutons d'action */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end; /* Aligne les boutons à droite */
+  gap: 10px; /* Ajoute un espace entre les boutons */
+}
+
+/* Style pour le bouton "Annuler" */
+.cancel-button {
+  background-color: #ef5350; /* Un ton de rouge */
+  color: white; /* Texte blanc */
+  border-radius: 5px; /* Coins légèrement arrondis */
+  padding: 8px 16px; /* Espacement interne */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère */
+  transition: background-color 0.3s ease; /* Transition douce au survol */
+}
+
+.cancel-button:hover {
+  background-color: #d32f2f; /* Rouge plus foncé au survol */
+}
+
+/* Style pour le bouton "Valider" */
+.confirm-button {
+  background-color: #66bb6a; /* Un ton de vert */
+  color: white; /* Texte blanc */
+  border-radius: 5px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+  background-color: #388e3c; /* Vert plus foncé au survol */
+}

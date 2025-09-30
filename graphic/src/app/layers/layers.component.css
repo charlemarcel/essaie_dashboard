@@ -1,0 +1,24 @@
+.layers-control {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    /* Au-dessus de la carte */
+}
+
+.layers-panel {
+    background: white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-top: 8px;
+    width: 200px;
+}
+
+.layer-item {
+    margin: 8px 0;
+}
+
+button.mat-icon-button {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

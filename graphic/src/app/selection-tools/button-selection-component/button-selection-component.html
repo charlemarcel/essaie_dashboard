@@ -1,0 +1,31 @@
+<!-- Conteneur principal -->
+<div class="menu-container">
+  <!-- Bouton déclencheur avec icône et tooltip légèrement au-dessus -->
+  <button mat-icon-button [matMenuTriggerFor]="mainMenu" aria-label="Menu de sélection" matTooltip="Sélection"
+    matTooltipPosition="above" matTooltipClass="custom-tooltip">
+    <mat-icon>apps</mat-icon>
+  </button>
+
+  <!-- Menu principal -->
+  <mat-menu #mainMenu="matMenu" yPosition="below" xPosition="after">
+    <button mat-menu-item [matMenuTriggerFor]="pointSubMenu">
+      <mat-icon>location_on</mat-icon>
+      <span>Par point</span>
+    </button>
+    <button mat-menu-item (click)="drawPolygon.emit()">
+      <mat-icon>polyline</mat-icon>
+      <span>Par polygone</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #pointSubMenu="matMenu" yPosition="below" xPosition="after">
+    <button mat-menu-item (click)="drawPoint.emit()">
+      <mat-icon>add_location</mat-icon>
+      <span>Créer un point</span>
+    </button>
+    <button mat-menu-item (click)="enterCoordinates.emit()">
+      <mat-icon>keyboard</mat-icon>
+      <span>Entrer les coordonnées</span>
+    </button>
+  </mat-menu>
+</div>

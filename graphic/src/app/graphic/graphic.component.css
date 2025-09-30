@@ -1,0 +1,318 @@
+/* Conteneur principal pour positionner le bouton en bas à droite */
+.graphic-container {
+    position: fixed;
+    top: 20px;
+    right: 10%;
+    z-index: 900;
+    /* Au-dessus du panneau de couches */
+}
+
+
+
+
+.open-graphic-button {
+
+    background-color: #2196f3;
+
+    color: white;
+
+}
+
+.open-graphic-button mat-icon {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.graphic-footer button mat-icon {
+
+    background-color: #2196f3;
+    color: white;
+    border-radius: 50%;
+    padding: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    top: -3px;
+
+    left: -3px;
+
+}
+
+.active-chart-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.graphic-header mat-icon {
+
+    background-color: #2196f3;
+    color: white;
+    border-radius: 50%;
+    padding: 3px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    top: -3px;
+
+    left: -3px;
+
+}
+
+/* Le panneau flottant et déplaçable */
+.graphic-panel {
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    width: 925px;
+    height: 650px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    resize: both;
+
+
+}
+
+/* En-tête du panneau */
+.graphic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #f5f5f5;
+    /* Un gris léger pour le distinguer */
+    color: #333;
+    font-weight: 500;
+    cursor: move;
+
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* ... (votre CSS existant pour .graphic-container, etc. reste le même) ... */
+
+/* Espace pour le contenu */
+.graphic-content {
+    flex-grow: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    /* CHANGÉ : Division de gauche à droite */
+    overflow: hidden;
+    color: black;
+}
+
+/* NOUVEAU : Zone d'affichage du graphique*/
+.chart-display-area {
+    flex: 0 0 70%;
+    /* Prend 80% de la LARGEUR */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    color: #888;
+    border-right: 4px solid #cbd1d4;
+    /* CHANGÉ : Séparateur vertical */
+    overflow: auto;
+    background-color: #f0f2f5;
+}
+
+.admin-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.preset-selection-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+}
+
+.preset-list {
+    flex: 1;
+    min-height: 100px;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+    /* ← NOUVEAU : organisation verticale */
+    overflow: hidden;
+    /* ← CHANGÉ : cache l'overflow global */
+}
+
+/* Ajoute un séparateur entre les deux listes de la colonne de droite */
+.preset-list:first-child {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.preset-title {
+    font-weight: bold;
+    background-color: #2196f3;
+    color: #ede4e4;
+    padding: 10px 12px;
+    margin: 0;
+    font-size: 14px;
+    border-bottom: 2px solid #2196f3;
+    text-align: center;
+    flex-shrink: 0;
+    /* ← IMPORTANT : empêche le titre de rétrécir */
+}
+
+.preset-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    /* ← DÉPLACÉ : overflow seulement sur la liste */
+    flex-grow: 1;
+    /* ← Prend tout l'espace restant */
+}
+
+.preset-list li a {
+    display: block;
+    padding: 6px 4px;
+    text-decoration: none;
+    color: #007bff;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+}
+
+.preset-list li a:hover {
+    background-color: #e9ecef;
+}
+
+
+/* .preset-list {
+    flex: 1;
+    min-height: 100px;
+    padding: 0;
+    overflow-y: auto;
+    margin: 8px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+} */
+
+
+
+
+.clickable-list-item {
+    display: block;
+    padding: 8px 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    color: #007bff;
+    transition: background-color 0.2s ease;
+}
+
+.clickable-list-item:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+/* Style de chaque boîte de graphique */
+.chart-preview-box {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Effet au survol de la souris */
+.chart-preview-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Conteneur de l'image */
+.chart-preview-image {
+    flex-grow: 1;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-preview-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+/* Conteneur du titre en bas de la boîte */
+.chart-preview-title {
+    padding: 10px 12px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+    flex-shrink: 0;
+}
+
+.chart-preview-title h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.active-chart-container,
+.chart-instance {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+
+
+/* Pied de page pour les actions */
+.graphic-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.active-chart-container {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    position: relative;
+}
