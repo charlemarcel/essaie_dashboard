@@ -28,7 +28,7 @@ export interface CreatePresetDto {
 
 @Injectable({ providedIn: 'root' })
 export class GraphicPrefineServiceApi {
-  // ✅ grâce au proxy, on reste relatif
+  //  grâce au proxy, on reste relatif
   private base = '/api/presets';
 
   constructor(private http: HttpClient) { }

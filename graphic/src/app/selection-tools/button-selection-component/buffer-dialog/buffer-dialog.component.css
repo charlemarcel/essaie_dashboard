@@ -15,28 +15,39 @@ p {
 /* Conteneur pour les boutons d'action */
 .dialog-actions {
   display: flex;
-  justify-content: flex-end; /* Aligne les boutons à droite */
-  gap: 10px; /* Ajoute un espace entre les boutons */
+  justify-content: flex-end;
+  /* Aligne les boutons à droite */
+  gap: 10px;
+  /* Ajoute un espace entre les boutons */
 }
 
 /* Style pour le bouton "Annuler" */
 .cancel-button {
-  background-color: #ef5350; /* Un ton de rouge */
-  color: white; /* Texte blanc */
-  border-radius: 5px; /* Coins légèrement arrondis */
-  padding: 8px 16px; /* Espacement interne */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère */
-  transition: background-color 0.3s ease; /* Transition douce au survol */
+  background-color: #ef5350;
+  /* Un ton de rouge */
+  color: white;
+  /* Texte blanc */
+  border-radius: 5px;
+  /* Coins légèrement arrondis */
+  padding: 8px 16px;
+  /* Espacement interne */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Ombre légère */
+  transition: background-color 0.3s ease;
+  /* Transition douce au survol */
 }
 
 .cancel-button:hover {
-  background-color: #d32f2f; /* Rouge plus foncé au survol */
+  background-color: #d32f2f;
+  /* Rouge plus foncé au survol */
 }
 
 /* Style pour le bouton "Valider" */
 .confirm-button {
-  background-color: #66bb6a; /* Un ton de vert */
-  color: white; /* Texte blanc */
+  background-color: #66bb6a;
+  /* Un ton de vert */
+  color: white;
+  /* Texte blanc */
   border-radius: 5px;
   padding: 8px 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -44,5 +55,6 @@ p {
 }
 
 .confirm-button:hover {
-  background-color: #388e3c; /* Vert plus foncé au survol */
+  background-color: #388e3c;
+  /* Vert plus foncé au survol */
 }

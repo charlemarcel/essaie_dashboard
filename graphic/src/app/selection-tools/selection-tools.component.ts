@@ -437,7 +437,7 @@ export class SelectionToolsComponent {
     this.resetFeatureStyles();
 
     const dialogRef = this.dialog.open(CoordinateEnterComponent, {
-      width: '300px'
+      width: '400px'
     });
 
     dialogRef.afterClosed().subscribe((coords4326) => {
@@ -469,7 +469,7 @@ export class SelectionToolsComponent {
       this.setupDeletionInteraction(map);
 
       const dialogBuffer = this.dialog.open(BufferDialogComponent, {
-        width: '300px',
+        width: '350px',
         data: {
           point: {
             lon: coords3857[0],
@@ -539,180 +539,7 @@ export class SelectionToolsComponent {
 
   }
 
-  // public startDrawPolygon(): void {
-  //   const map = (window as any).olMap;
-  //   this.resetFeatureStyles();
 
-  //   if (!map) {
-  //     console.error('❌ La carte OpenLayers n’est pas encore prête.');
-  //     return;
-  //   }
-
-  //   this.cancelDraw(map); // Nettoie tout état de dessin précédent
-
-  //   this.createMeasureTooltip(map);
-  //   this.createHelpTooltip(map);
-
-  //   const source = new VectorSource();
-  //   const polygonLayer = new VectorLayer({
-  //     source: source,
-  //     style: new Style({
-  //       fill: new Fill({ color: 'rgba(0, 128, 255, 0.3)' }),
-  //       stroke: new Stroke({ color: '#007bff', width: 2 })
-  //     })
-  //   });
-  //   (polygonLayer as any).userCreated = true;
-  //   map.addLayer(polygonLayer);
-  //   this.setupDeletionInteraction(map);
-
-  //   // const draw = new Draw({
-  //   //   source: source,
-  //   //   type: 'Polygon',
-  //   //   style: new Style({
-  //   //     fill: new Fill({
-  //   //       color: 'rgba(0, 128, 255, 0.1)',
-  //   //     }),
-  //   //     stroke: new Stroke({
-  //   //       color: 'deepskyblue',
-  //   //       width: 3,
-  //   //     }),
-  //   //     image: new CircleStyle({
-  //   //       radius: 6,
-  //   //       stroke: new Stroke({
-  //   //         color: 'deepskyblue',
-  //   //         width: 2
-  //   //       }),
-  //   //       fill: new Fill({
-  //   //         color: 'rgba(255, 255, 255, 0.5)',
-  //   //       }),
-  //   //     }),
-  //   //   }),
-  //   // });
-
-
-
-  //   const draw = new Draw({
-  //     source: source,
-  //     type: 'Polygon',
-  //     style: new Style({
-  //       fill: new Fill({
-  //         color: 'rgba(0, 128, 255, 0.1)',
-  //       }),
-  //       stroke: new Stroke({
-  //         color: 'deepskyblue',
-  //         width: 3,
-  //       }),
-  //       image: new CircleStyle({
-  //         radius: 6,
-  //         stroke: new Stroke({
-  //           color: 'deepskyblue',
-  //           width: 2
-  //         }),
-  //         fill: new Fill({
-  //           color: 'rgba(255, 255, 255, 0.5)',
-  //         }),
-  //       }),
-  //     }),
-  //     finishCondition: (event) => {
-  //       // On s'assure qu'il s'agit bien d'un événement de souris
-  //       if (event.originalEvent instanceof MouseEvent && event.originalEvent.button === 2) {
-  //         // On empêche le menu contextuel du navigateur de s'ouvrir
-  //         event.originalEvent.preventDefault();
-  //         return true; // On termine le dessin
-  //       }
-  //       return false; // Pour tous les autres cas, on ne termine pas
-  //     },
-  //   });
-
-
-  //   this.currentDrawInteraction = draw;
-  //   this.setupEscapeKeyListener(map);
-
-  //   map.addInteraction(draw);
-
-  //   draw.on('drawstart', (event) => {
-  //     this.sketch = event.feature;
-  //     const firstCoord = (this.sketch.getGeometry() as Polygon).getCoordinates()[0][0];
-  //     this.measureTooltip.setPosition(firstCoord);
-
-  //     this.helpTooltip.setPosition(firstCoord);
-  //   });
-
-  //   draw.on('drawend', (event) => {
-  //     // Nettoyage après un dessin réussi
-  //     if (this.currentDrawInteraction) {
-  //       map.removeInteraction(this.currentDrawInteraction);
-  //       this.currentDrawInteraction = null;
-  //     }
-  //     if (this.escapeKeyListener) {
-  //       document.removeEventListener('keydown', this.escapeKeyListener);
-  //       this.escapeKeyListener = null;
-  //     }
-  //     if (this.mapPointerMoveListener) {
-  //       map.un('pointermove', this.mapPointerMoveListener);
-  //       this.mapPointerMoveListener = null;
-  //     }
-  //     this.removeTooltips();
-  //     this.sketch = null; // Réinitialise la référence au croquis
-
-
-  //     const geometry = event.feature.getGeometry() as Polygon;
-
-  //     // envoyer le polygone ou selection au back end
-  //     const fmt = new GeoJSON();
-  //     const featureGeo = fmt.writeFeatureObject(event.feature, {
-  //       featureProjection: 'EPSG:3857', // projection de la carte
-  //       dataProjection: 'EPSG:4326'     // ce que le backend attend
-  //     }) as any; // { type:'Feature', geometry:{ type:'Polygon', coordinates:[...] } }
-
-  //     console.log('[Selection] Envoi polygon GeoJSON au backend:', featureGeo);
-  //     this.selectionSrv.setSelection(featureGeo).subscribe({
-  //       next: () => console.log('[Selection] ✅ polygon envoyé au backend'),
-  //       error: (e) => console.error('[Selection] ❌ échec envoi polygon', e)
-  //     });
-  //     this.selectionSrv.clearSelection().subscribe({
-  //       next: () => console.log('[Selection] ✅ sélection supprimée côté backend'),
-  //       error: (e) => console.error('[Selection] ❌ échec suppression sélection', e)
-  //     });
-
-
-  //     this.highlightIntersectingFeatures(geometry, map, polygonLayer);
-
-  //     const dialogRef = this.dialog.open(SaveFormDialogComponent, {
-  //       width: '300px',
-  //       data: {
-  //         geometry: geometry
-  //       }
-  //     });
-
-  //     dialogRef.afterClosed().subscribe((result) => {
-  //       if (result) {
-  //         console.log('✅ Données du formulaire sauvegardées :', result);
-  //       } else {
-  //         this.cancelDraw(map); // Annuler si la sauvegarde est annulée
-  //       }
-  //     });
-  //   });
-
-  //   if (!this.mapPointerMoveListener) {
-  //     this.mapPointerMoveListener = (evt: any) => {
-  //       if (this.sketch && this.currentDrawInteraction) {
-  //         const geometry = this.sketch.getGeometry() as Polygon;
-  //         const coordinates = geometry.getCoordinates()[0];
-  //         if (coordinates.length > 1) {
-  //           const lastPoint = coordinates[coordinates.length - 1];
-  //           const currentPoint = evt.coordinate;
-  //           const segment = new LineString([lastPoint, currentPoint]);
-  //           const length = this.formatLength(segment);
-  //           this.measureTooltipElement.innerHTML = length;
-  //           this.measureTooltip.setPosition(currentPoint);
-  //         }
-  //       }
-  //       this.helpTooltip.setPosition(evt.coordinate);
-  //     };
-  //     map.on('pointermove', this.mapPointerMoveListener);
-  //   }
-  // }
   public startDrawPolygon(): void {
     const map = (window as any).olMap;
     this.resetFeatureStyles();

@@ -70,19 +70,20 @@
           <div echarts [options]="chartOptions" [initOpts]="{renderer: 'svg'}" class="chart-instance"
             (chartInit)="onChartInit($event)">
           </div>
+          <!-- <div echarts [options]="chartOptions" [initOpts]="{renderer: 'canvas'}" class="chart-instance"
+            (chartInit)="onChartInit($event)">
+          </div> -->
         </div>
+
       </div>
 
-      <!-- Colonne de Droite -->
+
+
       <div class="preset-selection-area">
-        <div class="preset-list">
-          <div class="preset-title">
-            Graphiques Prédéfinis
-          </div>
+
+        <div class="preset-list" *ngIf="!showDataTable">
+          <div class="preset-title">Graphiques Prédéfinis</div>
           <ul>
-            <!-- <li class="clickable-list-item" (click)="loadSunburst()">
-               Sunburst - Milieux Humides
-            </li> -->
             <li *ngFor="let preset of adminPresets" class="clickable-list-item" (click)="loadPreset(preset.id)">
               {{ preset.name }}
             </li>
@@ -91,21 +92,67 @@
             </li>
           </ul>
         </div>
-        <div class="preset-list">
-          <div class="preset-title">
-            Mes Graphiques
-          </div>
+
+
+        <div class="preset-list" *ngIf="!showDataTable">
+          <div class="preset-title">Mes Graphiques</div>
           <ul>
-            <li *ngFor="let preset of userPresets" class="clickable-list-item" (click)="loadPreset(preset.id)">
-              {{ preset.name }}
+            <li *ngFor="let preset of userPresets" class="list-item-with-menu">
+
+              <span class="preset-name" (click)="loadPreset(preset.id)">
+                {{ preset.name }}
+              </span>
+
+              <button mat-icon-button class="menu-trigger" [matMenuTriggerFor]="userMenu"
+                (click)="$event.stopPropagation()" aria-label="Options du graphique">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+
+              <mat-menu #userMenu="matMenu">
+                <button mat-menu-item (click)="deletePreset(preset.id, $event)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Supprimer</span>
+                </button>
+              </mat-menu>
+
             </li>
             <li *ngIf="userPresets.length === 0" class="empty-list-message">
               Vous n'avez aucun graphique.
             </li>
           </ul>
         </div>
+
+        <div class="preset-list data-table-wrapper" *ngIf="showDataTable">
+          <div class="preset-title">Données du Graphique</div>
+          <div class="data-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th *ngFor="let col of tableColumns">
+                    <input class="data-table-header-input" [(ngModel)]="tableColumnAliases[col]"
+                      [name]="'alias-' + col">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of tableData">
+                  <td *ngFor="let col of tableColumns">{{ row[col] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="tableData.length === 0" class="empty-list-message">
+            Aucune donnée à afficher.
+          </div>
+        </div>
+
       </div>
     </div>
+
+
+
+
+
 
     <div class="graphic-footer">
       <button mat-icon-button matTooltip="Personnaliser" (click)="customizeChart()">
@@ -114,15 +161,11 @@
       <button mat-icon-button matTooltip="Filtrer à la sélection" (click)="filterToSelection()">
         <mat-icon>filter_alt</mat-icon>
       </button>
-      <!-- <button mat-icon-button matTooltip="Initialiser" (click)="resetChart()">
-        <mat-icon>restart_alt</mat-icon>
-      </button> -->
+      <button mat-icon-button matTooltip="Afficher/Masquer les données" (click)="toggleDataTable()">
+        <mat-icon>table_chart</mat-icon> </button>
       <button mat-icon-button matTooltip="Exporter" (click)="exportChart()">
         <mat-icon>save_alt</mat-icon>
       </button>
-      <!-- <button mat-icon-button matTooltip="Plein écran" (click)="toggleFullscreen()">
-        <mat-icon>fullscreen</mat-icon>
-      </button> -->
+
     </div>
   </div>
-</div>

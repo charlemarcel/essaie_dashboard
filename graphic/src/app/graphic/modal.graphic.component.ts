@@ -341,6 +341,24 @@ export interface BarUISettings {
     tooltipShadowColor: string;
     tooltipConfine: boolean;
     tooltipTriggerOn: 'mousemove' | 'click' | 'mousemove|click' | 'none';
+
+    xAxisLabel: {
+        show: boolean;
+        text: string;
+        offset: number; // %
+        color: string;
+        fontSize: number;
+        fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    };
+    yAxisLabel: {
+        show: boolean;
+        text: string;
+        offset: number; // %
+        color: string;
+        fontSize: number;
+        fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+        vertical: boolean; // spécifique à Y
+    };
 }
 
 
@@ -453,6 +471,25 @@ export interface LineUISettings {
     titleBoxBorderRadius: number;
     titleBoxPadding: number;  // padding uniforme
 
+
+    // --- Nom Axe X ---
+    xAxisLabel: {
+        show: boolean;
+        text: string;
+        offset: number; // %
+        color: string;
+        fontSize: number;
+        fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+    };
+    yAxisLabel: {
+        show: boolean;
+        text: string;
+        offset: number; // %
+        color: string;
+        fontSize: number;
+        fontWeight: 'normal' | 'bold' | 'bolder' | 'lighter' | number;
+        vertical: boolean; // spécifique à Y
+    };
 }
 
 
@@ -770,6 +807,24 @@ export class ModalGraphicComponent implements OnInit {
         titleBoxBorderRadius: 8,
         titleBoxPadding: 8,
 
+        // Nom Axe X
+        xAxisLabel: {
+            show: false, // désactivé par défaut
+            text: 'Axe X',
+            offset: 50, // %
+            color: '#333333',
+            fontSize: 14,
+            fontWeight: 'normal'
+        },
+        yAxisLabel: {
+            show: false, // désactivé par défaut
+            text: 'Axe Y',
+            offset: 50, // %
+            color: '#333333',
+            fontSize: 14,
+            fontWeight: 'normal',
+            vertical: true // vertical par défaut pour Y
+        }
     };
 
     //parametres par defaut du diagramme en ligne
@@ -821,7 +876,7 @@ export class ModalGraphicComponent implements OnInit {
         animationEasing: 'cubicOut',
 
         // DataZoom
-        dataZoomInside: false,
+        dataZoomInside: true,
         dataZoomSlider: false,
         dataZoomStart: 0, dataZoomEnd: 100,
         dzUseXY: false,
@@ -840,8 +895,8 @@ export class ModalGraphicComponent implements OnInit {
         legendTextColor: '#666666', legendTextSize: 12, legendTextWeight: 'normal',
         legendFormatter: '{name}',
         legendSelectedMode: 'multiple',
-        legendUseXY: false,
-        legendPosX: 20, legendPosY: 90,
+        legendUseXY: true,
+        legendPosX: 47, legendPosY: 91,
         //  legendPosUnit: 'px',
 
         // --- Titre / Sous-titre (LINE) ---
@@ -850,7 +905,7 @@ export class ModalGraphicComponent implements OnInit {
         titleColor: '#333333',
         titleFontSize: 16,
         titleFontWeight: 'bold',
-        titleOffsetX: 0,
+        titleOffsetX: 48,
         titleOffsetY: 0,
         titleItemGap: 6,
         titleTextAlign: 'center',
@@ -871,6 +926,24 @@ export class ModalGraphicComponent implements OnInit {
         titleBoxBorderRadius: 8,
         titleBoxPadding: 8,
 
+        // Nom Axe X
+        xAxisLabel: {
+            show: false, // désactivé par défaut
+            text: 'Axe X',
+            offset: 50, // %
+            color: '#333333',
+            fontSize: 14,
+            fontWeight: 'normal'
+        },
+        yAxisLabel: {
+            show: false, // désactivé par défaut
+            text: 'Axe Y',
+            offset: 50, // %
+            color: '#333333',
+            fontSize: 14,
+            fontWeight: 'normal',
+            vertical: true // vertical par défaut pour Y
+        }
     };
 
 
@@ -893,7 +966,10 @@ export class ModalGraphicComponent implements OnInit {
         return this.allLayers.filter(l => l.visible).length;
     }
 
-
+    // Propriétés pour afficher les données requétés dasn un tableau
+    tableColumns: string[] = [];
+    tableColumnAliases: { [key: string]: string } = {}; //alias pour éditer les en-tetes
+    tableData: any[] = [];
 
     // Couleurs par defaut des diagrammes
     private readonly DEFAULT_COLORS = [
@@ -947,13 +1023,7 @@ export class ModalGraphicComponent implements OnInit {
             if (names.includes(c.name)) selected[c.name] = !!c.visible;
         });
 
-        // const pos = s.legendUseXY
-        //     ? {
 
-        //         left: `${s.legendPosX}%`,
-        //         top: `${s.legendPosY}%`
-        //     }
-        //     : { left: s.legendLeft, top: s.legendTop };
         const positionConfig = s.legendUseXY
             ? {
                 left: `${s.legendPosX}%`,
@@ -1027,7 +1097,7 @@ export class ModalGraphicComponent implements OnInit {
             return {
                 text: sb.titleEnabled ? sb.titleText : '',
                 subtext: sb.subtitleEnabled ? sb.subtitleText : '',
-                left: '50%',
+                left: `${sb.titleOffsetX}%`,
                 top: `${sb.titleOffsetY}%`,
                 itemGap: sb.titleItemGap,
                 textAlign: 'center',
@@ -1056,7 +1126,7 @@ export class ModalGraphicComponent implements OnInit {
         if (sb.titleEnabled) {
             titleConfig.push({
                 text: sb.titleText || '',
-                left: '50%',
+                left: `${sb.titleOffsetX}%`,
                 top: `${sb.titleOffsetY}%`,
                 textAlign: 'center',
                 textStyle: {
@@ -1075,7 +1145,7 @@ export class ModalGraphicComponent implements OnInit {
 
             titleConfig.push({
                 text: sb.subtitleText || '',
-                left: '50%',
+                left: `${sb.titleOffsetX}%`,
                 top: `${subtitleTop}%`,
                 textAlign: 'center',
                 textStyle: {
@@ -1265,6 +1335,135 @@ export class ModalGraphicComponent implements OnInit {
 
 
 
+    // propriété pour la construction des axes X et Y pour les diagrammes en ligne, bar et bar goupés
+
+
+    private buildAxes(chartType: string): any {
+        const axesConfig: any = {};
+
+        if (chartType === 'ligne') {
+            const L = this.lineUI;
+
+            axesConfig.xAxis = [{
+                type: 'category',
+                data: this.rawLineData?.x || [],
+                boundaryGap: L.xBoundaryGap,
+                show: L.xShow,
+                axisLabel: {
+                    color: L.xAxisLabelColor,
+                    fontSize: L.xAxisLabelSize,
+                    rotate: L.xAxisRotate
+                },
+                // Nouveau: Label de l'axe X
+                name: L.xAxisLabel.show ? L.xAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: L.xAxisLabel.offset,
+                nameTextStyle: {
+                    color: L.xAxisLabel.color,
+                    fontSize: L.xAxisLabel.fontSize,
+                    fontWeight: L.xAxisLabel.fontWeight
+                },
+                axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
+                axisTick: { show: true }
+            }];
+
+            axesConfig.yAxis = [{
+                type: 'value',
+                show: L.yShow,
+                axisLabel: {
+                    color: L.yAxisLabelColor,
+                    fontSize: L.yAxisLabelSize
+                },
+                // Nouveau: Label de l'axe Y
+                name: L.yAxisLabel.show ? L.yAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: L.yAxisLabel.offset,
+                nameTextStyle: {
+                    color: L.yAxisLabel.color,
+                    fontSize: L.yAxisLabel.fontSize,
+                    fontWeight: L.yAxisLabel.fontWeight
+                },
+                // Rotation pour le label Y si vertical
+                ...(L.yAxisLabel.vertical && {
+                    nameRotate: 90
+                }),
+                axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
+                splitLine: {
+                    show: L.ySplitLineShow,
+                    lineStyle: {
+                        color: this.isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)'
+                    }
+                }
+            }];
+
+        } else if (chartType === 'bar' || chartType === 'bar_groupé') {
+            const B = this.barUI;
+
+            axesConfig.xAxis = [{
+                type: 'category',
+                data: this.getBarXAxisData(chartType),
+                show: B.xShow,
+                axisLabel: {
+                    color: B.xAxisLabelColor,
+                    fontSize: B.xAxisLabelSize,
+                    rotate: B.xAxisRotate
+                },
+                // Nouveau: Label de l'axe X
+                name: B.xAxisLabel.show ? B.xAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: B.xAxisLabel.offset,
+                nameTextStyle: {
+                    color: B.xAxisLabel.color,
+                    fontSize: B.xAxisLabel.fontSize,
+                    fontWeight: B.xAxisLabel.fontWeight
+                },
+                axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
+                axisTick: { show: true, alignWithLabel: true }
+            }];
+
+            axesConfig.yAxis = [{
+                type: 'value',
+                show: B.yShow,
+                axisLabel: {
+                    color: B.yAxisLabelColor,
+                    fontSize: B.yAxisLabelSize
+                },
+                // Nouveau: Label de l'axe Y
+                name: B.yAxisLabel.show ? B.yAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: B.yAxisLabel.offset,
+                nameTextStyle: {
+                    color: B.yAxisLabel.color,
+                    fontSize: B.yAxisLabel.fontSize,
+                    fontWeight: B.yAxisLabel.fontWeight
+                },
+                // Rotation pour le label Y si vertical
+                ...(B.yAxisLabel.vertical && {
+                    nameRotate: 90
+                }),
+                axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
+                splitLine: {
+                    show: B.ySplitLineShow,
+                    lineStyle: {
+                        color: this.isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)'
+                    }
+                }
+            }];
+        }
+
+        return axesConfig;
+    }
+
+    // Méthode helper pour récupérer les données de l'axe X pour les barres
+    private getBarXAxisData(chartType: string): string[] {
+        if (chartType === 'bar') {
+            return this.rawChartData?.map((item: any) => item.name) || [];
+        } else if (chartType === 'bar_groupé') {
+            return this.rawChartData?.[0]?.slice(1) || [];
+        }
+        return [];
+    }
+
     //========== Groupage des données du diagramme en ligne========
 
     lineGroupByMode: 'x' | 'series' = 'x';
@@ -1380,9 +1579,11 @@ export class ModalGraphicComponent implements OnInit {
                 return false;
         }
     }
+
+
     private lastGeneratedChartConfig: any = null;  // propriété pour garder les configuration en memoire
 
-    // snapshot construit et sauvegarde la configuration, on l'appelle dans generateChart ET openRegisterPreset.
+    // mappé les options pour sauvegarder dans le json.
 
     private _buildAndStoreCurrentConfig(): void {
         if (!this.isCurrentConfigValid) {
@@ -1401,7 +1602,13 @@ export class ModalGraphicComponent implements OnInit {
                 unspecifiedLabel: this.unspecifiedLabelPie,
                 useSelection: this.useSpatialFilter,
                 geomColumn: 'geom',
-                options: this.selectedChartType === 'pie' ? this.pieUI : this.barUI
+
+                options: {
+                    ...(this.selectedChartType === 'pie' ? this.pieUI : this.barUI),
+                    // mappage darkmode et pattern
+                    isDarkMode: this.isDarkMode,
+                    useDecalPattern: this.useDecalPattern
+                }
             };
         } else if (this.selectedChartType === 'bar_groupé') {
             config = {
@@ -1410,7 +1617,13 @@ export class ModalGraphicComponent implements OnInit {
                 categoryColumn: this.categoryColumnBar!,
                 valueColumn: this.valueColumnBar!,
                 includeNulls: this.includeNullsBarGrouped,
-                options: this.barUI
+
+                options: {
+                    ...this.barUI,
+                    // mappage darkmode et pattern
+                    isDarkMode: this.isDarkMode,
+                    useDecalPattern: this.useDecalPattern
+                }
             };
         } else if (this.selectedChartType === 'ligne') {
 
@@ -1422,13 +1635,21 @@ export class ModalGraphicComponent implements OnInit {
                 valueColumn: this.valueColumnLine,
                 seriesColumn: this.seriesColumnLine ?? null,
                 includeNulls: this.includeNullsLine,
-                options: this.lineUI
+
+                options: {
+                    ...this.lineUI,
+                    // mappage darkmode et pattern
+                    isDarkMode: this.isDarkMode,
+                    useDecalPattern: this.useDecalPattern
+                }
             };
         }
 
         if (config) {
             config.colorScheme = this.legendCategories.map(({ name, color }) => ({ name, color })); //stocker les parametres de couleurs
             config.categoryGroups = this.categoryGroups.map(({ name, members, color }) => ({ name, members, color }));
+            // On mappe les alias du tableau, s'ils existent
+            config.columnAliases = this.tableColumnAliases;
 
             this.lastGeneratedChartConfig = JSON.parse(JSON.stringify(config));
         } else {
@@ -1841,6 +2062,12 @@ export class ModalGraphicComponent implements OnInit {
 
     applyLegendChanges(): void {
 
+        // ddonnées requétés dans le tableau des données    
+        console.group('[ModalGraphic] applyLegendChanges');
+        this.tableColumns = []; // Reset table
+        this.tableColumnAliases = {};
+        this.tableData = []; // Reset table
+
 
         // On valide les données par type (évite de bloquer "ligne")
         if (this.selectedChartType === 'pie' || this.selectedChartType === 'bar' || this.selectedChartType === 'bar_groupé') {
@@ -2154,6 +2381,7 @@ export class ModalGraphicComponent implements OnInit {
             const sl = this.lineUI;
             const sPie = this.pieUI; // pour tooltip
             const isMulti = this.selectedLayersCount > 1;
+            const axesConfig = this.buildAxes('ligne');
 
             // 1) Appliquer le groupage (si des groupes existent)
             let toPlot: LineChartResponse = original;
@@ -2176,7 +2404,8 @@ export class ModalGraphicComponent implements OnInit {
             }
 
 
-            //    mais les NOMS affichés dépendent du mode de groupage
+
+            //     NOMS affichés dépendent du mode de groupage
             const legendNamesForChart = (isMulti && this.lineGroupByMode === 'series')
                 ? toPlot.series.map(s => s.name)         // séries éventuellement agrégées
                 : (original.series ?? []).map(s => s.name); // sinon, légende = séries “brutes”
@@ -2199,7 +2428,7 @@ export class ModalGraphicComponent implements OnInit {
                 // filtre par la légende de l’accordéon
                 seriesForChart = toPlot.series.filter(s => visibleSet.has(s.name));
 
-                // 🔒 synchronise l’ordre + les couleurs de la légende avec les séries tracées
+                // synchronise l’ordre + les couleurs de la légende avec les séries tracées
                 const order = seriesForChart.map(s => s.name);
                 this.syncLegendToSeriesOrder(order);
             }
@@ -2345,28 +2574,16 @@ export class ModalGraphicComponent implements OnInit {
                 legend: legendConfigLine,
                 tooltip,
                 title: titleLine,
+                ...axesConfig,
                 grid: {
                     left: `${sl.gridLeft}%`,
                     right: `${sl.gridRight}%`,
                     top: `${sl.gridTop}%`,
                     bottom: `${sl.gridBottom}%`, containLabel: sl.gridContainLabel
                 },
-                xAxis: [{
-                    type: 'category',
-                    data: toPlot.x,
-                    boundaryGap,
-                    show: sl.xShow,
-                    axisLabel: { color: sl.xAxisLabelColor, fontSize: sl.xAxisLabelSize, rotate: sl.xAxisRotate },
-                    axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
-                    axisTick: { show: true }
-                }],
-                yAxis: [{
-                    type: 'value',
-                    show: sl.yShow,
-                    axisLabel: { color: sl.yAxisLabelColor, fontSize: sl.yAxisLabelSize },
-                    axisLine: { lineStyle: { color: this.isDarkMode ? '#c7c7c7' : '#666666' } },
-                    splitLine: { show: sl.ySplitLineShow, lineStyle: { color: this.isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)' } }
-                }],
+
+                xAxis: axesConfig.xAxis,
+                yAxis: axesConfig.yAxis,
                 dataZoom: dz,
                 series
             } as EChartsOption;
@@ -2382,6 +2599,7 @@ export class ModalGraphicComponent implements OnInit {
         // ============================================================
         else if (this.selectedChartType === 'bar') {
             const sb = this.barUI;
+            const axesConfig = this.buildAxes(this.selectedChartType);
 
             // agrégation par groupes -> catégories = X, une seule série
             const memberToGroupBar = new Map<string, string>();
@@ -2411,7 +2629,7 @@ export class ModalGraphicComponent implements OnInit {
 
 
 
-            // total pour la catégorie active (mono-bar)
+
 
             // Tooltip simple (Bar)
             const tooltipBar: any = this.barTooltipEnabled
@@ -2507,7 +2725,7 @@ export class ModalGraphicComponent implements OnInit {
                 title: this.buildBarTitleConfig(),
                 legend: legendConfigBar,
                 tooltip: tooltipBar,
-
+                ...axesConfig,
 
                 grid: {
                     left: `${sb.gridLeft}%`,
@@ -2516,29 +2734,11 @@ export class ModalGraphicComponent implements OnInit {
                     bottom: `${sb.gridBottom}%`,
                     containLabel: sb.gridContainLabel
                 },
-                xAxis: [{
-                    show: sb.xShow,
-                    type: 'category',
-                    data: xNames,
-                    boundaryGap: true,
-                    axisLabel: {
-                        color: sb.xAxisLabelColor,
-                        fontSize: sb.xAxisLabelSize,
-                        rotate: sb.xAxisRotate,
-                        margin: 10                       // optionnel: espace label–axe
-                    },
-                    axisLine: { lineStyle: { color: axisCol } },
-                    axisTick: { show: true, alignWithLabel: true }
-                }],
 
 
-                yAxis: [{
-                    show: sb.yShow,
-                    type: 'value',
-                    axisLabel: { color: sb.yAxisLabelColor, fontSize: sb.yAxisLabelSize },
-                    axisLine: { lineStyle: { color: axisCol } },
-                    splitLine: { show: sb.ySplitLineShow, lineStyle: { color: gridCol } }
-                }],
+                xAxis: axesConfig.xAxis,
+                yAxis: axesConfig.yAxis,
+
                 dataZoom: [
                     ...(sb.dataZoomInside ? [{ type: 'inside', xAxisIndex: [0], start: sb.dataZoomStart, end: sb.dataZoomEnd }] : []),
                     ...(sb.dataZoomSlider ? [{
@@ -2567,6 +2767,7 @@ export class ModalGraphicComponent implements OnInit {
         // ============================================================
         else if (this.selectedChartType === 'bar_groupé') {
             const sb = this.barUI;
+            const axesConfig = this.buildAxes(this.selectedChartType);
 
             const sourceData = this.rawChartData;
             if (!sourceData || sourceData.length < 2) {
@@ -2686,6 +2887,7 @@ export class ModalGraphicComponent implements OnInit {
                 title: this.buildBarTitleConfig(),
                 legend: legendFinal,  // ← utilise la méthode de classe
                 tooltip: tooltipGrouped,
+                ...axesConfig,
 
                 grid: {
                     left: `${sb.gridLeft}%`,
@@ -2694,20 +2896,9 @@ export class ModalGraphicComponent implements OnInit {
                     bottom: `${sb.gridBottom}%`,
                     containLabel: sb.gridContainLabel
                 },
-                xAxis: {
-                    type: 'category',
-                    data: dimensions,
-                    show: sb.xShow,
-                    axisLabel: { color: axisCol, fontSize: sb.xAxisLabelSize, rotate: sb.xAxisRotate },
-                    axisLine: { lineStyle: { color: axisCol } }
-                },
-                yAxis: {
-                    type: 'value',
-                    show: sb.yShow,
-                    axisLabel: { color: axisCol, fontSize: sb.yAxisLabelSize },
-                    axisLine: { lineStyle: { color: axisCol } },
-                    splitLine: { show: sb.ySplitLineShow, lineStyle: { color: gridCol } }
-                },
+
+                xAxis: axesConfig.xAxis,
+                yAxis: axesConfig.yAxis,
 
                 dataZoom: [
                     ...(sb.dataZoomInside ? [{
@@ -2732,18 +2923,87 @@ export class ModalGraphicComponent implements OnInit {
 
 
 
-        // ============================================================
-        // TYPE inconnu
-        // ============================================================
-        // else {
-        //     console.warn('[ModalGraphic] Type de graphique non géré dans applyLegendChanges.');
-        //     console.groupEnd();
-        //     return;
-        // }
-        // if (!newOptions) {
-        //     console.warn('[ModalGraphic] applyLegendChanges: newOptions non défini pour', this.selectedChartType);
-        //     return; // on sort proprement si aucun type n'a produit d'options
-        // }
+        // ---  Préparation des données pour le tableau ---
+        try {
+            if (this.selectedChartType === 'pie' || this.selectedChartType === 'bar') {
+                if (this.rawChartData && this.rawChartData.length > 0) {
+                    this.tableColumns = ['Catégorie', 'Valeurs'];
+                    this.tableColumnAliases = {
+                        'Catégorie': 'Catégorie',
+                        'Valeurs': 'Valeurs'
+                    };
+                    this.tableData = this.rawChartData.map(item => ({
+                        'Catégorie': item.name,
+                        'Valeurs': item.value
+                    }));
+                }
+            } else if (this.selectedChartType === 'bar_groupé') {
+                if (this.rawChartData && this.rawChartData.length > 1) {
+                    this.tableColumns = ['Dimension', 'Catégorie', 'Valeur'];
+                    this.tableColumnAliases = {
+                        'Dimension': 'Dimension',
+                        'Catégorie': 'Catégorie',
+                        'Valeur': 'Valeur'
+                    };
+                    const dimensions = this.rawChartData[0].slice(1);
+                    const categoriesData = this.rawChartData.slice(1);
+                    this.tableData = [];
+                    categoriesData.forEach(row => {
+                        const categorie = row[0];
+                        dimensions.forEach((dimension: string, index: number) => {
+                            this.tableData.push({
+                                'Dimension': dimension,
+                                'Catégorie': categorie,
+                                'Valeur': row[index + 1] // +1 car la première colonne est la catégorie
+                            });
+                        });
+                    });
+                }
+            } else if (this.selectedChartType === 'ligne') {
+                if (this.rawLineData && this.rawLineData.x && this.rawLineData.series) {
+                    const hasSeriesColumn = this.seriesColumnLine || this.rawLineData.series.length > 1; // Vérifie si on a utilisé la colonne série ou si plusieurs séries sont retournées
+
+                    if (hasSeriesColumn) {
+                        this.tableColumns = ['Dimension', 'Catégorie', 'Valeur'];
+                        this.tableColumnAliases = {
+                            'Dimension': 'Dimension',
+                            'Catégorie': 'Catégorie',
+                            'Valeur': 'Valeur'
+                        };
+                        this.tableData = [];
+                        this.rawLineData.series.forEach(serie => {
+                            this.rawLineData?.x.forEach((dim, index) => {
+                                this.tableData.push({
+                                    'Dimension': dim,
+                                    'Catégorie': serie.name,
+                                    'Valeur': serie.data[index]
+                                });
+                            });
+                        });
+                    } else {
+                        // Cas simple : X et Y seulement
+                        this.tableColumns = ['Catégorie', 'Valeur'];
+                        this.tableColumnAliases = {
+                            'Catégorie': 'Catégorie',
+                            'Valeur': 'Valeur'
+                        };
+                        // Assumant qu'il y a au moins une série si hasSeriesColumn est faux
+                        const firstSeries = this.rawLineData.series[0];
+                        this.tableData = this.rawLineData.x.map((cat, index) => ({
+                            'Catégorie': cat,
+                            'Valeur': firstSeries.data[index]
+                        }));
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("Erreur lors de la préparation des données pour le tableau :", error);
+            this.tableColumns = ['Erreur'];
+            this.tableData = [{ 'Erreur': 'Impossible de formater les données.' }];
+        }
+
+        // --- FIN : Préparation des données pour le tableau ---
+
         this.chartOptions = newOptions;
 
         this.chartOptions = newOptions;

@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EChartsOption } from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { FormsModule } from '@angular/forms';
 import { AfterViewInit, OnDestroy, HostListener, ElementRef, ViewChild } from '@angular/core';
+
 // Import services and types
 import { ApiService } from '../api.service';
 import { GraphicPrefineServiceApi, Preset } from '../graphic.prefine.service.api';
@@ -29,7 +32,7 @@ interface PresetWithData {
     standalone: true,
     imports: [
         CommonModule, MatButtonModule, MatIconModule, MatTooltipModule,
-        DragDropModule, MatDialogModule, NgxEchartsModule
+        DragDropModule, MatDialogModule, NgxEchartsModule, FormsModule, MatMenuModule
     ],
     templateUrl: './graphic.component.html',
     styleUrls: ['./graphic.component.css']
@@ -42,6 +45,13 @@ export class GraphicComponent implements OnInit {
     chartOptions: EChartsOption | null = null;  // Stocke la configuration ECharts complète du graphique actuellement affiché.
     activeChartTitle: string = 'Bibliothèque de Graphiques'; // Gère le titre affiché dans l'en-tête du panneau.
 
+    // AJOUTS POUR LE TABLEAU DE DONNÉES 
+    showDataTable = false; // Flag pour afficher/masquer le tableau
+    tableColumns: string[] = []; // Clés internes des colonnes (ex: 'Catégorie')
+    tableColumnAliases: { [key: string]: string } = {}; // Alias affichés (ex: { 'Catégorie': 'Produit' })
+    tableData: any[] = []; // Données formatées pour le tableau
+
+
     @ViewChild('chartHost') chartHost!: ElementRef<HTMLDivElement>;
     private resizeObserver?: ResizeObserver;
     private lastLoadedPreset: Preset | null = null;
@@ -51,9 +61,121 @@ export class GraphicComponent implements OnInit {
     //   Propriété pour stocker l'instance ECharts
     private echartsInstance: any;
 
-    // Stocke la liste des presets appartenant à l'administrateur ou à un users.
+    // Stocke la liste des graphiques appartenant à l'administrateur ou à un users.
     adminPresets: Preset[] = [];
     userPresets: Preset[] = [];
+
+    //propriété pour le filtre spatial
+    private useSpatialFilter = false;
+
+    //Propriété pour préparer et afficher le tableau des données//
+    private _prepareTableData(): void {
+        this.tableColumns = [];
+        this.tableColumnAliases = {};
+        this.tableData = [];
+
+        if (!this.lastLoadedPreset || !this.lastLoadedChartData) {
+            console.warn('_prepareTableData: Données de preset ou de graphique manquantes.');
+            return;
+        }
+
+        const presetType = this.lastLoadedPreset.type;
+        const chartData = this.lastLoadedChartData;
+        // Récupère les alias sauvegardés ou un objet vide
+        const savedAliases = this.lastLoadedPreset.config.columnAliases || {};
+
+        try {
+            if (presetType === 'pie' || presetType === 'bar') {
+                if (Array.isArray(chartData) && chartData.length > 0) {
+                    this.tableColumns = ['Catégorie', 'Valeurs'];
+                    // Initialise les alias avec les valeurs sauvegardées OU les clés par défaut
+                    this.tableColumnAliases = {
+                        'Catégorie': savedAliases['Catégorie'] || 'Catégorie',
+                        'Valeurs': savedAliases['Valeurs'] || 'Valeurs'
+                    };
+                    this.tableData = chartData.map(item => ({
+                        'Catégorie': item.name,
+                        'Valeurs': item.value
+                    }));
+                }
+            } else if (presetType === 'bar_groupé') {
+                if (Array.isArray(chartData) && chartData.length > 1) {
+                    this.tableColumns = ['Dimension', 'Catégorie', 'Valeur'];
+                    // Initialise les alias
+                    this.tableColumnAliases = {
+                        'Dimension': savedAliases['Dimension'] || 'Dimension',
+                        'Catégorie': savedAliases['Catégorie'] || 'Catégorie',
+                        'Valeur': savedAliases['Valeur'] || 'Valeur'
+                    };
+                    const dimensions = chartData[0].slice(1);
+                    const categoriesData = chartData.slice(1);
+                    this.tableData = [];
+                    categoriesData.forEach(row => {
+                        const categorie = row[0];
+                        dimensions.forEach((dimension: string, index: number) => {
+                            this.tableData.push({
+                                'Dimension': dimension,
+                                'Catégorie': categorie,
+                                'Valeur': row[index + 1]
+                            });
+                        });
+                    });
+                }
+            } else if (presetType === 'ligne') {
+                // Assumons que chartData est { x: string[], series: { name: string, data: number[] }[] }
+                if (chartData && chartData.x && chartData.series) {
+                    // Détermine si on doit utiliser 3 colonnes basé sur la config sauvegardée ou le nombre de séries
+                    const hasSeriesColumn = this.lastLoadedPreset.config.seriesColumn || chartData.series.length > 1;
+
+                    if (hasSeriesColumn) {
+                        this.tableColumns = ['Dimension', 'Catégorie', 'Valeur'];
+                        // Initialise les alias
+                        this.tableColumnAliases = {
+                            'Dimension': savedAliases['Dimension'] || 'Dimension',
+                            'Catégorie': savedAliases['Catégorie'] || 'Catégorie',
+                            'Valeur': savedAliases['Valeur'] || 'Valeur'
+                        };
+                        this.tableData = [];
+                        chartData.series.forEach((serie: { name: string, data: number[] }) => {
+                            chartData.x.forEach((dim: string, index: number) => {
+                                this.tableData.push({
+                                    'Dimension': dim,
+                                    'Catégorie': serie.name,
+                                    'Valeur': serie.data[index]
+                                });
+                            });
+                        });
+                    } else {
+                        // Cas simple : 2 colonnes
+                        this.tableColumns = ['Catégorie', 'Valeur'];
+                        // Initialise les alias
+                        this.tableColumnAliases = {
+                            'Catégorie': savedAliases['Catégorie'] || 'Catégorie',
+                            'Valeur': savedAliases['Valeur'] || 'Valeur'
+                        };
+                        const firstSeries = chartData.series[0];
+                        if (firstSeries) {
+                            this.tableData = chartData.x.map((cat: string, index: number) => ({
+                                'Catégorie': cat,
+                                'Valeur': firstSeries.data[index]
+                            }));
+                        }
+                    }
+                }
+            }
+            console.log('Table data prepared:', {
+                columns: this.tableColumns,
+                aliases: this.tableColumnAliases,
+                dataCount: this.tableData.length
+            });
+        } catch (error) {
+            console.error("Erreur lors de la préparation des données pour le tableau :", error);
+            this.tableColumns = ['Erreur'];
+            this.tableColumnAliases = { 'Erreur': 'Erreur' };
+            this.tableData = [{ 'Erreur': 'Impossible de formater les données.' }];
+        }
+    }
+
 
     constructor(
         public dialog: MatDialog,
@@ -106,6 +228,7 @@ export class GraphicComponent implements OnInit {
         this.currentView = 'library';
         this.activeChartTitle = 'Bibliothèque de Graphiques';
         this.chartOptions = null;
+        this.useSpatialFilter = false;
 
         //  On nettoie l'observateur et les données quand on retourne à la grille
         if (this.resizeObserver) {
@@ -129,13 +252,23 @@ export class GraphicComponent implements OnInit {
         this.currentView = 'chart';
         this.chartOptions = null;
 
-        // Étape 1: Récupérer le preset dans la BD (la configuration JSON).
+        // RÉINITIALISER LE FILTRE (SI NÉCESSAIRE) 
+        // Si l'ID demandé est DIFFÉRENT du dernier chargé,
+        // c'est un nouveau graphique, donc on désactive le filtre.
+        if (this.lastLoadedPreset?.id !== presetId) {
+            this.useSpatialFilter = false;
+        }
+
 
 
         setTimeout(() => {
             this.presetApiService.getPreset(presetId).pipe(
                 switchMap((preset: Preset) => {
                     const config = preset.config;
+
+                    //  APPLIQUER LE FILTRE AU CONFIG et utiliser l'état actuel du filtre.
+                    config.useSelection = this.useSpatialFilter;
+
                     if (config.tables && !config.tableNames) {
                         config.tableNames = config.tables;
                         delete config.tables;
@@ -144,7 +277,7 @@ export class GraphicComponent implements OnInit {
                     let dataRequest$: Observable<any>;
                     switch (preset.type) {
                         case 'pie': case 'bar':
-                            dataRequest$ = this.apiService.getPieChartData(config);
+                            dataRequest$ = this.apiService.getPieChartData(config, this.useSpatialFilter);
                             break;
                         case 'bar_groupé':
                             dataRequest$ = this.apiService.getBarGroupedChartData(config);
@@ -166,13 +299,18 @@ export class GraphicComponent implements OnInit {
                     );
                 })
             ).subscribe({
-                //  CORRECTION : On reçoit un objet 'result' et on accède à ses propriétés.
-                // On ne déstructure plus directement car cela causait l'erreur.
-                next: (result: PresetWithData) => {
+                //   On reçoit un objet 'result' et on accède à ses propriétés.
 
+                next: (result: PresetWithData) => {
+                    console.log('Données de la requête reçues (result.chartData):', result.chartData);
                     //  MODIFICATION : On stocke les données pour pouvoir les réutiliser
                     this.lastLoadedPreset = result.preset;
                     this.lastLoadedChartData = result.chartData;
+
+                    //  Préparation des données pour le tableau 
+                    this._prepareTableData();
+                    this.showDataTable = false; // Masque le tableau par défaut lors du chargement
+
 
                     // On construit le graphique une première fois
                     this.chartOptions = this._buildChartOptionsFromPreset(result.preset, result.chartData);
@@ -192,6 +330,13 @@ export class GraphicComponent implements OnInit {
                     this.activeChartTitle = "Erreur de chargement";
                     this.chartOptions = { title: { text: 'Impossible de charger le graphique.' } };
                     console.error("Error during chart loading:", err);
+
+                    //  Vider les données du tableau en cas d'erreur 
+                    this.tableColumns = [];
+                    this.tableColumnAliases = {};
+                    this.tableData = [];
+                    this.showDataTable = false; // Assure que le tableau vide n'est pas montré
+
                 }
             });
         }, 0);
@@ -232,7 +377,7 @@ export class GraphicComponent implements OnInit {
         if (!this.echartsInstance) { // On vérifie si l'instance existe
             return;
         }
-        // 👇 MODIFICATION : On remplace la reconstruction des options par un simple appel à resize()
+        //  On remplace la reconstruction des options par un simple appel à resize()
         console.log('Conteneur redimensionné, appel de resize()...');
         this.echartsInstance.resize();
     }
@@ -254,10 +399,223 @@ export class GraphicComponent implements OnInit {
         return parts.join('.');
     }
 
+
+    private calculateFontSize(baseSize: number, maxSize: number): number {
+        const containerWidth = this.chartHost?.nativeElement.clientWidth || 925;
+        const baseWidth = 1100;
+        const scalingFactor = Math.min(1, containerWidth / baseWidth);
+        const newSize = Math.floor(baseSize * scalingFactor);
+        return Math.max(10, Math.min(maxSize, newSize));
+    }
+
+    //  Construction du label des axes X et Y
+
+    private buildAxesConfig(options: any, chartType: string, isDarkMode: boolean = false): any {
+        const axesConfig: any = {};
+
+        const axisLineColor = isDarkMode ? '#c7c7c7' : '#ccc';
+        const splitLineColor = isDarkMode ? 'rgba(255,255,255,0.12)' : '#f0f0f0';
+
+        if (chartType === 'bar' || chartType === 'bar_groupé') {
+            axesConfig.xAxis = {
+                type: 'category',
+                show: options.xShow,
+                axisLabel: {
+                    rotate: options.xAxisRotate,
+                    fontSize: this.calculateFontSize(options.xAxisLabelSize, 12),
+                    color: options.xAxisLabelColor
+                },
+                //  Label de l'axe X
+                name: options.xAxisLabel?.show ? options.xAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: options.xAxisLabel?.offset || 50,
+                nameTextStyle: {
+                    color: options.xAxisLabel?.color || '#333333',
+                    fontSize: this.calculateFontSize(options.xAxisLabel?.fontSize || 14, 16),
+                    fontWeight: options.xAxisLabel?.fontWeight || 'normal'
+                },
+
+                axisTick: {
+                    show: options.xShow,
+                    alignWithLabel: true
+                },
+                axisLine: {
+                    show: options.xShow,
+                    lineStyle: { color: axisLineColor }
+                },
+            };
+
+            axesConfig.yAxis = {
+                type: 'value',
+                show: options.yShow,
+                axisLabel: {
+                    fontSize: this.calculateFontSize(options.yAxisLabelSize, 12),
+                    color: options.yAxisLabelColor
+                },
+                // NOUVEAU : Label de l'axe Y
+                name: options.yAxisLabel?.show ? options.yAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: options.yAxisLabel?.offset || 50,
+                nameTextStyle: {
+                    color: options.yAxisLabel?.color || '#333333',
+                    fontSize: this.calculateFontSize(options.yAxisLabel?.fontSize || 14, 16),
+                    fontWeight: options.yAxisLabel?.fontWeight || 'normal'
+                },
+                // Rotation pour le label Y si vertical
+                ...(options.yAxisLabel?.vertical && {
+                    nameRotate: 90
+                }),
+                splitLine: {
+                    show: options.ySplitLineShow,
+                    lineStyle: { color: '#f0f0f0' }
+                },
+                axisLine: {
+                    show: options.yShow,
+                    lineStyle: { color: '#ccc' }
+                }
+            };
+
+        } else if (chartType === 'ligne') {
+            axesConfig.xAxis = {
+                type: 'category',
+                boundaryGap: options.xBoundaryGap,
+                show: options.xShow,
+                axisLabel: {
+                    rotate: options.xAxisRotate,
+                    fontSize: this.calculateFontSize(options.xAxisLabelSize, 12),
+                    color: options.xAxisLabelColor
+                },
+                //  Label de l'axe X pour ligne
+                name: options.xAxisLabel?.show ? options.xAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: options.xAxisLabel?.offset || 50,
+                nameTextStyle: {
+                    color: options.xAxisLabel?.color || '#333333',
+                    fontSize: this.calculateFontSize(options.xAxisLabel?.fontSize || 14, 16),
+                    fontWeight: options.xAxisLabel?.fontWeight || 'normal'
+                },
+                axisLine: {
+                    show: options.xShow,
+                    lineStyle: { color: axisLineColor }
+                },
+                splitLine: {
+                    show: options.xSplitLineShow,
+                    lineStyle: { color: splitLineColor }
+                },
+                axisTick: {
+                    show: options.xShow
+                }
+            };
+
+            axesConfig.yAxis = {
+                type: 'value',
+                show: options.yShow,
+                axisLabel: {
+                    fontSize: this.calculateFontSize(options.yAxisLabelSize, 12),
+                    color: options.yAxisLabelColor
+                },
+                // Label de l'axe Y pour ligne
+                name: options.yAxisLabel?.show ? options.yAxisLabel.text : undefined,
+                nameLocation: 'middle',
+                nameGap: options.yAxisLabel?.offset || 50,
+                nameTextStyle: {
+                    color: options.yAxisLabel?.color || '#333333',
+                    fontSize: this.calculateFontSize(options.yAxisLabel?.fontSize || 14, 16),
+                    fontWeight: options.yAxisLabel?.fontWeight || 'normal'
+                },
+                // Rotation pour le label Y si vertical
+                ...(options.yAxisLabel?.vertical && {
+                    nameRotate: 90
+                }),
+                splitLine: {
+                    show: options.ySplitLineShow,
+                    lineStyle: { color: '#f0f0f0' }
+                },
+                axisLine: {
+                    show: options.yShow,
+                    lineStyle: { color: axisLineColor },
+                    splitLine: {
+                        show: options.ySplitLineShow,
+                        lineStyle: { color: splitLineColor }
+                    }
+
+                }
+            };
+        }
+
+        return axesConfig;
+    }
+
+    //  Helper pour diagramme en bar
+    private getBarXAxisData(chartType: string): string[] {
+        if (chartType === 'bar') {
+            return this.lastLoadedChartData?.map((item: any) => item.name) || [];
+        } else if (chartType === 'bar_groupé') {
+            return this.lastLoadedChartData?.[0]?.slice(1) || [];
+        }
+        return [];
+    }
+
+    //  Helper pour diagramme en  ligne
+    private getLineXAxisData(): string[] {
+        return this.lastLoadedChartData?.x || [];
+    }
+
+
+
+    /**
+ * Applique les motifs de décal aux séries
+ */
+    private applyDecalPattern(series: any[], useDecalPattern: boolean): any[] {
+        if (!useDecalPattern) return series;
+
+        return series.map((serie, index) => ({
+            ...serie,
+            itemStyle: {
+                ...serie.itemStyle,
+                decal: this.getDecalPattern(index)
+            }
+        }));
+    }
+
+    /**
+     * Applique les motifs de décal aux données de camembert
+     */
+    private applyDecalPatternToPieData(pieData: any[], useDecalPattern: boolean): any[] {
+        if (!useDecalPattern) return pieData;
+
+        return pieData.map((item, index) => ({
+            ...item,
+            itemStyle: {
+                ...item.itemStyle,
+                decal: this.getDecalPattern(index)
+            }
+        }));
+    }
+
+    /**
+     * Génère les motifs de décal (identique à ModalGraphicComponent)
+     */
+    private getDecalPattern(index: number): any {
+        const i = index % 5;
+        const common = { color: 'rgba(0,0,0,0.22)', symbolSize: 1 };
+
+        switch (i) {
+            case 0: return { ...common, symbol: 'rect', dashArrayX: [4, 2], dashArrayY: [2, 2], rotation: 0 };
+            case 1: return { ...common, symbol: 'rect', dashArrayX: [1, 2], dashArrayY: [4, 2], rotation: Math.PI / 4 };
+            case 2: return { ...common, symbol: 'line', dashArrayX: [1, 0], dashArrayY: [2, 3], rotation: 0 };
+            case 3: return { ...common, symbol: 'rect', dashArrayX: [0, 4], dashArrayY: [2, 2], rotation: Math.PI / 6 };
+            default: return { ...common, symbol: 'triangle', dashArrayX: [1, 2], dashArrayY: [2, 2], rotation: 0 };
+        }
+    }
+
+
+    //méthode qui lit et interprète le contenu des JSON et construit le graphique
+
     private _buildChartOptionsFromPreset(preset: Preset, chartData: any): EChartsOption {
         // Extraction des options
         const { options, colorScheme = [], categoryGroups = [] } = preset.config;
-        const colorMap = new Map(colorScheme.map((item: any) => [item.name, item.color]));
+        // const colorMap = new Map(colorScheme.map((item: any) => [item.name, item.color]));
         this.categoryGroups = categoryGroups;
         // Logique de redimensionnement de la police
         const containerWidth = this.chartHost?.nativeElement.clientWidth || 925;
@@ -267,8 +625,29 @@ export class GraphicComponent implements OnInit {
             const newSize = Math.floor(baseSize * scalingFactor);
             return Math.max(10, Math.min(maxSize, newSize));
         };
-        //Dark mode
-        const backgroundColor = options.isDarkMode ? '#121212' : '#ffffff';
+
+        // Options globales avec valeurs par défaut
+        const isDarkMode = options.isDarkMode || false;
+        const useDecalPattern = options.useDecalPattern || false;
+
+        const colorMap = new Map(colorScheme.map((item: any) => [item.name, item.color]));
+        this.categoryGroups = categoryGroups;
+
+        // Configuration du thème
+        const backgroundColor = isDarkMode ? '#121212' : 'transparent';
+        const textColor = isDarkMode ? '#e0e0e0' : '#333333';
+        const axisLineColor = isDarkMode ? '#c7c7c7' : '#666666';
+        const gridLineColor = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+
+        // Configuration de base avec thème
+        const baseOptions: any = {
+            backgroundColor: backgroundColor,
+            textStyle: {
+                color: textColor
+            }
+        };
+
+
 
         // Configuration du titre
         const titleConfig: any = {
@@ -297,19 +676,12 @@ export class GraphicComponent implements OnInit {
             itemWidth: options.legendItemWidth,
             itemHeight: options.legendItemHeight,
             itemGap: options.legendItemGap,
-            icon: options.legendIcon,
+            icon: (options.legendIcon === 'auto' || !options.legendIcon) ? undefined : options.legendIcon,
             textStyle: { color: options.legendTextColor, fontSize: calculateFontSize(options.legendTextSize, 16), fontWeight: options.legendTextWeight },
             formatter: options.legendFormatter,
             selectedMode: options.legendSelectedMode
         };
-        // if (options.legendUseXY) {
-        //     legendConfig.left = `${options.legendPosX}%`;
-        //     legendConfig.top = `${options.legendPosY}%`;
-        // } else {
-        //     legendConfig.left = options.legendLeft;
-        //     legendConfig.top = options.legendTop;
 
-        // }
         if (options.legendUseXY) {
             // Si la position X est supérieure à 50%, on considère que l'intention
             // de l'utilisateur est d'aligner la légende à droite.
@@ -360,32 +732,49 @@ export class GraphicComponent implements OnInit {
 
         let finalCenter = isPie ? [`${options.centerX}%`, `${options.centerY}%`] : undefined;
 
-        //Construction de la configuration DataZoom
+        // configuration de datazoom
+
         const dataZoomConfig: any[] = [];
         if (isGridBased) {
             if (options.dataZoomInside) {
                 dataZoomConfig.push({
                     type: 'inside',
-                    start: options.dataZoomStart,
-                    end: options.dataZoomEnd
+                    xAxisIndex: [0],
+                    start: options.dataZoomStart || 0,
+                    end: options.dataZoomEnd || 100
                 });
             }
             if (options.dataZoomSlider) {
                 const sliderConfig: any = {
                     type: 'slider',
-                    start: options.dataZoomStart,
-                    end: options.dataZoomEnd
+                    xAxisIndex: [0],
+                    start: options.dataZoomStart || 0,
+                    end: options.dataZoomEnd || 100
                 };
+
+
                 if (options.dzUseXY) {
-                    sliderConfig.left = options.dzPosUnit === '%' ? `${options.dzOffsetX}%` : options.dzOffsetX;
-                    sliderConfig.top = options.dzPosUnit === '%' ? `${options.dzOffsetY}%` : options.dzOffsetY;
-                    if (options.dzWidth != null) sliderConfig.width = options.dzPosUnit === '%' ? `${options.dzWidth}%` : options.dzWidth;
-                    if (options.dzHeight != null) sliderConfig.height = options.dzPosUnit === '%' ? `${options.dzHeight}%` : options.dzHeight;
+
+                    if (options.dzPosUnit === '%') {
+                        sliderConfig.left = `${options.dzOffsetX || 0}%`;
+                        sliderConfig.top = `${options.dzOffsetY || 0}%`;
+                        if (options.dzWidth != null) sliderConfig.width = `${options.dzWidth}%`;
+                        if (options.dzHeight != null) sliderConfig.height = `${options.dzHeight}%`;
+                    } else {
+                        // Position en pixels
+                        sliderConfig.left = options.dzOffsetX || 0;
+                        sliderConfig.top = options.dzOffsetY || 0;
+                        if (options.dzWidth != null) sliderConfig.width = options.dzWidth;
+                        if (options.dzHeight != null) sliderConfig.height = options.dzHeight;
+                    }
+                } else {
+                    // Position par défaut d'ECharts
+                    sliderConfig.bottom = 10; // ou autre valeur par défaut
                 }
+
                 dataZoomConfig.push(sliderConfig);
             }
         }
-
 
         switch (preset.type) {
 
@@ -416,7 +805,9 @@ export class GraphicComponent implements OnInit {
                 });
                 const formatNumber = (num: number) => num.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 
+
                 return {
+                    ...baseOptions,
                     title: titleConfig,
                     legend: {
                         ...legendConfig,
@@ -434,10 +825,14 @@ export class GraphicComponent implements OnInit {
                                 .replace('{percent}', percent.toFixed(2));
                         }
                     },
-                    tooltip: { ...tooltipConfig, trigger: 'item' },
+                    tooltip: {
+                        ...tooltipConfig, trigger: 'item', backgroundColor: isDarkMode ? 'rgba(50,50,50,0.9)' : options.tooltipBg, textStyle: {
+                            color: isDarkMode ? '#e0e0e0' : options.tooltipTextColor
+                        }
+                    },
                     series: [{
                         type: 'pie',
-                        data: seriesData,
+                        data: this.applyDecalPatternToPieData(seriesData, useDecalPattern),
                         radius: options.isDonut ? [`${options.innerRadius}%`, `${options.outerRadius}%`] : `${options.outerRadius}%`,
                         center: finalCenter,
                         roseType: options.roseType,
@@ -489,8 +884,9 @@ export class GraphicComponent implements OnInit {
                             },
                             labelLine: {
                                 show: options.labelPosition === 'outside' ? options.emphasisLabelLineShow : false
-                            }
+                            },
                         }
+
                     }]
                 };
             }
@@ -501,7 +897,7 @@ export class GraphicComponent implements OnInit {
 
 
             case 'bar': {
-                // ÉTAPE 1 : AGRÉGATION (si nécessaire)
+                // ÉTAPE 1 : AGRÉGATION des catégories
                 let finalData = chartData;
                 if (categoryGroups && categoryGroups.length > 0) {
                     const memberToGroup = new Map<string, any>();
@@ -534,7 +930,7 @@ export class GraphicComponent implements OnInit {
                             color: colorMap.get(name),
                             borderColor: options.itemBorderColor,
                             borderWidth: options.itemBorderWidth,
-                            borderRadius: options.itemBorderRadius
+                            borderRadius: options.barBorderRadius || 0
                         },
                         barWidth: options.barWidthPx > 0 ? options.barWidthPx : undefined,
                         label: {
@@ -562,7 +958,7 @@ export class GraphicComponent implements OnInit {
                     };
                 });
 
-                // ÉTAPE 4 : FORMATTER POUR LA LÉGENDE
+                //  FORMATTER POUR LA LÉGENDE
                 const customLegendFormatter = (name: string): string => {
                     if (options.legendFormatter && options.legendFormatter.includes('{value}')) {
                         const dataItem = finalData.find((item: any) => item.name === name);
@@ -575,13 +971,31 @@ export class GraphicComponent implements OnInit {
                     return name;
                 };
 
-                // ÉTAPE 5 : CONFIGURATION FINALE
+
+                //Configuration des axes
+                const axesConfig = this.buildAxesConfig(options, 'bar');
+                axesConfig.xAxis.data = categoryNames; // Injecter les données
+
+                // Appliquer le thème aux axes
+                axesConfig.xAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.splitLine.lineStyle.color = gridLineColor;
+                // CORRECTION : Appliquer le thème aux textes des axes
+                axesConfig.xAxis.axisLabel.color = textColor;
+                axesConfig.yAxis.axisLabel.color = textColor;
+
+                //  CONFIGURATION FINALE
                 return {
+                    ...baseOptions,
                     title: titleConfig,
                     legend: {
                         ...legendConfig,
                         data: categoryNames,
-                        formatter: customLegendFormatter
+                        formatter: customLegendFormatter,
+                        textStyle: {
+                            ...legendConfig.textStyle,
+                            color: textColor // application de la couleur du thème
+                        }
                     },
                     tooltip: {
                         ...tooltipConfig,
@@ -593,21 +1007,13 @@ export class GraphicComponent implements OnInit {
                         }
                     },
                     grid: finalGrid,
-                    xAxis: {
-                        type: 'category',
-                        data: categoryNames, // Les catégories dans l'ordre correct
-                        axisLabel: {
-                            rotate: options.xAxisRotate,
-                            fontSize: calculateFontSize(options.xAxisLabelSize, 12),
-                            color: options.xAxisLabelColor
-                        }
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: { show: options.ySplitLineShow }
-                    },
+
+                    xAxis: axesConfig.xAxis,
+                    yAxis: axesConfig.yAxis,
                     dataZoom: dataZoomConfig,
-                    series: series
+                    // series: series
+
+                    series: this.applyDecalPattern(series, useDecalPattern)
                 } as EChartsOption;
             }
 
@@ -657,13 +1063,15 @@ export class GraphicComponent implements OnInit {
                 const series = visibleSeriesNames.map((seriesName, index) => {
                     const values = aggregatedSeriesMap.get(seriesName) || [];
 
+
+
                     return {
                         name: seriesName,
                         type: 'bar',
                         data: values,
                         itemStyle: {
                             color: colorMap.get(seriesName),
-                            borderRadius: options.barBorderRadius
+                            borderRadius: options.barBorderRadius || 0
                         },
                         barGap: options.barGap,
                         barCategoryGap: options.barCategoryGap,
@@ -698,7 +1106,7 @@ export class GraphicComponent implements OnInit {
                     };
                 });
 
-                // ÉTAPE 4 : FORMATTER POUR LA LÉGENDE AVEC VALEURS AGRÉGÉES
+                //  FORMATTER POUR LA LÉGENDE AVEC VALEURS AGRÉGÉES
                 const customLegendFormatter = (name: string): string => {
                     if (options.legendFormatter && options.legendFormatter.includes('{value}')) {
                         const seriesData = aggregatedSeriesMap.get(name);
@@ -711,10 +1119,25 @@ export class GraphicComponent implements OnInit {
                     return name;
                 };
 
-                // ÉTAPE 5 : CONFIGURATION FINALE
-                const header = dimensions.slice(1); // Les groupes sur l'axe X
+
+
+
+                const header = dimensions.slice(1);
+                // configuration des axes
+                const axesConfig = this.buildAxesConfig(options, 'bar_groupé');
+                axesConfig.xAxis.data = header; // Injecter les données
+
+                // Appliquer le thème
+                axesConfig.xAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.splitLine.lineStyle.color = gridLineColor;
+
+                // CORRECTION : Appliquer le thème aux textes des axes
+                axesConfig.xAxis.axisLabel.color = textColor;
+                axesConfig.yAxis.axisLabel.color = textColor;
 
                 return {
+                    ...baseOptions,
                     title: titleConfig,
                     legend: {
                         ...legendConfig,
@@ -740,49 +1163,17 @@ export class GraphicComponent implements OnInit {
                         }
                     },
                     grid: finalGrid,
-                    xAxis: {
-                        type: 'category',
-                        data: header,
-                        axisLabel: {
-                            rotate: options.xAxisRotate,
-                            fontSize: calculateFontSize(options.xAxisLabelSize, 12),
-                            color: options.xAxisLabelColor
-                        }
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: { show: options.ySplitLineShow }
-                    },
+
+
+                    xAxis: axesConfig.xAxis,
+                    yAxis: axesConfig.yAxis,
                     dataZoom: dataZoomConfig,
-                    series: series
+                    // series: series
+                    series: this.applyDecalPattern(series, useDecalPattern) // ← APPLIQUER PATTERNS
                 } as EChartsOption;
             }
 
 
-            // case 'ligne': {
-            //     const seriesData = chartData.series.map((s: any) => ({
-            //         name: s.name,
-            //         data: s.data,
-            //         type: 'line',
-            //         stack: options.stack || null,
-            //         smooth: options.smooth,
-            //         symbol: options.symbol,
-            //         symbolSize: options.symbolSize,
-            //         showSymbol: options.showSymbol,
-            //         lineStyle: { width: options.lineWidth, type: options.lineType },
-            //         areaStyle: { opacity: options.areaOpacity },
-            //         itemStyle: { color: colorMap.get(s.name) },
-            //     }));
-            //     return {
-            //         title: titleConfig,
-            //         legend: { ...legendConfig, data: chartData.series.map((s: any) => s.name) },
-            //         tooltip: { ...tooltipConfig, trigger: 'axis' },
-            //         grid: finalGrid,
-            //         xAxis: { type: 'category', data: chartData.x, axisLabel: { rotate: options.xAxisRotate } },
-            //         yAxis: { type: 'value', splitLine: { show: options.ySplitLineShow } },
-            //         series: seriesData
-            //     };
-            // }
 
 
             case 'ligne': {
@@ -845,99 +1236,97 @@ export class GraphicComponent implements OnInit {
                     console.log('ℹ️ Aucun groupe à agréger');
                 }
 
-                const seriesData = finalChartData.series.map((serie: any) => ({
-                    name: serie.name,
-                    data: serie.data,
-                    type: 'line',
-                    stack: options.stack || undefined,
-                    smooth: options.smooth,
-                    symbol: options.symbol,
-                    symbolSize: options.symbolSize,
-                    showSymbol: options.showSymbol,
-                    connectNulls: options.connectNulls,
-                    step: options.step,
-                    lineStyle: {
-                        width: options.lineWidth,
-                        type: options.lineType
-                    },
-                    areaStyle: options.areaOpacity > 0 ? {
-                        opacity: options.areaOpacity
-                    } : undefined,
-                    itemStyle: {
-                        color: colorMap.get(serie.name) || '#5470c6'
-                    },
-                    // AJOUTER TOUTES LES OPTIONS DE LABEL
-                    label: {
-                        show: options.labelShow,
-                        position: options.labelPosition,
-                        formatter: (params: any) => {
-                            const value = params.value as number;
-                            if (value === 0) return '';
-                            const tpl = options.labelFormatter || '{c}';
-                            let formatted = tpl.replace('{c}', this.formatBarValue(value));
-                            formatted = formatted.replace('{b}', params.seriesName || '');
-                            return formatted;
+
+
+                const seriesData = finalChartData.series.map((serie: any) => {
+                    const seriesConfig: any = {
+                        name: serie.name,
+                        data: serie.data,
+                        type: 'line',
+                        stack: options.stack || undefined,
+                        smooth: options.smooth || false,
+                        symbol: options.symbol || 'emptyCircle',
+                        symbolSize: options.symbolSize || 6,
+                        showSymbol: options.showSymbol !== false, // true par défaut
+                        connectNulls: options.connectNulls || false,
+                        step: options.step || false,
+                        lineStyle: {
+                            width: options.lineWidth || 2,
+                            type: options.lineType || 'solid'
                         },
-                        color: options.labelColor,
-                        fontSize: calculateFontSize(options.labelFontSize, 16),
-                        fontWeight: options.labelFontWeight
-                    },
-                    // AJOUTER TOUTES LES OPTIONS D'EMPHASIS
-                    emphasis: {
-                        focus: options.emphasisFocus,
                         itemStyle: {
-                            shadowBlur: options.emphasisShadowBlur,
-                            shadowColor: options.emphasisShadowColor
+                            color: colorMap.get(serie.name) || '#5470c6'
+                        }
+                    };
+
+                    // CONFIGURATION DES LABELS - CORRECTION IMPORTANTE
+                    if (options.labelShow) {
+                        seriesConfig.label = {
+                            show: true,
+                            position: options.labelPosition || 'top',
+                            formatter: (params: any) => {
+                                const value = params.value as number;
+                                if (value === 0) return '';
+                                const tpl = options.labelFormatter || '{c}';
+                                let formatted = tpl.replace('{c}', this.formatBarValue(value));
+                                formatted = formatted.replace('{b}', params.seriesName || '');
+                                return formatted;
+                            },
+                            color: options.labelColor || '#666666',
+                            fontSize: this.calculateFontSize(options.labelFontSize || 11, 16),
+                            fontWeight: options.labelFontWeight || 'normal'
+                        };
+                    } else {
+                        // Désactiver explicitement les labels
+                        seriesConfig.label = { show: false };
+                    }
+
+                    // AREA STYLE (si activé)
+                    if (options.areaOpacity > 0) {
+                        seriesConfig.areaStyle = {
+                            opacity: options.areaOpacity
+                        };
+                    }
+
+                    // EMPHASIS
+                    seriesConfig.emphasis = {
+                        focus: options.emphasisFocus || 'series',
+                        itemStyle: {
+                            shadowBlur: options.emphasisShadowBlur || 6,
+                            shadowColor: options.emphasisShadowColor || 'rgba(0,0,0,0.3)'
                         },
                         label: {
-                            show: options.emphasisLabelShow
+                            show: options.emphasisLabelShow || false
                         }
-                    },
-                    // AJOUTER LES OPTIONS D'ANIMATION
-                    animation: options.animation,
-                    animationDuration: options.animationDuration,
-                    animationEasing: options.animationEasing
-                }));
+                    };
 
-                // ÉTAPE 3 : CONFIGURATION COMPLÈTE DES AXES
-                const xAxisConfig = {
-                    type: 'category' as const,
-                    data: finalChartData.x,
-                    boundaryGap: options.xBoundaryGap,
-                    show: options.xShow,
-                    axisLabel: {
-                        rotate: options.xAxisRotate,
-                        fontSize: calculateFontSize(options.xAxisLabelSize, 12),
-                        color: options.xAxisLabelColor
-                    },
-                    axisLine: {
-                        show: options.xShow,
-                        lineStyle: { color: '#ccc' }
-                    },
-                    axisTick: {
-                        show: options.xShow
+                    // ANIMATION
+                    if (options.animation !== false) {
+                        seriesConfig.animation = true;
+                        seriesConfig.animationDuration = options.animationDuration || 500;
+                        seriesConfig.animationEasing = options.animationEasing || 'cubicOut';
                     }
-                };
 
-                const yAxisConfig = {
-                    type: 'value' as const,
-                    show: options.yShow,
-                    splitLine: {
-                        show: options.ySplitLineShow,
-                        lineStyle: { color: '#f0f0f0' }
-                    },
-                    axisLabel: {
-                        fontSize: calculateFontSize(options.yAxisLabelSize, 12),
-                        color: options.yAxisLabelColor
-                    },
-                    axisLine: {
-                        show: options.yShow,
-                        lineStyle: { color: '#ccc' }
-                    }
-                };
+                    return seriesConfig;
+                });
+
+
+                const axesConfig = this.buildAxesConfig(options, 'ligne');
+                axesConfig.xAxis.data = finalChartData.x; // Injecter les données
+                axesConfig.xAxis.boundaryGap = options.xBoundaryGap;
+
+                // Appliquer le thème
+                axesConfig.xAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.axisLine.lineStyle.color = axisLineColor;
+                axesConfig.yAxis.splitLine.lineStyle.color = gridLineColor;
+
+                // CORRECTION : Appliquer le thème aux textes des axes
+                axesConfig.xAxis.axisLabel.color = textColor;
+                axesConfig.yAxis.axisLabel.color = textColor;
 
                 // ÉTAPE 4 : CONFIGURATION FINALE COMPLÈTE
                 return {
+                    ...baseOptions,
                     title: titleConfig,
                     legend: {
                         ...legendConfig,
@@ -951,6 +1340,7 @@ export class GraphicComponent implements OnInit {
                         ...tooltipConfig,
                         trigger: 'axis',
                         axisPointer: { type: 'line' },
+                        icon: options.legendIcon === 'auto' ? undefined : options.legendIcon,
                         formatter: (params: any) => {
                             const arr = Array.isArray(params) ? params : [params];
                             const head = arr[0]?.axisValueLabel || arr[0]?.name || '';
@@ -964,20 +1354,57 @@ export class GraphicComponent implements OnInit {
                         }
                     },
                     grid: finalGrid,
-                    xAxis: xAxisConfig,
-                    yAxis: yAxisConfig,
+                    xAxis: axesConfig.xAxis,
+                    yAxis: axesConfig.yAxis,
                     dataZoom: dataZoomConfig,
                     series: seriesData,
-                    // AJOUTER LA CONFIGURATION D'ANIMATION GLOBALE
+
                     animation: options.animation,
                     animationDuration: options.animationDuration,
-                    animationEasing: options.animationEasing
+                    animationEasing: options.animationEasing,
+                    data: this.applyDecalPatternToPieData(seriesData, useDecalPattern) // ← APPLIQUER PATTERNS
                 } as EChartsOption;
             }
 
             default:
                 return { title: { text: "Type de graphique non encore implémenté." } };
         }
+    }
+
+
+    // supprimer un diagramme predefini coté users
+
+    deletePreset(presetId: string, event: MouseEvent): void {
+        // Empêche le clic de déclencher d'autres événements (comme le chargement)
+        event.stopPropagation();
+
+        // Demande de confirmation
+        // if (!confirm(`Êtes-vous sûr de vouloir supprimer ce graphique ?\n(ID: ${presetId})`)) {
+        //     return;
+        // }
+
+        // console.log(`[GraphicComponent] Demande de suppression pour le preset ID: ${presetId}`);
+
+        // Appel au service API (en supposant que la méthode existe)
+        this.presetApiService.deletePreset(presetId).subscribe({
+            next: () => {
+                console.log('[GraphicComponent] Preset supprimé avec succès.');
+
+                // Si le graphique supprimé est celui qui est actuellement affiché,
+                // on retourne à la vue de la bibliothèque.
+                if (this.lastLoadedPreset?.id === presetId) {
+                    this.showGrid();
+                }
+
+                // Dans tous les cas, on rafraîchit la liste des presets.
+                this.loadPresetLists();
+            },
+            error: (err) => {
+                console.error('[GraphicComponent] Erreur lors de la suppression du preset:', err);
+                // Idéalement, afficher un message d'erreur à l'utilisateur ici (ex: via un Snackbar)
+                alert('Erreur: Impossible de supprimer le graphique.');
+            }
+        });
     }
 
     /**
@@ -1139,6 +1566,8 @@ export class GraphicComponent implements OnInit {
      * en le rendant responsive, centré, et avec une couleur de fond.
      */
     exportChart(): void {
+
+
         if (!this.echartsInstance) {
             console.error("L'instance ECharts n'est pas disponible pour l'export.");
             return;
@@ -1180,18 +1609,32 @@ export class GraphicComponent implements OnInit {
         URL.revokeObjectURL(url);
     }
 
-
-    filterToSelection(): void { }
-
+    // Appliquer un filtre spatial sur les données
 
 
 
+
+    filterToSelection(): void {
+        if (!this.lastLoadedPreset) {
+            console.warn("Aucun graphique n'est chargé. Impossible de filtrer.");
+            return;
+        }
+
+        console.log(`Activation du filtre spatial pour le preset: ${this.lastLoadedPreset.id}`);
+        this.useSpatialFilter = true; // 1. Active le flag
+        this.loadPreset(this.lastLoadedPreset.id);
+    }
+
+
+
+    //Affichage du tableau des données agrégées
+    toggleDataTable(): void {
+        this.showDataTable = !this.showDataTable;
+        console.log('Affichage du tableau de données:', this.showDataTable);
+    }
 
 
 
 
 
 }
-
-
-

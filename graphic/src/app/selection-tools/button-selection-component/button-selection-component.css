@@ -45,3 +45,9 @@
 #mainMenu .mat-menu-item:hover {
   background: #f5f5f5 !important;
 }
+
+p {
+  font-size: 0.9em;
+  font-style: italic;
+  /* La couleur par défaut est conservée, ou vous pouvez la définir ici si besoin */
+}
