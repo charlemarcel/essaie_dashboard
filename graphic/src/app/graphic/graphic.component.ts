@@ -68,6 +68,45 @@ export class GraphicComponent implements OnInit {
     //propriété pour le filtre spatial
     private useSpatialFilter = false;
 
+
+
+    // configuration de l'apercu des graphiques
+
+    previewBoxes = [
+        {
+            id: 'da9beb0e-0baa-45ae-9602-07434dcc6083', // id des digrammes choisis dans la bd
+
+            title: 'Répartition par Type',
+            svgPath: 'assets/pie.svg'
+        },
+        {
+            id: 'dd1d005e-f765-44d8-a4b7-1d3c22b25635',
+            title: 'Agriculture 2022',
+            svgPath: '/assets/agriculture 2022.svg'
+        },
+        {
+            id: 'f208118e-d8c6-49b4-a0b9-3b172242189b',
+            title: 'Evolution agricole',
+            svgPath: '/assets/evolution_agricole.svg'
+        },
+        {
+            id: 'cfd5d031-bbc8-4fe5-ad00-f85ef105721b',
+            title: 'Production agricole 2022',
+            svgPath: '/assets/production_agricole_2022.svg'
+        },
+        {
+            id: '83b01047-0d47-466f-8a65-f6c760ae775a',
+            title: 'Production agricole 2023',
+            svgPath: '/assets/production_agricole_2023.svg'
+        },
+        {
+            id: 'fb2e44dc-654b-4cbe-80d9-aa6c676e5b94',
+            title: 'Production 2022',
+            svgPath: '/assets/production 2022.svg'
+        }
+    ];
+
+
     //Propriété pour préparer et afficher le tableau des données//
     private _prepareTableData(): void {
         this.tableColumns = [];

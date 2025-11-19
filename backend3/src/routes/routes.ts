@@ -14,7 +14,7 @@ const allowedTables: string[] = ["agri2022", "agri2023", "agri2024", "milieux_hu
 type GeoJSONGeom = { type: string; coordinates: any };
 let currentSelection: { geometry: GeoJSONGeom } | null = null; // GeoJSON Feature (Polygon/MultiPolygon)
 
-// let currentSelection: { geometry: { type: string; coordinates: any } } | null = null;
+
 
 
 // Route existante pour le GeoJSON (inchangée, mais typée)
@@ -65,7 +65,7 @@ router.get("/geojson/:table", async (req: Request, res: Response) => {
     return res.status(500).send("Erreur lors de la requête à PostGIS");
   }
 });
-
+//==============selection spatiale=====////
 //// Créer/remplacer la sélection spatiale
 router.post('/selection', (req: Request, res: Response) => {
   const body = req.body || {};
@@ -98,6 +98,9 @@ router.delete('/selection', (_req: Request, res: Response) => {
 router.get('/selection', (_req: Request, res: Response) => {
   return res.json({ selection: currentSelection });
 });
+
+//=============fin selection spatiale=========////////
+
 
 
 // REQUETES POUR LES DIAGRAMMES PREDEFINIS

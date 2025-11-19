@@ -19,51 +19,28 @@
     <div class="graphic-content">
       <!-- Colonne de Gauche -->
       <div class="chart-display-area">
-        <!-- Grille de Sélection -->
+
+        <!-- Grille de Sélection ou apercu -->
+
         <div *ngIf="currentView === 'library'" class="admin-chart-grid">
-          <!-- Vos 6 boîtes cliquables ici -->
-          <div class="chart-preview-box" (click)="loadPreset('chart1_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/8X5J4Jq.png" alt="Aperçu Bump Chart"></div>
+
+
+          <div *ngFor="let box of previewBoxes" class="chart-preview-box" (click)="loadPreset(box.id)">
+
+            <div class="chart-preview-image">
+              <img [src]="box.svgPath" [alt]="box.title" />
+            </div>
+
             <div class="chart-preview-title">
-              <h4>chart 1</h4>
+              <h4>{{ box.title }}</h4>
             </div>
           </div>
-          <div class="chart-preview-box" (click)="loadPreset('chart2_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/2s3F4qL.png"
-                alt="Aperçu Variation de Température"></div>
-            <div class="chart-preview-title">
-              <h4>chart 1</h4>
-            </div>
-          </div>
-          <div class="chart-preview-box" (click)="loadPreset('chart3_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/KzD5g6t.png" alt="Aperçu Graphique en Aires">
-            </div>
-            <div class="chart-preview-title">
-              <h4>chart 1</h4>
-            </div>
-          </div>
-          <div class="chart-preview-box" (click)="loadPreset('chart4_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/V2z6v6d.png"
-                alt="Aperçu Données à Grande Échelle"></div>
-            <div class="chart-preview-title">
-              <h4>chart 1</h4>
-            </div>
-          </div>
-          <div class="chart-preview-box" (click)="loadPreset('chart5_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/UfG5t4r.png" alt="Aperçu Bande de Confiance">
-            </div>
-            <div class="chart-preview-title">
-              <h4>chart 1</h4>
-            </div>
-          </div>
-          <div class="chart-preview-box" (click)="loadPreset('chart6_id')">
-            <div class="chart-preview-image"><img src="https://i.imgur.com/M6x8d7n.png" alt="Aperçu Précipitations">
-            </div>
-            <div class="chart-preview-title">
-              <h4>chart 1</h4>
-            </div>
-          </div>
+
         </div>
+
+
+
+
 
         <!--  MODIFICATION : Ajout de #chartHost pour pouvoir mesurer la taille du conteneur -->
         <div *ngIf="currentView === 'chart'" class="active-chart-container" #chartHost>

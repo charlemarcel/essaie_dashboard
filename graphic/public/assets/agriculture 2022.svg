@@ -1,0 +1,93 @@
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 648 508">
+<rect x="0" y="0" width="100%" height="100%" fill="#f0f2f5" />
+
+<rect width="648" height="508" x="0" y="0" fill="none"></rect>
+<path d="M103.3859 439.5L596.16 439.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<path d="M103.3859 366.5L596.16 366.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<path d="M103.3859 294.5L596.16 294.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<path d="M103.3859 221.5L596.16 221.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<path d="M103.3859 149.5L596.16 149.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<path d="M103.3859 76.5L596.16 76.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;font-weight:bold;" y="-5" transform="matrix(0,-1,1,0,47.3859,257.7)" fill="#333333">Valeurs</text>
+<path d="M103.5 439.2L103.5 76.2" fill="none" stroke="#666666" stroke-linecap="round" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;font-weight:bold;" y="5" transform="translate(349.773 479.2)" fill="#333333">Catégories</text>
+<path d="M103.3859 439.5L596.16 439.5" fill="none" stroke="#666666" stroke-linecap="round" class="zr0-cls-0"></path>
+<path d="M103.5 439.2L103.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<path d="M196.5 439.2L196.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<path d="M288.5 439.2L288.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<path d="M380.5 439.2L380.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<path d="M473.5 439.2L473.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<path d="M565.5 439.2L565.5 444.2" fill="none" stroke="#666666" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 439.2)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 366.6)" fill="#333333">5,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 294)" fill="#333333">10,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 221.4)" fill="#333333">15,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 148.8)" fill="#333333">20,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(95.3859 76.2)" fill="#333333">25,000</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(103.3859 447.2)" fill="#333333">AUT</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(195.7811 447.2)" fill="#333333">CMA</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(288.1762 447.2)" fill="#333333">INC</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(380.5713 447.2)" fill="#333333">MUL</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(472.9665 447.2)" fill="#333333">PRT</text>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;" y="5" transform="translate(565.3616 447.2)" fill="#333333">SEI</text>
+<g clip-path="url(#zr0-c0)">
+<path d="M103.3859 436.553C103.3859 436.553 120.2509 436.553 134.1843 430.9788C151.0493 424.2318 150.5842 408.9185 164.9827 408.9185C181.3826 408.9185 177.8098 439.1405 195.7811 439.1405C208.6082 439.1405 222.2053 439.1405 226.5795 439.1114C253.0037 438.9359 241.7039 255.6265 257.3778 255.6265C272.5022 255.6265 263.5126 432.4932 288.1762 432.4932C294.3109 432.4932 302.0008 414.3996 318.9746 400.1586C332.7992 388.5598 337.5916 380.8136 349.773 380.8136C368.39 380.8136 375.5327 427.086 380.5714 427.086C406.3311 427.086 396.1311 144.5863 411.3697 144.5863C426.9294 144.5863 414.3751 377.6778 442.1681 433.1074C445.1735 439.1013 457.4242 439.0066 472.9665 439.1013C488.2226 439.1942 488.3656 439.1942 503.7649 439.1942C519.164 439.1942 519.3694 439.1942 534.5632 439.1913C550.1678 439.1883 553.7047 439.1913 565.3616 431.9821C584.503 420.1443 596.16 390.1587 596.16 390.1587L596.16 439.2L565.3616 439.2L534.5632 439.2L503.7649 439.2L472.9665 439.2L442.1681 439.2L411.3697 439.2L380.5714 439.2L349.773 439.2L318.9746 439.2L288.1762 439.2L257.3778 439.2L226.5795 439.2L195.7811 439.2L164.9827 439.2L134.1843 439.2L103.3859 439.2Z" fill="#5470c6" fill-opacity="0.15" class="zr0-cls-2"></path>
+<path d="M103.3859 436.553C103.3859 436.553 120.2509 436.553 134.1843 430.9788C151.0493 424.2318 150.5842 408.9185 164.9827 408.9185C181.3826 408.9185 177.8098 439.1405 195.7811 439.1405C208.6082 439.1405 222.2053 439.1405 226.5795 439.1114C253.0037 438.9359 241.7039 255.6265 257.3778 255.6265C272.5022 255.6265 263.5126 432.4932 288.1762 432.4932C294.3109 432.4932 302.0008 414.3996 318.9746 400.1586C332.7992 388.5598 337.5916 380.8136 349.773 380.8136C368.39 380.8136 375.5327 427.086 380.5714 427.086C406.3311 427.086 396.1311 144.5863 411.3697 144.5863C426.9294 144.5863 414.3751 377.6778 442.1681 433.1074C445.1735 439.1013 457.4242 439.0066 472.9665 439.1013C488.2226 439.1942 488.3656 439.1942 503.7649 439.1942C519.164 439.1942 519.3694 439.1942 534.5632 439.1913C550.1678 439.1883 553.7047 439.1913 565.3616 431.9821C584.503 420.1443 596.16 390.1587 596.16 390.1587" fill="none" stroke="#5470c6" stroke-width="3" stroke-linejoin="bevel" class="zr0-cls-3"></path>
+</g>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,103.3859,436.553)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,134.1843,430.9788)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,164.9827,408.9185)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,195.7811,439.1405)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,226.5795,439.1114)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,257.3778,255.6265)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,288.1762,432.4932)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,318.9746,400.1586)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,349.773,380.8136)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,380.5714,427.086)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,411.3697,144.5863)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,442.1681,433.1074)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,472.9665,439.1013)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,503.7649,439.1942)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,534.5632,439.1913)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,565.3616,431.9821)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M1 0A1 1 0 1 1 1 -0.0001" transform="matrix(3.5,0,0,3.5,596.16,390.1587)" fill="#fff" stroke="#5470c6" stroke-width="0.5714285714285714" class="zr0-cls-4"></path>
+<path d="M-5 -5l56.8906 0l0 21.6l-56.8906 0Z" transform="translate(147.56 467.28)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#b7b9be" stroke-width="0" class="zr0-cls-0"></path>
+<path d="M0 6L18 6" transform="translate(148.56 467.08)" fill="#000" stroke="#5470c6" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" class="zr0-cls-0"></path>
+<path d="M13.8 6A4.8 4.8 0 1 1 13.8 5.9995" transform="translate(148.56 467.08)" fill="#fff" stroke="#5470c6" stroke-width="2" stroke-linecap="butt" stroke-miterlimit="10" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" x="23" y="6" transform="translate(148.56 467.08)" fill="#666666">Total</text>
+<path d="M-1 0.2l46.8906 0l0 11.6l-46.8906 0Z" transform="translate(148.56 467.08)" fill="none" class="zr0-cls-5"></path>
+<path d="M-42.1387 -8L42.1387 -8A8 8 0 0 1 50.1387 0L50.1387 10A8 8 0 0 1 42.1387 18L-42.1387 18A8 8 0 0 1 -50.1387 10L-50.1387 0A8 8 0 0 1 -42.1387 -8" transform="translate(319.04 8)" fill="none" stroke="#000000" stroke-width="0" class="zr0-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;font-weight:bold;" xml:space="preserve" y="5" transform="translate(319.04 8)" fill="#333333">Agriculture 2022</text>
+<defs >
+<clipPath id="zr0-c0">
+<path d="M101 74.7l497 0l0 366l-497 0Z" fill="#000" class="zr0-cls-1"></path>
+</clipPath>
+</defs>
+<style ><![CDATA[
+.zr0-cls-0:hover {
+pointer-events:none;
+}
+.zr0-cls-1:hover {
+cursor:pointer;
+fill:rgba(0,0,0,1);
+}
+.zr0-cls-2:hover {
+cursor:pointer;
+fill:rgba(92,123,217,1);
+}
+.zr0-cls-3:hover {
+cursor:pointer;
+}
+.zr0-cls-4:hover {
+cursor:pointer;
+fill:rgba(255,255,255,1);
+}
+.zr0-cls-5:hover {
+cursor:pointer;
+fill:rgba(0,0,0,0);
+}
+
+]]>
+
+</style>
+</svg>

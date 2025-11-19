@@ -235,20 +235,47 @@
 }
 
 /* Le bouton "trois points" */
+
 .list-item-with-menu .menu-trigger {
-    flex-shrink: 0;
-    /* Empêche le bouton de rétrécir */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 32px;
     height: 32px;
-    line-height: 0px;
-    color: #757575;
+    padding: 0;
+    color: #cecaca;
 
 }
+
+/* Centre parfaitement l’icône dans son cercle */
+.list-item-with-menu .menu-trigger mat-icon {
+    font-size: 22px;
+    /* taille normale */
+    line-height: 1;
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    /* supprime tout décalage */
+}
+
+/* Ajoute le pointer sur le nom du preset dans "Mes Graphiques" */
+.list-item-with-menu .preset-name {
+    cursor: pointer !important;
+}
+
+/* Ajoute aussi un effet visuel au survol, comme dans les autres listes */
+.list-item-with-menu:hover .preset-name {
+    color: #0056b3;
+}
+
+
 
 .list-item-with-menu .menu-trigger mat-icon {
     font-size: 20px;
     width: 20px;
     height: 20px;
+    line-height: 20px;
+
 }
 
 .clickable-list-item {
@@ -355,7 +382,7 @@
     /* Retire le padding car l'input le gère */
 }
 
-/* Styles pour l'input dans l'en-tête (identique à la modale) */
+/* Styles pour l'input dans l'en-tête  */
 .data-table-header-input {
     width: 100%;
     box-sizing: border-box;
@@ -394,9 +421,7 @@
 
 /*===Fin style pour le tableau===*/
 
-
-
-
+/*===debut style pour les boites SVG==*/
 /* Style de chaque boîte de graphique */
 .chart-preview-box {
     border: 1px solid #e0e0e0;
@@ -419,7 +444,7 @@
 /* Conteneur de l'image */
 .chart-preview-image {
     flex-grow: 1;
-    padding: 10px;
+    padding: 1px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -430,7 +455,15 @@
     max-height: 100%;
     object-fit: contain;
     border-radius: 4px;
+    transition: transform 0.3s ease;
 }
+
+/* Effet d'agrandissement de l'image au survol */
+.chart-preview-box:hover .chart-preview-image img {
+    transform: scale(1.2);
+
+}
+
 
 /* Conteneur du titre en bas de la boîte */
 .chart-preview-title {
@@ -450,6 +483,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
+
+/*===fin style pour les boites SVG==*/
+
 
 
 

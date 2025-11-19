@@ -1,0 +1,113 @@
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" viewBox="0 0 648 508">
+<rect x="0" y="0" width="100%" height="100%" fill="#f0f2f5" />
+
+<rect width="648" height="508" x="0" y="0" fill="none"></rect>
+<path d="M187.6259 469.5L589.68 469.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<path d="M187.6259 392.5L589.68 392.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<path d="M187.6259 316.5L589.68 316.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<path d="M187.6259 239.5L589.68 239.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<path d="M187.6259 163.5L589.68 163.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<path d="M187.6259 86.5L589.68 86.5" fill="none" stroke="rgb(0,0,0)" stroke-opacity="0.12" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;font-weight:bold;" xml:space="preserve" y="-5" transform="matrix(0,-1,1,0,137.6259,277.8266)" fill="#333333">Superficie (en hectares)</text>
+<path d="M187.5 469.2933L187.5 86.36" fill="none" stroke="#666666" stroke-linecap="round" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="middle" style="font-size:10px;font-family:Microsoft YaHei;font-weight:bold;" y="5" transform="translate(388.653 495.2933)" fill="#333333">Années</text>
+<path d="M187.6259 469.5L589.68 469.5" fill="none" stroke="#666666" stroke-linecap="round" class="zr1-cls-0"></path>
+<path d="M254.5 469.2933L254.5 474.2933" fill="none" stroke="#666666" class="zr1-cls-0"></path>
+<path d="M388.5 469.2933L388.5 474.2933" fill="none" stroke="#666666" class="zr1-cls-0"></path>
+<path d="M522.5 469.2933L522.5 474.2933" fill="none" stroke="#666666" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 469.2933)" fill="#333333">0</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 392.7066)" fill="#333333">5,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 316.12)" fill="#333333">10,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 239.5333)" fill="#333333">15,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 162.9467)" fill="#333333">20,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="translate(179.6259 86.36)" fill="#333333">25,000</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="matrix(1,-0.017,0.017,1,254.6349,477.2933)" fill="#333333">2022</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="matrix(1,-0.017,0.017,1,388.653,477.2933)" fill="#333333">2023</text>
+<text dominant-baseline="central" text-anchor="end" style="font-size:10px;font-family:Microsoft YaHei;" transform="matrix(1,-0.017,0.017,1,522.671,477.2933)" fill="#333333">2024</text>
+<path d="M190.9764 469.2933l15.5265 0l0 -71.1536l-15.5265 0Z" fill="#f57c00" class="zr1-cls-1"></path>
+<path d="M324.9944 469.2933l15.5265 0l0 -73.635l-15.5265 0Z" fill="#f57c00" class="zr1-cls-1"></path>
+<path d="M459.0124 469.2933l15.5265 0l0 -74.214l-15.5265 0Z" fill="#f57c00" class="zr1-cls-1"></path>
+<path d="M209.6082 469.2933l15.5265 0l0 -193.654l-15.5265 0Z" fill="#f6aaaa" class="zr1-cls-2"></path>
+<path d="M343.6262 469.2933l15.5265 0l0 -195.3327l-15.5265 0Z" fill="#f6aaaa" class="zr1-cls-2"></path>
+<path d="M477.6442 469.2933l15.5265 0l0 -200.4901l-15.5265 0Z" fill="#f6aaaa" class="zr1-cls-2"></path>
+<path d="M228.2399 469.2933l15.5265 0l0 -41.1852l-15.5265 0Z" fill="#fc8452" class="zr1-cls-3"></path>
+<path d="M362.258 469.2933l15.5265 0l0 -46.4467l-15.5265 0Z" fill="#fc8452" class="zr1-cls-3"></path>
+<path d="M496.276 469.2933l15.5265 0l0 -46.9047l-15.5265 0Z" fill="#fc8452" class="zr1-cls-3"></path>
+<path d="M246.8717 469.2933l15.5265 0l0 -61.5925l-15.5265 0Z" fill="#5470c6" class="zr1-cls-4"></path>
+<path d="M380.8897 469.2933l15.5265 0l0 -63.0737l-15.5265 0Z" fill="#5470c6" class="zr1-cls-4"></path>
+<path d="M514.9078 469.2933l15.5265 0l0 -59.0131l-15.5265 0Z" fill="#5470c6" class="zr1-cls-4"></path>
+<path d="M265.5035 469.2933l15.5265 0l0 -310.7917l-15.5265 0Z" fill="#91cc75" class="zr1-cls-5"></path>
+<path d="M399.5215 469.2933l15.5265 0l0 -291.7308l-15.5265 0Z" fill="#91cc75" class="zr1-cls-5"></path>
+<path d="M533.5395 469.2933l15.5265 0l0 -267.5448l-15.5265 0Z" fill="#91cc75" class="zr1-cls-5"></path>
+<path d="M284.1353 469.2933l15.5265 0l0 -6.4272l-15.5265 0Z" fill="#bde6ad" class="zr1-cls-6"></path>
+<path d="M418.1533 469.2933l15.5265 0l0 -6.0151l-15.5265 0Z" fill="#bde6ad" class="zr1-cls-6"></path>
+<path d="M552.1713 469.2933l15.5265 0l0 -6.7779l-15.5265 0Z" fill="#bde6ad" class="zr1-cls-6"></path>
+<path d="M302.767 469.2933l15.5265 0l0 -51.7343l-15.5265 0Z" fill="#73c0de" class="zr1-cls-7"></path>
+<path d="M436.7851 469.2933l15.5265 0l0 -59.7085l-15.5265 0Z" fill="#73c0de" class="zr1-cls-7"></path>
+<path d="M570.8031 469.2933l15.5265 0l0 -61.7595l-15.5265 0Z" fill="#73c0de" class="zr1-cls-7"></path>
+<path d="M-5 -5l144.5166 0l0 168l-144.5166 0Z" transform="translate(11.48 304.72)" fill="rgb(0,0,0)" fill-opacity="0" stroke="#b7b9be" stroke-width="0" class="zr1-cls-0"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 304.72)" fill="#f57c00" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 304.72)" fill="#333">Autres : 14 297.70</text>
+<path d="M0 0l105.6445 0l0 14l-105.6445 0Z" transform="translate(11.48 304.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 328.72)" fill="#f6aaaa" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 328.72)" fill="#333">FOI : 38 484.30</text>
+<path d="M0 0l91.1426 0l0 14l-91.1426 0Z" transform="translate(11.48 328.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 352.72)" fill="#fc8452" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 352.72)" fill="#333">MAF : 8 783.30</text>
+<path d="M0 0l90.9961 0l0 14l-90.9961 0Z" transform="translate(11.48 352.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 376.72)" fill="#5470c6" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 376.72)" fill="#333">MGR : 11 991.60</text>
+<path d="M0 0l98.4766 0l0 14l-98.4766 0Z" transform="translate(11.48 376.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 400.72)" fill="#91cc75" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 400.72)" fill="#333">Non spécifié : 56 802.80</text>
+<path d="M0 0l134.5166 0l0 14l-134.5166 0Z" transform="translate(11.48 400.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 424.72)" fill="#bde6ad" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 424.72)" fill="#333">ORG : 1 254.80</text>
+<path d="M0 0l90.8398 0l0 14l-90.8398 0Z" transform="translate(11.48 424.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M3.5 0L11.5 0A3.5 3.5 0 0 1 15 3.5L15 10.5A3.5 3.5 0 0 1 11.5 14L3.5 14A3.5 3.5 0 0 1 0 10.5L0 3.5A3.5 3.5 0 0 1 3.5 0" transform="translate(11.48 448.72)" fill="#73c0de" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" x="20" y="7" transform="translate(11.48 448.72)" fill="#333">SOY : 11 307.60</text>
+<path d="M0 0l94.5654 0l0 14l-94.5654 0Z" transform="translate(11.48 448.72)" fill="none" class="zr1-cls-8"></path>
+<path d="M-5.5 -13.5L183.5 -13.5A8 8 0 0 1 191.5 -5.5L191.5 28.5A8 8 0 0 1 183.5 36.5L-5.5 36.5A8 8 0 0 1 -13.5 28.5L-13.5 -5.5A8 8 0 0 1 -5.5 -13.5" transform="translate(338 14)" fill="#b0bec5" stroke="#000000" class="zr1-cls-0"></path>
+<text dominant-baseline="central" text-anchor="start" style="font-size:11px;font-family:Microsoft YaHei;font-weight:bold;" xml:space="preserve" y="5.5" transform="translate(338 14)" fill="#333333">Évolution des produits agricoles</text>
+<text dominant-baseline="central" text-anchor="start" style="font-size:10px;font-family:Microsoft YaHei;" xml:space="preserve" y="18" transform="translate(338 14)" fill="#666666">Entre 2022 et 2024</text>
+<style ><![CDATA[
+.zr1-cls-0:hover {
+pointer-events:none;
+}
+.zr1-cls-1:hover {
+cursor:pointer;
+fill:rgba(255,136,0,1);
+}
+.zr1-cls-2:hover {
+cursor:pointer;
+fill:rgba(255,187,187,1);
+}
+.zr1-cls-3:hover {
+cursor:pointer;
+fill:rgba(255,145,90,1);
+}
+.zr1-cls-4:hover {
+cursor:pointer;
+fill:rgba(92,123,217,1);
+}
+.zr1-cls-5:hover {
+cursor:pointer;
+fill:rgba(159,224,128,1);
+}
+.zr1-cls-6:hover {
+cursor:pointer;
+fill:rgba(207,253,190,1);
+}
+.zr1-cls-7:hover {
+cursor:pointer;
+fill:rgba(126,211,244,1);
+}
+.zr1-cls-8:hover {
+cursor:pointer;
+fill:rgba(0,0,0,0);
+}
+
+]]>
+
+</style>
+</svg>

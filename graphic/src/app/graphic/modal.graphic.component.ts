@@ -1160,44 +1160,7 @@ export class ModalGraphicComponent implements OnInit {
     }
 
 
-    // Propriété pour garder les données du graphique en ligne
-    // private rawLineData: { x: string[]; series: Array<{ name: string; data: number[] }> } | null = null;
 
-    // private buildLegendForLine(names: string[]): any {
-    //     const L = this.lineUI;
-    //     if (!L.legendShow) return { show: false };
-
-    //     // const pos = L.legendUseXY
-    //     //     ? {
-
-    //     //         left: `${L.legendPosX}%`,
-    //     //         top: `${L.legendPosY}%`
-    //     //     }
-    //     //     : { left: L.legendLeft, top: L.legendTop };
-
-    //     return {
-    //         show: true,
-    //         type: L.legendType,
-    //         orient: L.legendOrient,
-    //         // ...pos,
-    //         itemWidth: L.legendItemWidth,
-    //         itemHeight: L.legendItemHeight,
-    //         itemGap: L.legendItemGap,
-    //         icon: L.legendIcon === 'auto' ? undefined : L.legendIcon,
-    //         textStyle: {
-    //             color: L.legendTextColor,
-    //             fontSize: L.legendTextSize,
-    //             fontWeight: L.legendTextWeight
-    //         },
-    //         selectedMode: L.legendSelectedMode,
-    //         data: names,
-    //         formatter: (name: string) => {
-    //             const tpl = (L.legendFormatter || '{name}').trim();
-    //             return tpl ? tpl.replace('{name}', name) : name;
-    //         }
-    //     };
-
-    // }
 
     private buildLegendForLine(names: string[]): any {
         const L = this.lineUI;
@@ -1887,7 +1850,7 @@ export class ModalGraphicComponent implements OnInit {
     generateChart(): void {
         console.log(`[ModalGraphic] generateChart: Type="${this.selectedChartType}", useSpatialFilter=${this.useSpatialFilter}`);
         console.log(`[ModalGraphic] generateChart: Type="${this.selectedChartType}"`);
-        // mis  à jour dusnapshot
+        // mis  à jour du snapshot
         this._buildAndStoreCurrentConfig();
 
         if (!this.lastGeneratedChartConfig) {
