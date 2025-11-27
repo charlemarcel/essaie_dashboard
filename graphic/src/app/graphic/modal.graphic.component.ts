@@ -25,7 +25,7 @@ import { GraphicPrefineServiceApi, CreatePresetDto, PresetType, Preset } from '.
 
 import { RegisterPresetDialog } from '../graphic/register-preset.dialog';
 
-
+import { saveAs } from 'file-saver';
 
 
 
@@ -1455,7 +1455,7 @@ export class ModalGraphicComponent implements OnInit {
         this.applyLegendChanges();
     }
 
-    // Agrège les séries (sum élément par élément) selon les groupes crées
+    // Agrège les séries (somme élément par élément) selon les groupes crées
     private aggregateLineBySeries(data: LineChartResponse): LineChartResponse {
         const memberToGroup = new Map<string, string>();
         this.categoryGroups.forEach(g => g.members.forEach(m => memberToGroup.set(m, g.name)));
@@ -2017,6 +2017,7 @@ export class ModalGraphicComponent implements OnInit {
     //========Methode pour la gestion du redimensionnement et positionnement du contenair graphique==
     onChartInit(ec: any) {
         this.echartsSvc = ec;
+        console.log('Instance ECharts initialisée:', this.echartsSvc);
     }
 
     // ====================================================================
@@ -2577,8 +2578,12 @@ export class ModalGraphicComponent implements OnInit {
             const aggregatedDataBar = Array.from(aggregatedBar.entries()).map(([name, value]) => ({
                 name, value: Math.round((value + Number.EPSILON) * 100) / 100
             }));
+
             const visibleSetBar = new Set(this.legendCategories.filter(c => c.visible).map(c => c.name));
             const filteredDataBar = aggregatedDataBar.filter(d => visibleSetBar.has(d.name));
+            console.log('🔍 [BAR] Données après agrégation et filtrage:', filteredDataBar);
+            console.log('🔍 [BAR] Catégories visibles dans légende:', Array.from(visibleSetBar));
+
 
             const autoWidth = !(sb.barWidthPx > 0);
 
@@ -2589,7 +2594,6 @@ export class ModalGraphicComponent implements OnInit {
 
             // Noms à afficher (ordre de l’axe X)
             const xNames = filteredDataBar.map(d => d.name);
-
 
 
 
@@ -2632,13 +2636,26 @@ export class ModalGraphicComponent implements OnInit {
 
 
             // === SÉRIES : 1 série par catégorie, mais EMPILÉES pour centrer la barre ===
+
+
+            // const series: SeriesOption[] = xNames.map((name, i): SeriesOption => {
+            //     const v = valueMapBar.get(name) ?? 0;
+            //     const data = xNames.map(n => (n === name ? v : 0));
+
+            //     const color = this.legendCategories.find(c => c.name === name)?.color;
+            //     const itemStyle: any = { color, borderRadius: sb.barBorderRadius };
+            //     if (this.useDecalPattern) itemStyle.decal = this.getDecal(i);
+
             const series: SeriesOption[] = xNames.map((name, i): SeriesOption => {
-                const v = valueMapBar.get(name) ?? 0;
+                // UTILISER filteredDataBar AU LIEU DE valueMapBar
+                const item = filteredDataBar.find(d => d.name === name);
+                const v = item ? item.value : 0;
                 const data = xNames.map(n => (n === name ? v : 0));
 
                 const color = this.legendCategories.find(c => c.name === name)?.color;
                 const itemStyle: any = { color, borderRadius: sb.barBorderRadius };
                 if (this.useDecalPattern) itemStyle.decal = this.getDecal(i);
+
 
                 return {
                     name,
@@ -3014,6 +3031,7 @@ export class ModalGraphicComponent implements OnInit {
             console.warn('[Group] Nom de groupe requis.');
             return;
         }
+
         const nameExists = this.legendCategories.some(c => c.name === name) ||
             this.categoryGroups.some(g => g.name === name);
         if (nameExists) {
@@ -3033,7 +3051,6 @@ export class ModalGraphicComponent implements OnInit {
             members.includes(c.name) ? { ...c, visible: false } : c
         );
 
-        // Reset sélection & champ nom
         this.groupSelection.clear();
         this.newGroupName = '';
         console.log('[Group] Créé:', group);
@@ -3135,6 +3152,8 @@ export class ModalGraphicComponent implements OnInit {
         this.dialogRef.close();
     }
 
+
+
     filterToSelection(): void {
         console.log('[ModalGraphic] filterToSelection appelée - ancienne valeur:', this.useSpatialFilter);
         this.useSpatialFilter = true;
@@ -3147,7 +3166,7 @@ export class ModalGraphicComponent implements OnInit {
 
 
 
-
+    // permet d'ajouter les options mappées (buildAndStoreCurrentConfig) dans la BD
     openRegisterPreset() {
         this._buildAndStoreCurrentConfig();
 
@@ -3174,4 +3193,45 @@ export class ModalGraphicComponent implements OnInit {
         });
     }
 
+
+    exportChart(): void {
+        if (!this.echartsSvc) {
+            console.error("L'instance ECharts n'est pas disponible pour l'export.");
+            return;
+        }
+
+        try {
+            // Générer le SVG
+            const originalSvgString = this.echartsSvc.renderToSVGString();
+
+            // Rendre le SVG responsive
+            const responsiveSvgString = originalSvgString
+                .replace(/width="(\d+)"/, 'width="100%"')
+                .replace(/height="(\d+)"/, 'height="100%"');
+
+            const backgroundColor = '#595e66ff';
+            const finalSvgString = responsiveSvgString.replace(
+                />/,
+                `>\n<rect x="0" y="0" width="100%" height="100%" fill="${backgroundColor}" />\n`
+            );
+
+            // Créer le Blob
+            const blob = new Blob([finalSvgString], {
+                type: 'image/svg+xml;charset=utf-8'
+            });
+
+            // Nom de fichier
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
+            const fileName = `graphique_${this.selectedChartType}_${timestamp}.svg`;
+
+            // Utiliser FileSaver.js
+            saveAs(blob, fileName);
+
+            console.log(`Téléchargement déclenché: ${fileName}`);
+
+        } catch (error) {
+            console.error('Erreur lors de l\'export SVG:', error);
+            alert('Erreur lors de l\'export du graphique.');
+        }
+    }
 }

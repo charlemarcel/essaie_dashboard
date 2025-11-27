@@ -8,18 +8,16 @@
 }
 
 /* Bouton principal */
-.menu-container button[mat-icon-button] {
-  background-color: #c99507;
-  color: #030303;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 50%;
-  border: 1px solid rgba(73, 228, 112, 0.3);
+.open-menu {
+  background-color: #2196f3;
+
+  color: white;
 }
 
-.menu-container button[mat-icon-button]:hover {
-  background-color: rgba(234, 190, 190, 0.8);
-  transform: scale(1.1);
-  box-shadow: 0 0 0 3px rgba(73, 228, 112, 0.2);
+.menu-container button mat-icon {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
 }
 
 

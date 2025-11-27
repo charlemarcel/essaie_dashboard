@@ -1,5 +1,5 @@
 <div mat-dialog-title class="modal-header">
-    <mat-form-field class="header-item">
+    <!-- <mat-form-field class="header-item">
         <mat-label>Couche</mat-label>
         <mat-select [(ngModel)]="selectedLayerId" name="selectedLayerId"
             (selectionChange)="onLayerSelectionChange($event.value)">
@@ -7,7 +7,7 @@
                 {{ layer.name }}
             </mat-option>
         </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
     <mat-form-field class="header-item">
 
         <mat-label>Type de graphique</mat-label>
@@ -121,7 +121,7 @@
             <!-- =================   PARAMETRAGE=============================-->
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title><strong>Paramétrage</strong></mat-panel-title>
+                    <mat-panel-title><strong>Requêtes</strong></mat-panel-title>
                 </mat-expansion-panel-header>
 
                 <div *ngIf="selectedChartType === 'pie' || selectedChartType === 'bar'" class="setting-section">
@@ -258,10 +258,13 @@
                 </mat-expansion-panel-header>
 
                 <!--========DEBUT DIAGRAMME EN PIE====--->
+
                 <div class="chart-config-section" *ngIf="selectedChartType === 'pie'">
                     <h3>Configuration du camembert </h3>
+                    <div class="title-section">
+                        <h3>Grouper des catégories</h3>
+                    </div>
 
-                    <h4>Grouper des catégories</h4>
                     <div class="grouping-section">
                         <div class="bar-config-scroll-categorie-line">
                             <div class="category-pool">
@@ -316,6 +319,10 @@
                         </div>
                     </div>
 
+                    <div class="title-section">
+                        <h3>Options du cercle</h3>
+                    </div>
+
                     <div class="grid-3">
                         <mat-checkbox [(ngModel)]="pieUI.isDonut" (change)="applyLegendChanges()">Donut</mat-checkbox>
                         <div class="pack-pie-1">
@@ -353,15 +360,18 @@
                             </div>
                         </div>
 
-                        <mat-checkbox [(ngModel)]="pieUI.avoidLabelOverlap" (change)="applyLegendChanges()">
-                            Éviter chevauchement labels
-                        </mat-checkbox>
+
+                    </div>
+                    <div class="title-section">
+                        <h3>Étiquettes</h3>
                     </div>
 
-                    <h4>Labels</h4>
                     <div class="grid-3">
                         <mat-checkbox [(ngModel)]="pieUI.labelShow" (change)="applyLegendChanges()">Afficher
                             les étiquettes</mat-checkbox>
+                        <mat-checkbox [(ngModel)]="pieUI.avoidLabelOverlap" (change)="applyLegendChanges()">
+                            Éviter les chevauchements
+                        </mat-checkbox>
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
                                 <div class="mini-label">Position label</div>
@@ -386,11 +396,11 @@
                             </div>
                         </div>
                         <mat-checkbox [(ngModel)]="pieUI.labelLineShow" (change)="applyLegendChanges()">
-                            Afficher lignes de label
+                            Gérer lignes des Étiquettes
                         </mat-checkbox>
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">Ligne en Y</div>
+                                <div class="mini-label">Oblique</div>
                                 <mat-form-field appearance="outline" class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.labelLineLength"
                                         (ngModelChange)="applyLegendChanges()" min="0">
@@ -398,7 +408,7 @@
                             </div>
 
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">Ligne en X</div>
+                                <div class="mini-label">Horizontale</div>
                                 <mat-form-field appearance="outline" class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.labelLineLength2"
                                         (ngModelChange)="applyLegendChanges()" min="0">
@@ -452,7 +462,7 @@
                         </div>
                     </div>
 
-                    <h3>Style du label</h3>
+                    <h4>Style des étiquettes</h4>
                     <div class="grid-3">
                         <div class="color-field">
                             <label>Couleur</label>
@@ -464,7 +474,7 @@
 
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">Taille (px)</div>
+                                <div class="mini-label">Taille</div>
                                 <mat-form-field appearance="outline" class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.labelFontSize"
                                         (ngModelChange)="applyLegendChanges()" min="8" />
@@ -491,6 +501,8 @@
                                 (ngModelChange)="applyLegendChanges()">
                                 <input [style.background]="pieUI.labelBackgroundColor" class="color-input-ngx" />
                             </ngx-colors>
+
+
                         </div>
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
@@ -528,8 +540,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <h3>Orientation des labels</h3>
+                    <div class="title-section">
+                        <h3>Orientation des labels</h3>
+                    </div>
                     <div class="grid-3">
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
@@ -597,7 +610,9 @@
                         </div>
                     </div>
 
-                    <h3>Emphasis (survol)</h3>
+                    <div class="title-section">
+                        <h3>Emphasis (survol)</h3>
+                    </div>
                     <div class="grid-3">
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
@@ -647,7 +662,7 @@
                         </div>
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">Label fontSize</div>
+                                <div class="mini-label">Taille </div>
                                 <mat-form-field appearance="outline" class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.emphasisLabelFontSize"
                                         (ngModelChange)="applyLegendChanges()" min="0" />
@@ -655,7 +670,7 @@
                             </div>
 
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">Label fontWeight</div>
+                                <div class="mini-label">Graisse</div>
                                 <mat-form-field appearance="outline" class="compact-field-pie-1">
                                     <mat-select [(ngModel)]="pieUI.emphasisLabelFontWeight"
                                         (selectionChange)="applyLegendChanges()">
@@ -669,7 +684,10 @@
                         </div>
                     </div>
 
-                    <h3>Tooltip</h3>
+                    <div class="title-section">
+                        <h3>Tooltip</h3>
+                    </div>
+
                     <div class="grid-3">
                         <div class="field check">
                             <mat-checkbox [(ngModel)]="pieUI.tooltipEnabled" (change)="applyLegendChanges()">
@@ -716,22 +734,23 @@
 
                     <h4>Style de la tooltip</h4>
                     <div class="grid-3">
-                        <div class="color-field">
-                            <label>Fond</label>
-                            <ngx-colors ngx-colors-trigger [(ngModel)]="pieUI.tooltipBg"
-                                (ngModelChange)="applyLegendChanges()">
-                                <input [style.background]="pieUI.tooltipBg" class="color-input-ngx" />
-                            </ngx-colors>
-                        </div>
+                        <div class="color-tooltip">
+                            <div class="color-field">
+                                <label>Fond</label>
+                                <ngx-colors ngx-colors-trigger [(ngModel)]="pieUI.tooltipBg"
+                                    (ngModelChange)="applyLegendChanges()">
+                                    <input [style.background]="pieUI.tooltipBg" class="color-input-ngx" />
+                                </ngx-colors>
+                            </div>
 
-                        <div class="color-field">
-                            <label>Texte</label>
-                            <ngx-colors ngx-colors-trigger [(ngModel)]="pieUI.tooltipTextColor"
-                                (ngModelChange)="applyLegendChanges()">
-                                <input [style.background]="pieUI.tooltipTextColor" class="color-input-ngx" />
-                            </ngx-colors>
+                            <div class="color-field">
+                                <label>Texte</label>
+                                <ngx-colors ngx-colors-trigger [(ngModel)]="pieUI.tooltipTextColor"
+                                    (ngModelChange)="applyLegendChanges()">
+                                    <input [style.background]="pieUI.tooltipTextColor" class="color-input-ngx" />
+                                </ngx-colors>
+                            </div>
                         </div>
-
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
                                 <div class="mini-label">Taille police (px)</div>
@@ -822,7 +841,9 @@
                     </div>
 
                     <!-- Légende dans le graphique -->
-                    <h4>Légende (sur le graphique)</h4>
+                    <div class="title-section">
+                        <h3>Légende</h3>
+                    </div>
                     <div class="legend-compact"
                         *ngIf="selectedChartType === 'pie' || selectedChartType === 'bar' || selectedChartType === 'bar_groupé'">
 
@@ -856,11 +877,11 @@
                             </div>
                         </div>
 
-                        <span class="inline-note">Item (px)</span>
+
 
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">width</div>
+                                <div class="mini-label">Largeur</div>
                                 <mat-form-field class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.legendItemWidth"
                                         (ngModelChange)="applyLegendChanges()" min="8" />
@@ -868,7 +889,7 @@
                             </div>
 
                             <div class="field w-140-pie-1">
-                                <div class="mini-label">height</div>
+                                <div class="mini-label">Hauteur</div>
                                 <mat-form-field appearance="fill" class="compact-field-pie-1">
                                     <input matInput type="number" [(ngModel)]="pieUI.legendItemHeight"
                                         (ngModelChange)="applyLegendChanges()" min="8" />
@@ -913,7 +934,7 @@
                                         <mat-option class="leg-style" value="auto">auto</mat-option>
                                         <mat-option class="leg-style" value="circle">cercle</mat-option>
                                         <mat-option class="leg-style" value="rect">rect</mat-option>
-                                        <mat-option class="leg-style" value="roundRect">roundRect</mat-option>
+                                        <mat-option class="leg-style" value="roundRect">Arrondi</mat-option>
                                         <mat-option class="leg-style" value="triangle">triangle</mat-option>
                                         <mat-option class="leg-style" value="diamond">diamand</mat-option>
                                         <mat-option class="leg-style" value="pin">pin</mat-option>
@@ -979,8 +1000,9 @@
                             </div>
                         </div>
                     </div>
-
-                    <h3>Interactions & angles</h3>
+                    <div class="title-section">
+                        <h3>Interactions & angles</h3>
+                    </div>
                     <div class="grid-3">
                         <div class="pack-pie-1">
                             <div class="field w-140-pie-1">
@@ -1049,12 +1071,12 @@
                             </div>
                         </div>
 
-                        <mat-checkbox [(ngModel)]="pieUI.stillShowZeroSum" (change)="applyLegendChanges()">
-                            Afficher si somme = 0
-                        </mat-checkbox>
+
                     </div>
 
-                    <h3>Titre & Sous-titre</h3>
+                    <div class="title-section">
+                        <h3>Titre & Sous-titre</h3>
+                    </div>
                     <div class="grid-3">
                         <div class="field check">
                             <mat-checkbox [(ngModel)]="pieUI.titleEnabled" (change)="applyLegendChanges()">
@@ -1211,12 +1233,6 @@
                                             (ngModelChange)="applyLegendChanges()" />
                                     </mat-form-field>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Alignement texte du titre -->
-                        <div class="row-justified">
-                            <div class="pack-pie-1">
                                 <div class="field w-140-pie-1">
                                     <div class="mini-label">Align</div>
                                     <mat-form-field appearance="outline" class="compact-field-pie-1">
@@ -1230,17 +1246,20 @@
                                 </div>
                             </div>
                         </div>
+
+
+
                     </div>
                 </div>
 
                 <!--============== DEBUT DU DIAGRAMME EN LIGNE ===================== -->
                 <div *ngIf="selectedChartType === 'ligne'">
-                    <h2>Configuration des Lignes</h2>
+                    <h3>Configuration des Lignes</h3>
 
                     <div class="bar-config-scroll">
                         <!-- Multi-couches : choix du groupage -->
                         <div *ngIf="selectedChartType === 'ligne'" class="mt-3">
-                            <div class="titre-option">
+                            <div class="title-section">
                                 <h3>Grouper les catégories</h3>
                             </div>
                             <div class="bar-config-scroll-categorie-line">
@@ -1291,7 +1310,9 @@
                         </div>
 
                         <div class="row-justified">
-                            <h3>Grille</h3>
+                            <div class="title-section">
+                                <h3>Grille</h3>
+                            </div>
                             <div class="pack-line">
                                 <div class="field w-140-line">
                                     <div class="mini-label">Gauche</div>
@@ -1330,9 +1351,12 @@
                         </div>
 
                         <!-- Axe X -->
-                        <h3>Axe X</h3>
+                        <div class="title-section">
+                            <h3>Gestion des axes</h3>
+                        </div>
                         <div class="row-justified">
-                            <mat-checkbox [(ngModel)]="lineUI.xShow" (change)="applyLegendChanges()">Afficher l'axe
+                            <mat-checkbox [(ngModel)]="lineUI.xShow" (change)="applyLegendChanges()">Afficher
+                                l'axe
                                 X</mat-checkbox>
 
                             <div class="pack-line-2">
@@ -1356,7 +1380,7 @@
                                 </div>
 
                                 <div class="field w-160-line-2">
-                                    <div class="mini-label">Taille labels</div>
+                                    <div class="mini-label">Taille des étiquettes</div>
                                     <mat-form-field appearance="outline" class="compact-field-line-2">
                                         <input matInput type="number" [(ngModel)]="lineUI.xAxisLabelSize"
                                             (ngModelChange)="applyLegendChanges()">
@@ -1374,9 +1398,10 @@
                         </div>
 
                         <!-- Axe Y -->
-                        <h4>Axe Y</h4>
+
                         <div class="row-justified">
-                            <mat-checkbox [(ngModel)]="lineUI.yShow" (change)="applyLegendChanges()">Afficher l'axe
+                            <mat-checkbox [(ngModel)]="lineUI.yShow" (change)="applyLegendChanges()">Afficher
+                                l'axe
                                 Y</mat-checkbox>
                             <mat-checkbox [(ngModel)]="lineUI.ySplitLineShow" (change)="applyLegendChanges()">Lignes
                                 de
@@ -1402,7 +1427,9 @@
                         </div>
 
                         <!-- Série (ligne) -->
-                        <h3>paramètres de lignes</h3>
+                        <div class="title-section">
+                            <h3>paramètres de lignes</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.smooth"
                                 (change)="applyLegendChanges()">Lissage</mat-checkbox>
@@ -1488,11 +1515,13 @@
                         </div>
 
                         <!-- Labels -->
-                        <h3>Etiquettes</h3>
+                        <div class="title-section">
+                            <h3>Gestion des étiquettes</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.labelShow" (change)="applyLegendChanges()">Afficher
                                 les
-                                labels</mat-checkbox>
+                                étiquettes</mat-checkbox>
 
                             <div class="pack-line-5">
                                 <div class="field w-180-line-5">
@@ -1549,9 +1578,11 @@
                         </div>
 
                         <!-- Emphasis -->
-                        <h4>Emphasis</h4>
+                        <div class="title-section">
+                            <h3>Emphasis (Survol)</h3>
+                        </div>
                         <div class="row-justified">
-                            <div class="pack-3">
+                            <div class="pack-line-legend-type">
                                 <div class="field w-180">
                                     <div class="mini-label">Focus</div>
                                     <mat-form-field appearance="outline" class="compact-field-3">
@@ -1587,12 +1618,14 @@
                         </div>
 
                         <!-- Animation -->
-                        <h4>Animation</h4>
+                        <div class="title-section">
+                            <h3>Animation</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.animation"
                                 (change)="applyLegendChanges()">Activer</mat-checkbox>
 
-                            <div class="pack">
+                            <div class="pack-line-legend-type">
                                 <div class="field w-180">
                                     <div class="mini-label">Durée (ms)</div>
                                     <mat-form-field class="compact-field">
@@ -1617,74 +1650,82 @@
                         </div>
 
                         <!-- DataZoom -->
-                        <h3>Zoom</h3>
+                        <div class="title-section">
+
+                            <h3>Gestion du zoom</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.dataZoomInside"
-                                (change)="applyLegendChanges()">Inside</mat-checkbox>
-                            <mat-checkbox [(ngModel)]="lineUI.dataZoomSlider"
-                                (change)="applyLegendChanges()">Slider</mat-checkbox>
+                                (change)="applyLegendChanges()">Interieur</mat-checkbox>
+                            <mat-checkbox [(ngModel)]="lineUI.dataZoomSlider" (change)="applyLegendChanges()">Par
+                                curseur</mat-checkbox>
 
-                            <div class="pack-line-zoom">
-                                <div class="field w-140-zoom">
-                                    <div class="mini-label">Start (%)</div>
-                                    <mat-form-field class="compact-field-zoom">
-                                        <input matInput type="number" min="0" max="100"
-                                            [(ngModel)]="lineUI.dataZoomStart" (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
 
-                                <div class="field w-140-zoom">
-                                    <div class="mini-label">End (%)</div>
-                                    <mat-form-field class="compact-field-zoom">
-                                        <input matInput type="number" min="0" max="100" [(ngModel)]="lineUI.dataZoomEnd"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
+                            <div class="field w-140-zoom">
+                                <div class="mini-label">Début</div>
+                                <!-- en pourcentage -->
+                                <mat-form-field class="compact-field-zoom">
+                                    <input matInput type="number" min="0" max="100" [(ngModel)]="lineUI.dataZoomStart"
+                                        (ngModelChange)="applyLegendChanges()">
+                                </mat-form-field>
+                            </div>
 
+                            <div class="field w-140-zoom">
+                                <div class="mini-label">Fin</div>
+                                <mat-form-field class="compact-field-zoom">
+                                    <input matInput type="number" min="0" max="100" [(ngModel)]="lineUI.dataZoomEnd"
+                                        (ngModelChange)="applyLegendChanges()">
+                                </mat-form-field>
+                            </div>
+
+                            <div class="field w-140-zoom">
                                 <mat-checkbox [(ngModel)]="lineUI.dzUseXY" (change)="applyLegendChanges()">Position
                                     XY</mat-checkbox>
+                            </div>
 
-                                <!-- <mat-button-toggle-group *ngIf="lineUI.dzUseXY" [(ngModel)]="lineUI.dzPosUnit"
-                                    (change)="applyLegendChanges()" aria-label="Unité">
-                                    <mat-button-toggle value="px">px</mat-button-toggle>
-                                    <mat-button-toggle value="%">%</mat-button-toggle>
-                                </mat-button-toggle-group> -->
+                            <div class="pack-line-legend-type">
 
                                 <ng-container *ngIf="lineUI.dzUseXY">
-                                    <div class="field w-120">
+
+                                    <div class="field w-180-line-2">
                                         <div class="mini-label">X</div>
                                         <mat-form-field class="compact-field-1">
                                             <input matInput type="number" [(ngModel)]="lineUI.dzOffsetX"
                                                 (ngModelChange)="applyLegendChanges()">
                                         </mat-form-field>
                                     </div>
-                                    <div class="field w-120">
+                                    <div class="field w-160-line-2">
                                         <div class="mini-label">Y</div>
                                         <mat-form-field class="compact-field-1">
                                             <input matInput type="number" [(ngModel)]="lineUI.dzOffsetY"
                                                 (ngModelChange)="applyLegendChanges()">
                                         </mat-form-field>
                                     </div>
-                                    <div class="field w-140">
+                                    <div class="field w-160-line-2">
                                         <div class="mini-label">Largeur</div>
                                         <mat-form-field class="compact-field-1">
                                             <input matInput type="number" [(ngModel)]="lineUI.dzWidth"
                                                 (ngModelChange)="applyLegendChanges()">
                                         </mat-form-field>
                                     </div>
-                                    <div class="field w-140">
+                                    <div class="field w-180-line-2">
                                         <div class="mini-label">Hauteur</div>
                                         <mat-form-field class="compact-field-1">
                                             <input matInput type="number" [(ngModel)]="lineUI.dzHeight"
                                                 (ngModelChange)="applyLegendChanges()">
                                         </mat-form-field>
+
                                     </div>
                                 </ng-container>
+
+
                             </div>
                         </div>
 
                         <!-- Légende (sur le graphique) -->
-                        <h3>Légende</h3>
+                        <div class="title-section">
+                            <h3>Gestion de la légende</h3>
+                        </div>
                         <div class="legend-compact">
                             <div class="row-justified">
                                 <mat-checkbox [(ngModel)]="lineUI.legendShow" (change)="applyLegendChanges()">
@@ -1839,21 +1880,23 @@
                         </div>
 
                         <!-- Dans la section LIGNE, après "Axe X" -->
-                        <h4>Label de l'axe X</h4>
+                        <div class="title-section">
+                            <h3>Afficher le texte des axes</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.xAxisLabel.show" (change)="applyLegendChanges()">
-                                Afficher le label
+                                Afficher l'axe x
                             </mat-checkbox>
 
-                            <div class="pack-line-axes">
-                                <div class="field w-200">
-                                    <div class="mini-label">Texte</div>
-                                    <mat-form-field appearance="outline" class="compact-field">
-                                        <input matInput [(ngModel)]="lineUI.xAxisLabel.text"
-                                            (ngModelChange)="applyLegendChanges()" placeholder="Axe X">
-                                    </mat-form-field>
-                                </div>
 
+                            <div class="field w-140">
+                                <div class="mini-label">Texte</div>
+                                <mat-form-field appearance="outline" class="compact-field">
+                                    <input matInput [(ngModel)]="lineUI.xAxisLabel.text"
+                                        (ngModelChange)="applyLegendChanges()" placeholder="Axe X">
+                                </mat-form-field>
+                            </div>
+                            <div class="pack-line-legend-type">
                                 <div class="field w-140">
                                     <div class="mini-label">Offset (%)</div>
                                     <mat-form-field appearance="outline" class="compact-field">
@@ -1893,10 +1936,10 @@
                             </div>
                         </div>
 
-                        <h4>Label de l'axe Y</h4>
+
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="lineUI.yAxisLabel.show" (change)="applyLegendChanges()">
-                                Afficher le label
+                                Afficher l'axe y
                             </mat-checkbox>
 
                             <mat-checkbox [(ngModel)]="lineUI.yAxisLabel.vertical" (change)="applyLegendChanges()">
@@ -1911,48 +1954,53 @@
                                             (ngModelChange)="applyLegendChanges()" placeholder="Axe Y">
                                     </mat-form-field>
                                 </div>
+                                <div class="pack-line-legend-type">
+                                    <div class="field w-140">
+                                        <div class="mini-label">Offset (%)</div>
+                                        <mat-form-field appearance="outline" class="compact-field">
+                                            <input matInput type="number" [(ngModel)]="lineUI.yAxisLabel.offset"
+                                                (ngModelChange)="applyLegendChanges()" min="0" max="100">
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-140">
-                                    <div class="mini-label">Offset (%)</div>
-                                    <mat-form-field appearance="outline" class="compact-field">
-                                        <input matInput type="number" [(ngModel)]="lineUI.yAxisLabel.offset"
-                                            (ngModelChange)="applyLegendChanges()" min="0" max="100">
-                                    </mat-form-field>
-                                </div>
+                                    <div class="field w-140">
+                                        <div class="mini-label">Taille</div>
+                                        <mat-form-field appearance="outline" class="compact-field">
+                                            <input matInput type="number" [(ngModel)]="lineUI.yAxisLabel.fontSize"
+                                                (ngModelChange)="applyLegendChanges()" min="8">
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-140">
-                                    <div class="mini-label">Taille</div>
-                                    <mat-form-field appearance="outline" class="compact-field">
-                                        <input matInput type="number" [(ngModel)]="lineUI.yAxisLabel.fontSize"
-                                            (ngModelChange)="applyLegendChanges()" min="8">
-                                    </mat-form-field>
-                                </div>
+                                    <div class="field w-160">
+                                        <div class="mini-label">Graisse</div>
+                                        <mat-form-field appearance="outline" class="compact-field">
+                                            <mat-select [(ngModel)]="lineUI.yAxisLabel.fontWeight"
+                                                (selectionChange)="applyLegendChanges()">
+                                                <mat-option value="normal">normal</mat-option>
+                                                <mat-option value="bold">bold</mat-option>
+                                                <mat-option value="bolder">bolder</mat-option>
+                                                <mat-option value="lighter">lighter</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-160">
-                                    <div class="mini-label">Graisse</div>
-                                    <mat-form-field appearance="outline" class="compact-field">
-                                        <mat-select [(ngModel)]="lineUI.yAxisLabel.fontWeight"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="normal">normal</mat-option>
-                                            <mat-option value="bold">bold</mat-option>
-                                            <mat-option value="bolder">bolder</mat-option>
-                                            <mat-option value="lighter">lighter</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-160-color">
-                                    <div class="mini-label">Couleur</div>
-                                    <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.yAxisLabel.color"
-                                        (ngModelChange)="applyLegendChanges()">
-                                        <input [style.background]="lineUI.yAxisLabel.color" class="color-input-ngx" />
-                                    </ngx-colors>
+                                    <div class="field w-160-color">
+                                        <div class="mini-label">Couleur</div>
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.yAxisLabel.color"
+                                            (ngModelChange)="applyLegendChanges()">
+                                            <input [style.background]="lineUI.yAxisLabel.color"
+                                                class="color-input-ngx" />
+                                        </ngx-colors>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
+
                         <!-- titre et sous titre -->
-                        <h3>Titre & Sous-titre</h3>
+                        <div class="title-section">
+                            <h3>Titre & Sous-titre</h3>
+                        </div>
                         <div class="pack">
                             <div class="field w-240">
                                 <div class="mini-label">Titre</div>
@@ -1961,67 +2009,67 @@
                                         (ngModelChange)="applyLegendChanges()">
                                 </mat-form-field>
                             </div>
+                            <div class="pack-line-legend-type">
+                                <div class="field w-140">
+                                    <div class="mini-label">Taille</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleFontSize"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-140">
-                                <div class="mini-label">Taille</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleFontSize"
+                                <div class="field w-160-color">
+                                    <div class="mini-label">Couleur</div>
+                                    <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleColor"
                                         (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
-                            </div>
+                                        <input [style.background]="lineUI.titleColor" class="color-input-ngx" />
+                                    </ngx-colors>
+                                </div>
 
-                            <div class="field w-160-color">
-                                <div class="mini-label">Couleur</div>
-                                <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleColor"
-                                    (ngModelChange)="applyLegendChanges()">
-                                    <input [style.background]="lineUI.titleColor" class="color-input-ngx" />
-                                </ngx-colors>
-                            </div>
+                                <div class="field w-180">
+                                    <div class="mini-label">Graisse</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <mat-select [(ngModel)]="lineUI.titleFontWeight"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="lighter">lighter</mat-option>
+                                            <mat-option value="normal">normal</mat-option>
+                                            <mat-option value="bold">bold</mat-option>
+                                            <mat-option value="bolder">bolder</mat-option>
+                                            <mat-option [value]="600">600</mat-option>
+                                            <mat-option [value]="700">700</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-180">
-                                <div class="mini-label">Graisse</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <mat-select [(ngModel)]="lineUI.titleFontWeight"
-                                        (selectionChange)="applyLegendChanges()">
-                                        <mat-option value="lighter">lighter</mat-option>
-                                        <mat-option value="normal">normal</mat-option>
-                                        <mat-option value="bold">bold</mat-option>
-                                        <mat-option value="bolder">bolder</mat-option>
-                                        <mat-option [value]="600">600</mat-option>
-                                        <mat-option [value]="700">700</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
+                                <div class="field w-140">
+                                    <div class="mini-label">Offset X (px)</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleOffsetX"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-140">
-                                <div class="mini-label">Offset X (px)</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleOffsetX"
-                                        (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
-                            </div>
+                                <div class="field w-140">
+                                    <div class="mini-label">Offset Y (px)</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleOffsetY"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-140">
-                                <div class="mini-label">Offset Y (px)</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleOffsetY"
-                                        (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
-                            </div>
+                                <div class="field w-160">
+                                    <div class="mini-label">Align</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <mat-select [(ngModel)]="lineUI.titleTextAlign"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="left">left</mat-option>
+                                            <mat-option value="center">center</mat-option>
+                                            <mat-option value="right">right</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-160">
-                                <div class="mini-label">Align</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <mat-select [(ngModel)]="lineUI.titleTextAlign"
-                                        (selectionChange)="applyLegendChanges()">
-                                        <mat-option value="left">left</mat-option>
-                                        <mat-option value="center">center</mat-option>
-                                        <mat-option value="right">right</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-
-                            <!-- <div class="field w-160">
+                                <!-- <div class="field w-160">
                                 <div class="mini-label">Vertical align</div>
                                 <mat-form-field appearance="outline" class="compact-field-1">
                                     <mat-select [(ngModel)]="lineUI.titleTextVerticalAlign"
@@ -2033,60 +2081,68 @@
                                 </mat-form-field>
                             </div> -->
 
-                            <div class="field w-140">
-                                <div class="mini-label">Espacement titre/sous-titre</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleItemGap"
-                                        (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
+                                <div class="field w-140">
+                                    <div class="mini-label">Ecart avec sous-titre</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleItemGap"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Cadre du bloc titre -->
                         <div class="pack">
-                            <mat-checkbox [(ngModel)]="lineUI.titleBoxEnabled" (change)="applyLegendChanges()">Cadre du
+                            <mat-checkbox [(ngModel)]="lineUI.titleBoxEnabled" (change)="applyLegendChanges()">Cadre
+                                du
                                 titre</mat-checkbox>
 
-                            <div class="field w-160-color" *ngIf="lineUI.titleBoxEnabled">
-                                <div class="mini-label">Fond</div>
-                                <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleBoxBg"
-                                    (ngModelChange)="applyLegendChanges()">
-                                    <input [style.background]="lineUI.titleBoxBg" class="color-input-ngx" />
-                                </ngx-colors>
-                            </div>
+                            <div class="pack-line-legend-type">
 
-                            <div class="field w-160-color" *ngIf="lineUI.titleBoxEnabled">
-                                <div class="mini-label">Bordure</div>
-                                <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleBoxBorderColor"
-                                    (ngModelChange)="applyLegendChanges()">
-                                    <input [style.background]="lineUI.titleBoxBorderColor" class="color-input-ngx" />
-                                </ngx-colors>
-                            </div>
-
-                            <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
-                                <div class="mini-label">Épaisseur</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleBoxBorderWidth"
+                                <div class="field w-160-color" *ngIf="lineUI.titleBoxEnabled">
+                                    <div class="mini-label">Fond</div>
+                                    <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleBoxBg"
                                         (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
-                            </div>
+                                        <input [style.background]="lineUI.titleBoxBg" class="color-input-ngx" />
+                                    </ngx-colors>
+                                </div>
 
-                            <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
-                                <div class="mini-label">Rayon</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleBoxBorderRadius"
+                                <div class="field w-160-color" *ngIf="lineUI.titleBoxEnabled">
+                                    <div class="mini-label">Bordure</div>
+                                    <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.titleBoxBorderColor"
                                         (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
-                            </div>
+                                        <input [style.background]="lineUI.titleBoxBorderColor"
+                                            class="color-input-ngx" />
+                                    </ngx-colors>
+                                </div>
 
-                            <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
-                                <div class="mini-label">Padding</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.titleBoxPadding"
-                                        (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
+                                <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
+                                    <div class="mini-label">Épaisseur</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleBoxBorderWidth"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
+                                    <div class="mini-label">Rayon</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleBoxBorderRadius"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140" *ngIf="lineUI.titleBoxEnabled">
+                                    <div class="mini-label">Padding</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.titleBoxPadding"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
+
+
 
                         <!-- Sous-titre -->
                         <mat-checkbox [(ngModel)]="lineUI.subtitleEnabled" (change)="applyLegendChanges()">
@@ -2101,39 +2157,41 @@
                                         (ngModelChange)="applyLegendChanges()">
                                 </mat-form-field>
                             </div>
+                            <div class="pack-line-legend-type">
+                                <div class="field w-140">
+                                    <div class="mini-label">Taille</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <input matInput type="number" [(ngModel)]="lineUI.subtitleFontSize"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
 
-                            <div class="field w-140">
-                                <div class="mini-label">Taille</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <input matInput type="number" [(ngModel)]="lineUI.subtitleFontSize"
+                                <div class="field w-180">
+                                    <div class="mini-label">Graisse</div>
+                                    <mat-form-field appearance="outline" class="compact-field-1">
+                                        <mat-select [(ngModel)]="lineUI.subtitleFontWeight"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="lighter">lighter</mat-option>
+                                            <mat-option value="normal">normal</mat-option>
+                                            <mat-option value="bold">bold</mat-option>
+                                            <mat-option value="bolder">bolder</mat-option>
+                                            <mat-option [value]="600">600</mat-option>
+                                            <mat-option [value]="700">700</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+
+                                <div class="field w-160-color">
+                                    <div class="mini-label">Couleur</div>
+                                    <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.subtitleColor"
                                         (ngModelChange)="applyLegendChanges()">
-                                </mat-form-field>
+                                        <input [style.background]="lineUI.subtitleColor" class="color-input-ngx" />
+                                    </ngx-colors>
+                                </div>
+
+
                             </div>
-
-                            <div class="field w-160-color">
-                                <div class="mini-label">Couleur</div>
-                                <ngx-colors ngx-colors-trigger [(ngModel)]="lineUI.subtitleColor"
-                                    (ngModelChange)="applyLegendChanges()">
-                                    <input [style.background]="lineUI.subtitleColor" class="color-input-ngx" />
-                                </ngx-colors>
-                            </div>
-
-                            <div class="field w-180">
-                                <div class="mini-label">Graisse</div>
-                                <mat-form-field appearance="outline" class="compact-field-1">
-                                    <mat-select [(ngModel)]="lineUI.subtitleFontWeight"
-                                        (selectionChange)="applyLegendChanges()">
-                                        <mat-option value="lighter">lighter</mat-option>
-                                        <mat-option value="normal">normal</mat-option>
-                                        <mat-option value="bold">bold</mat-option>
-                                        <mat-option value="bolder">bolder</mat-option>
-                                        <mat-option [value]="600">600</mat-option>
-                                        <mat-option [value]="700">700</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -2141,7 +2199,7 @@
 
                 <!-- ============== DEBUT DU Diagramme en Bar ================-->
 
-                <h4>Bar — Configuration</h4>
+                <h4>Configuration</h4>
                 <div class="legend-compact bar-compact"
                     *ngIf="selectedChartType === 'bar' || selectedChartType === 'bar_groupé'">
                     <div class="bar-config-scroll">
@@ -2149,7 +2207,9 @@
                         <!-- Groupement de catégories -->
                         <div class="grouping-section">
                             <div class="category-pool">
-                                <h5>Grouper les catégories</h5>
+                                <div class="title-section">
+                                    <h3>Grouper les catégories</h3>
+                                </div>
                                 <div class="bar-config-scroll-categorie-line">
                                     <div *ngFor="let c of legendCategories" class="group-pick-item">
                                         <mat-checkbox [checked]="groupSelection.has(c.name)"
@@ -2200,7 +2260,10 @@
                         </div>
 
                         <!-- Grille -->
-                        <h3>Grille</h3>
+                        <div class="title-section">
+
+                            <h3>Grille</h3>
+                        </div>
                         <div class="pack-bar-1">
                             <div class="field w-120-bar-1">
                                 <div class="mini-label">Gauche</div>
@@ -2246,7 +2309,9 @@
 
                         <!-- Paramètres des axes -->
                         <div class="row-justified">
-                            <h3>paramètres des Axes</h3>
+                            <div class="title-section">
+                                <h3>paramètres des Axes</h3>
+                            </div>
 
                             <div class="pack-bar-2">
                                 <div class="field w-140-bar-2">
@@ -2317,6 +2382,9 @@
                         </div>
 
                         <!-- Label -->
+                        <div class="title-section">
+                            <h3>Gestion des étiquettes</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="barUI.labelShow" (change)="applyLegendChanges()">Afficher
                                 les étiquettes</mat-checkbox>
@@ -2379,6 +2447,9 @@
                         </div>
 
                         <!-- Animation -->
+                        <div class="title-section">
+                            <h3>Animation</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="barUI.animation"
                                 (change)="applyLegendChanges()">Animation</mat-checkbox>
@@ -2443,6 +2514,9 @@
                         </div>
 
                         <!-- DataZoom -->
+                        <div class="title-section">
+                            <h3>Zoom</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="barUI.dataZoomInside" (change)="applyLegendChanges()">Zoom
                                 interieur</mat-checkbox>
@@ -2531,10 +2605,12 @@
 
                         <!-- Label de l'axe X et Y -->
 
-                        <h4>Label des axes</h4>
+                        <div class="title-section">
+                            <h3>Étiquettes des axes</h3>
+                        </div>
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="barUI.xAxisLabel.show" (change)="applyLegendChanges()">
-                                Afficher le label
+                                Afficher l'axe X
                             </mat-checkbox>
 
                             <div class="pack-bar-axes">
@@ -2545,51 +2621,53 @@
                                             (ngModelChange)="applyLegendChanges()" placeholder="Axe X">
                                     </mat-form-field>
                                 </div>
+                                <div class="pack-line-legend-type">
+                                    <div class="field w-140-bar-axes">
+                                        <div class="mini-label">Offset (%)</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <input matInput type="number" [(ngModel)]="barUI.xAxisLabel.offset"
+                                                (ngModelChange)="applyLegendChanges()" min="0" max="100">
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-140-bar-axes">
-                                    <div class="mini-label">Offset (%)</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <input matInput type="number" [(ngModel)]="barUI.xAxisLabel.offset"
-                                            (ngModelChange)="applyLegendChanges()" min="0" max="100">
-                                    </mat-form-field>
-                                </div>
+                                    <div class="field w-140-bar-axes">
+                                        <div class="mini-label">Taille</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <input matInput type="number" [(ngModel)]="barUI.xAxisLabel.fontSize"
+                                                (ngModelChange)="applyLegendChanges()" min="8">
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-140-bar-axes">
-                                    <div class="mini-label">Taille</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <input matInput type="number" [(ngModel)]="barUI.xAxisLabel.fontSize"
-                                            (ngModelChange)="applyLegendChanges()" min="8">
-                                    </mat-form-field>
-                                </div>
+                                    <div class="field w-160-bar-axes">
+                                        <div class="mini-label">Graisse</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <mat-select [(ngModel)]="barUI.xAxisLabel.fontWeight"
+                                                (selectionChange)="applyLegendChanges()">
+                                                <mat-option value="normal">normal</mat-option>
+                                                <mat-option value="bold">bold</mat-option>
+                                                <mat-option value="bolder">bolder</mat-option>
+                                                <mat-option value="lighter">lighter</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-160-bar-axes">
-                                    <div class="mini-label">Graisse</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <mat-select [(ngModel)]="barUI.xAxisLabel.fontWeight"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="normal">normal</mat-option>
-                                            <mat-option value="bold">bold</mat-option>
-                                            <mat-option value="bolder">bolder</mat-option>
-                                            <mat-option value="lighter">lighter</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-160-color-bar-axes">
-                                    <div class="mini-label">Couleur</div>
-                                    <ngx-colors ngx-colors-trigger [(ngModel)]="barUI.xAxisLabel.color"
-                                        (ngModelChange)="applyLegendChanges()">
-                                        <input [style.background]="barUI.xAxisLabel.color" class="color-input-ngx" />
-                                    </ngx-colors>
+                                    <div class="field w-160-color-bar-axes">
+                                        <div class="mini-label">Couleur</div>
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="barUI.xAxisLabel.color"
+                                            (ngModelChange)="applyLegendChanges()">
+                                            <input [style.background]="barUI.xAxisLabel.color"
+                                                class="color-input-ngx" />
+                                        </ngx-colors>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Label de l'axe Y -->
-                        <h4>Label de l'axe Y</h4>
+
                         <div class="row-justified">
                             <mat-checkbox [(ngModel)]="barUI.yAxisLabel.show" (change)="applyLegendChanges()">
-                                Afficher le label
+                                Afficher l'axe Y
                             </mat-checkbox>
 
                             <mat-checkbox [(ngModel)]="barUI.yAxisLabel.vertical" (change)="applyLegendChanges()">
@@ -2604,27 +2682,179 @@
                                             (ngModelChange)="applyLegendChanges()" placeholder="Axe Y">
                                     </mat-form-field>
                                 </div>
+                                <div class="pack-line-legend-type">
+                                    <div class="field w-140-bar-axes">
+                                        <div class="mini-label">Offset (%)</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <input matInput type="number" [(ngModel)]="barUI.yAxisLabel.offset"
+                                                (ngModelChange)="applyLegendChanges()" min="0" max="100">
+                                        </mat-form-field>
+                                    </div>
 
-                                <div class="field w-140-bar-axes">
-                                    <div class="mini-label">Offset (%)</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <input matInput type="number" [(ngModel)]="barUI.yAxisLabel.offset"
-                                            (ngModelChange)="applyLegendChanges()" min="0" max="100">
+                                    <div class="field w-140-bar-axes">
+                                        <div class="mini-label">Taille</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <input matInput type="number" [(ngModel)]="barUI.yAxisLabel.fontSize"
+                                                (ngModelChange)="applyLegendChanges()" min="8">
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="field w-160-bar-axes">
+                                        <div class="mini-label">Graisse</div>
+                                        <mat-form-field appearance="outline" class="compact-field-bar-axes">
+                                            <mat-select [(ngModel)]="barUI.yAxisLabel.fontWeight"
+                                                (selectionChange)="applyLegendChanges()">
+                                                <mat-option value="normal">normal</mat-option>
+                                                <mat-option value="bold">bold</mat-option>
+                                                <mat-option value="bolder">bolder</mat-option>
+                                                <mat-option value="lighter">lighter</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div class="field w-160-color-bar-axes">
+                                        <div class="mini-label">Couleur</div>
+                                        <ngx-colors ngx-colors-trigger [(ngModel)]="barUI.yAxisLabel.color"
+                                            (ngModelChange)="applyLegendChanges()">
+                                            <input [style.background]="barUI.yAxisLabel.color"
+                                                class="color-input-ngx" />
+                                        </ngx-colors>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Affichage u nom des axes X et Y -->
+
+
+
+
+                        <!-- affichage de la tooltip -->
+                        <div *ngIf="selectedChartType === 'bar' || selectedChartType === 'bar_groupé'" class="pack">
+                            <mat-checkbox [(ngModel)]="barTooltipEnabled" (change)="applyLegendChanges()">
+                                Afficher la tooltip (au clic)
+                            </mat-checkbox>
+                        </div>
+
+                        <!-- LÉGENDE (Bar & Bar groupé) -->
+                        <div class="title-section">
+                            <h3>Légende</h3>
+                        </div>
+
+                        <div class="row-justified">
+                            <mat-checkbox [(ngModel)]="barUI.legendShow" (change)="applyLegendChanges()">Afficher la
+                                légende</mat-checkbox>
+
+                            <div class="pack-bar-title">
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Type</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <mat-select [(ngModel)]="barUI.legendType"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="plain">plain</mat-option>
+                                            <mat-option value="scroll">scroll</mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                                 </div>
 
-                                <div class="field w-140-bar-axes">
-                                    <div class="mini-label">Taille</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <input matInput type="number" [(ngModel)]="barUI.yAxisLabel.fontSize"
-                                            (ngModelChange)="applyLegendChanges()" min="8">
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Orientation</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <mat-select [(ngModel)]="barUI.legendOrient"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="horizontal">horizontal</mat-option>
+                                            <mat-option value="vertical">vertical</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-justified">
+                            <div class="pack-bar-title">
+                                <div class="field w-120">
+                                    <div class="mini-label">Item w</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendItemWidth"
+                                            (ngModelChange)="applyLegendChanges()">
                                     </mat-form-field>
                                 </div>
 
-                                <div class="field w-160-bar-axes">
-                                    <div class="mini-label">Graisse</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-axes">
-                                        <mat-select [(ngModel)]="barUI.yAxisLabel.fontWeight"
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Item h</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendItemHeight"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Gap</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendItemGap"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-justified">
+                            <mat-checkbox [(ngModel)]="barUI.legendUseXY" (change)="applyLegendChanges()">Position
+                                absolue (X/Y)</mat-checkbox>
+
+                            <div class="pack-bar-title" *ngIf="barUI.legendUseXY">
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">X</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendPosX"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Y</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendPosY"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-justified">
+                            <div class="pack-bar-title">
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Icône</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <mat-select [(ngModel)]="barUI.legendIcon"
+                                            (selectionChange)="applyLegendChanges()">
+                                            <mat-option value="auto">auto</mat-option>
+                                            <mat-option value="circle">circle</mat-option>
+                                            <mat-option value="rect">rect</mat-option>
+                                            <mat-option value="roundRect">roundRect</mat-option>
+                                            <mat-option value="triangle">triangle</mat-option>
+                                            <mat-option value="diamond">diamond</mat-option>
+                                            <mat-option value="pin">pin</mat-option>
+                                            <mat-option value="arrow">arrow</mat-option>
+                                            <mat-option value="none">none</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Taille texte</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <input matInput type="number" [(ngModel)]="barUI.legendTextSize"
+                                            (ngModelChange)="applyLegendChanges()">
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="field w-140-bar-title">
+                                    <div class="mini-label">Gras</div>
+                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
+                                        <mat-select [(ngModel)]="barUI.legendTextWeight"
                                             (selectionChange)="applyLegendChanges()">
                                             <mat-option value="normal">normal</mat-option>
                                             <mat-option value="bold">bold</mat-option>
@@ -2633,19 +2863,37 @@
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
+                            </div>
+                        </div>
 
-                                <div class="field w-160-color-bar-axes">
-                                    <div class="mini-label">Couleur</div>
-                                    <ngx-colors ngx-colors-trigger [(ngModel)]="barUI.yAxisLabel.color"
-                                        (ngModelChange)="applyLegendChanges()">
-                                        <input [style.background]="barUI.yAxisLabel.color" class="color-input-ngx" />
-                                    </ngx-colors>
-                                </div>
+                        <div class="row-justified">
+                            <div class="field w-100p">
+                                <div class="mini-label">Formatter</div>
+                                <mat-form-field appearance="outline" class="compact-field">
+                                    <input matInput [(ngModel)]="barUI.legendFormatter"
+                                        (ngModelChange)="applyLegendChanges()" placeholder="{name}">
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="row-justified">
+                            <div class="field w-200">
+                                <div class="mini-label">Mode</div>
+                                <mat-form-field appearance="outline" class="compact-field">
+                                    <mat-select [(ngModel)]="barUI.legendSelectedMode"
+                                        (selectionChange)="applyLegendChanges()">
+                                        <mat-option [value]="false">désactivé</mat-option>
+                                        <mat-option value="single">single</mat-option>
+                                        <mat-option value="multiple">multiple</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                             </div>
                         </div>
 
                         <!-- Titre & Sous-titre -->
-                        <h3>Titre & Sous-titre</h3>
+                        <div class="title-section">
+                            <h3>Titre & Sous-titre</h3>
+                        </div>
                         <div class="grid-3">
                             <div class="field check">
                                 <mat-checkbox [(ngModel)]="barUI.titleEnabled" (change)="applyLegendChanges()">
@@ -2803,168 +3051,6 @@
                             </div>
                         </div>
 
-
-                        <!-- Affichage u nom des axes X et Y -->
-
-
-
-
-                        <!-- affichage de la tooltip -->
-                        <div *ngIf="selectedChartType === 'bar' || selectedChartType === 'bar_groupé'" class="pack">
-                            <mat-checkbox [(ngModel)]="barTooltipEnabled" (change)="applyLegendChanges()">
-                                Afficher la tooltip (au clic)
-                            </mat-checkbox>
-                        </div>
-
-                        <!-- LÉGENDE (Bar & Bar groupé) -->
-                        <h3>Légende</h3>
-
-                        <div class="row-justified">
-                            <mat-checkbox [(ngModel)]="barUI.legendShow" (change)="applyLegendChanges()">Afficher la
-                                légende</mat-checkbox>
-
-                            <div class="pack-bar-title">
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Type</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <mat-select [(ngModel)]="barUI.legendType"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="plain">plain</mat-option>
-                                            <mat-option value="scroll">scroll</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Orientation</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <mat-select [(ngModel)]="barUI.legendOrient"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="horizontal">horizontal</mat-option>
-                                            <mat-option value="vertical">vertical</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row-justified">
-                            <div class="pack-bar-title">
-                                <div class="field w-120">
-                                    <div class="mini-label">Item w</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendItemWidth"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Item h</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendItemHeight"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Gap</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendItemGap"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row-justified">
-                            <mat-checkbox [(ngModel)]="barUI.legendUseXY" (change)="applyLegendChanges()">Position
-                                absolue (X/Y)</mat-checkbox>
-
-                            <div class="pack-bar-title" *ngIf="barUI.legendUseXY">
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">X</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendPosX"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Y</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendPosY"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row-justified">
-                            <div class="pack-bar-title">
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Icône</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <mat-select [(ngModel)]="barUI.legendIcon"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="auto">auto</mat-option>
-                                            <mat-option value="circle">circle</mat-option>
-                                            <mat-option value="rect">rect</mat-option>
-                                            <mat-option value="roundRect">roundRect</mat-option>
-                                            <mat-option value="triangle">triangle</mat-option>
-                                            <mat-option value="diamond">diamond</mat-option>
-                                            <mat-option value="pin">pin</mat-option>
-                                            <mat-option value="arrow">arrow</mat-option>
-                                            <mat-option value="none">none</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Taille texte</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <input matInput type="number" [(ngModel)]="barUI.legendTextSize"
-                                            (ngModelChange)="applyLegendChanges()">
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="field w-140-bar-title">
-                                    <div class="mini-label">Gras</div>
-                                    <mat-form-field appearance="outline" class="compact-field-bar-title">
-                                        <mat-select [(ngModel)]="barUI.legendTextWeight"
-                                            (selectionChange)="applyLegendChanges()">
-                                            <mat-option value="normal">normal</mat-option>
-                                            <mat-option value="bold">bold</mat-option>
-                                            <mat-option value="bolder">bolder</mat-option>
-                                            <mat-option value="lighter">lighter</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row-justified">
-                            <div class="field w-100p">
-                                <div class="mini-label">Formatter</div>
-                                <mat-form-field appearance="outline" class="compact-field">
-                                    <input matInput [(ngModel)]="barUI.legendFormatter"
-                                        (ngModelChange)="applyLegendChanges()" placeholder="{name}">
-                                </mat-form-field>
-                            </div>
-                        </div>
-
-                        <div class="row-justified">
-                            <div class="field w-200">
-                                <div class="mini-label">Mode</div>
-                                <mat-form-field appearance="outline" class="compact-field">
-                                    <mat-select [(ngModel)]="barUI.legendSelectedMode"
-                                        (selectionChange)="applyLegendChanges()">
-                                        <mat-option [value]="false">désactivé</mat-option>
-                                        <mat-option value="single">single</mat-option>
-                                        <mat-option value="multiple">multiple</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -3011,7 +3097,8 @@
 
     <div class="main-content">
         <p *ngIf="!chartOptions">Veuillez configurer votre graphique et cliquer sur "Appliquer".</p>
-        <div *ngIf="chartOptions" echarts [options]="chartOptions" class="chart-container"></div>
+        <div *ngIf="chartOptions" echarts [options]="chartOptions" (chartInit)="onChartInit($event)"
+            [initOpts]="{renderer: 'svg'}" class="chart-instance" class="chart-container"></div>
     </div>
 </mat-dialog-content>
 
@@ -3027,5 +3114,5 @@
         [disabled]="!isCurrentConfigValid">
         Ajouter
     </button>
-    <button mat-raised-button class="color-bottom" (click)="close()">Exporter</button>
+    <button mat-raised-button class="color-bottom" (click)="exportChart()">Exporter</button>
 </mat-dialog-actions>

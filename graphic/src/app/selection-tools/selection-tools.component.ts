@@ -11,7 +11,6 @@ import { MatOptionModule } from '@angular/material/core';
 
 import { CoordinateEnterComponent } from './button-selection-component/coordinate-enter.component/coordinate-enter.component';
 import { BufferDialogComponent } from './button-selection-component/buffer-dialog/buffer-dialog.component';
-import { SaveFormDialogComponent } from './button-selection-component/save-form-dialog/save-form-dialog.component';
 import { ButtonSelectionComponent } from './button-selection-component/button-selection-component';
 
 import Map from 'ol/Map';
@@ -34,7 +33,6 @@ import Overlay from 'ol/Overlay';
 
 import { SelectionService } from '../selection.service';
 import OLGeoJSON from 'ol/format/GeoJSON'; // pour l'export du polygon OL
-
 
 @Component({
   selector: 'app-selection-tools',
@@ -301,7 +299,7 @@ export class SelectionToolsComponent {
   public startDrawPoint(): void {
     const map: Map = (window as any).olMap;
     if (!map) {
-      console.error('❌ La carte OpenLayers n’est pas encore prête.');
+      console.error('❌ La carte OpenLayers n\'est pas encore prête.');
       return;
     }
 
@@ -349,7 +347,6 @@ export class SelectionToolsComponent {
       }
       this.removeTooltips();
 
-
       const geometry = event.feature.getGeometry() as Point;
       const coords3857 = geometry.getCoordinates();
 
@@ -396,8 +393,6 @@ export class SelectionToolsComponent {
           { featureProjection: 'EPSG:3857' }
         );
 
-
-
         const bufferLayer = new VectorLayer({
           source: new VectorSource({ features }),
           style: new Style({
@@ -411,22 +406,8 @@ export class SelectionToolsComponent {
 
         this.highlightIntersectingFeatures(features[0].getGeometry() as Polygon, map, bufferLayer);
 
-        const dialogSave = this.dialog.open(SaveFormDialogComponent, {
-          width: '300px',
-          data: {
-            polygonShape: 'buffer',
-            bufferRadius: distanceMeters,
-            convertedLonLat: { lat, lon }
-          }
-        });
-
-        dialogSave.afterClosed().subscribe((result) => {
-          if (result) {
-            console.log('✅ Données enregistrées :', result);
-          } else {
-            this.cancelDraw(map); // Annuler si la sauvegarde est annulée
-          }
-        });
+        // SUPPRIMÉ: L'appel à SaveFormDialogComponent
+        console.log('✅ Buffer créé avec succès, sauvegarde automatique');
       });
     });
   }
@@ -498,7 +479,6 @@ export class SelectionToolsComponent {
           error: (e) => console.error('[Selection] échec envoi buffer', e)
         });
 
-
         const format = new GeoJSON();
         const features = format.readFeatures(
           turf.featureCollection([buffered]),
@@ -518,34 +498,18 @@ export class SelectionToolsComponent {
 
         this.highlightIntersectingFeatures(features[0].getGeometry() as Polygon, map, bufferLayer);
 
-        const dialogSave = this.dialog.open(SaveFormDialogComponent, {
-          width: '300px',
-          data: {
-            polygonShape: 'buffer',
-            bufferRadius: distanceMeters,
-            convertedLonLat: coords4326
-          }
-        });
-
-        dialogSave.afterClosed().subscribe((result) => {
-          if (result) {
-            console.log('✅ Données enregistrées :', result);
-          } else {
-            this.cancelDraw(map); // Annuler si la sauvegarde est annulée
-          }
-        });
+        // SUPPRIMÉ: L'appel à SaveFormDialogComponent
+        console.log('✅ Buffer créé avec succès, sauvegarde automatique');
       });
     });
-
   }
-
 
   public startDrawPolygon(): void {
     const map = (window as any).olMap;
     this.resetFeatureStyles();
 
     if (!map) {
-      console.error('❌ La carte OpenLayers n’est pas encore prête.');
+      console.error('❌ La carte OpenLayers n\'est pas encore prête.');
       return;
     }
 
@@ -656,20 +620,8 @@ export class SelectionToolsComponent {
 
       this.highlightIntersectingFeatures(geometry, map, polygonLayer);
 
-      const dialogRef = this.dialog.open(SaveFormDialogComponent, {
-        width: '300px',
-        data: {
-          geometry: geometry
-        }
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          console.log('✅ Données du formulaire sauvegardées :', result);
-        } else {
-          this.cancelDraw(map);
-        }
-      });
+      // SUPPRIMÉ: L'appel à SaveFormDialogComponent
+      console.log('✅ Polygone créé avec succès, sauvegarde automatique');
     });
 
     if (!this.mapPointerMoveListener) {
@@ -691,7 +643,7 @@ export class SelectionToolsComponent {
       map.on('pointermove', this.mapPointerMoveListener);
     }
 
-    // SOLUTION: Ajouter également la possibilité de terminer avec la touche Entrée
+    //possibilité de terminer avec la touche Entrée
     const enterKeyListener = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {
         draw.finishDrawing();

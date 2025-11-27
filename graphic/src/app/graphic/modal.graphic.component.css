@@ -256,84 +256,96 @@
 /*** ====================            DEBUT STYLE ACCORDEON    ====================           ***/
 
 
-/* Bordure noire sur tous les panneaux */
-:host ::ng-deep .mat-expansion-panel {
-    border: 1.5px solid #474545;
 
+/* 1. Configuration de base du panneau (supprime l'ombre) */
+:host ::ng-deep .mat-expansion-panel {
+    box-shadow: none;
+    /* Remplacer par cette règle si elle n'est pas déjà dans .sidebar .mat-expansion-panel */
+    border: 1.5px solid #474545;
+    border-radius: 0;
 }
 
-/* Header quand le panneau est FERMÉ */
+/* 2. Style de l'En-tête quand le panneau est FERMÉ */
 :host ::ng-deep .mat-expansion-panel-header:not(.mat-expanded) {
     background-color: #2196f3;
-    /* bleu demandé */
+    /* Bleu */
     color: #fff;
-    transition: background-color .2s ease;
+    /* Texte blanc si nécessaire */
 }
 
-
-
-
-
-/* Header quand le panneau est OUVERT */
+/* 3. Style de l'En-tête quand le panneau est OUVERT */
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded {
     background-color: #842929;
-    /* violet */
-    color: #721414;
+    /* Violet */
+    /* Le 'color: #721414;' d'origine est retiré ici, car il est géré ci-dessous pour être blanc */
 }
 
-/* Assure la couleur des textes/indicateurs/icônes */
+/* 4. Assure la couleur des textes/indicateurs/icônes (forcé en blanc) */
 :host ::ng-deep .mat-expansion-panel-header .mat-expansion-panel-header-title,
 :host ::ng-deep .mat-expansion-panel-header .mat-expansion-panel-header-description,
 :host ::ng-deep .mat-expansion-panel-header mat-icon,
 :host ::ng-deep .mat-expansion-panel-header .mat-expansion-indicator::after {
-    color: #fff;
+    color: #fff !important;
+    /* Utilisation de !important pour garantir la couleur */
 }
 
+/* 5. FIX du 'flash blanc' : DÉFINITION DE LA COULEUR DU CORPS */
 
-/* Corps du panneau quand il est OUVERT : teinte violette légère */
+/* a. Force la couleur de fond du CORPS du panneau à la couleur de la sidebar */
+/* pour éviter le flash BLANC pur de l'arrière-plan du modal. */
+:host ::ng-deep .mat-expansion-panel-body {
+    background-color: #610707;
+    /* La couleur de .sidebar */
+    padding: 12px 16px;
+    /* Assurez-vous d'avoir le padding désiré */
+}
+
+/* b. Applique la teinte VIOLETTE LÉGÈRE uniquement quand le panneau est OUVERT */
 :host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-body {
     background-color: rgba(156, 39, 176, 0.08);
-    /* #9c27b0 à ~8% */
+    /* Teinte violette finale souhaitée */
     color: #1a1a1a;
-    /* lisible sur fond clair */
-    transition: background-color .2s ease;
-}
-
-/* (Optionnel) fine séparation entre header et body, cohérente avec ta bordure noire */
-:host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-body {
     border-top: 1px solid #000;
-}
-
-/* (Optionnel) un peu d’air à l’intérieur pour un rendu net */
-:host ::ng-deep .mat-expansion-panel .mat-expansion-panel-body {
-    padding: 12px 16px;
-    /* ajuste si besoin */
+    transition: none;
+    /* Élimine toute transition qui pourrait retarder l'affichage du background */
 }
 
 
+/* 6. Comportement de HOVER sur l'en-tête */
 
-/* Curseur main sur le header */
-:host ::ng-deep .mat-expansion-panel-header {
-    cursor: pointer;
-    transition: background-color .2s ease, color .2s ease;
-}
-
-/* HOVER : header noir (qu'il soit ouvert ou fermé) */
+/* HOVER : Fond noir/gris sur l'en-tête (ouvert ou fermé) */
 :host ::ng-deep .mat-expansion-panel-header:hover,
 :host ::ng-deep .mat-expansion-panel-header.mat-expanded:hover {
     background-color: #837d85 !important;
-    color: #2f0303 !important;
+    /* Fond gris/noir au survol */
 }
 
-/* HOVER : texte/chevron/icône en blanc pour la lisibilité */
+/* HOVER : texte/chevron/icône en noir pour le contraste sur le fond gris/noir de l'état HOVER */
 :host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-panel-header-title,
 :host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-panel-header-description,
 :host ::ng-deep .mat-expansion-panel-header:hover mat-icon,
 :host ::ng-deep .mat-expansion-panel-header:hover .mat-expansion-indicator::after {
     color: #2f0303 !important;
+    /* Couleur sombre/noir au survol */
 }
 
-/***  ============  FIN STYLE ACCORDEON========  **/
+/* (Optionnel) Ajout du curseur */
+:host ::ng-deep .mat-expansion-panel-header {
+    cursor: pointer;
+}
+
+/* 7. FIX : Assure la couleur de fond pour l'état fermé et actif/au focus */
+
+:host ::ng-deep .mat-expansion-panel-header:not(.mat-expanded),
+:host ::ng-deep .mat-expansion-panel-header:not(.mat-expanded):focus {
+    /* Maintient la couleur bleue même au focus/actif */
+    background-color: #2196f3 !important;
+    transition: background-color 0s;
+    /* Retire toute transition qui pourrait retarder l'application de la couleur */
+}
+
+/***  ============  FIN STYLE ACCORDEON========  **/
+
 
 
 
@@ -471,10 +483,6 @@
     }
 }
 
-/* Helpers si tu les utilises encore */
-/* .w-140-line-2 {
-    min-width: 140px;
-} */
 
 :host ::ng-deep .pack-line-2 mat-form-field .mat-mdc-text-field-wrapper {
     background-color: #ffffff;
@@ -1432,6 +1440,31 @@
     width: 100%;
     box-sizing: border-box;
 }
+
+.color-tooltip {
+    display: flex;
+    /* Aligne les éléments horizontalement */
+    flex-direction: row;
+    /* Ajoute un espacement entre les deux champs (Fond et Texte) */
+    gap: 20px;
+
+    flex-wrap: nowrap;
+}
+
+.title-section {
+    /* Fond violet foncé (Hexadécimal) */
+    background-color: #975f88;
+    /* Ou une autre nuance sombre comme #4527A0 ou #673AB7 (Purple Material) */
+
+    /* Occupe toute la largeur disponible */
+    width: 98%;
+    padding: 0px;
+    text-align: center;
+
+
+}
+
+
 
 :host ::ng-deep .pack-pie-1 mat-form-field .mat-mdc-text-field-wrapper {
     background-color: #ffffff;
